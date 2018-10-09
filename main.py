@@ -1,0 +1,33 @@
+from pico2d import *
+
+class Main_character:
+    def __init__(self):
+        self.image = load_image('H:\\2DGP\\2D_Game_Project\\resource\\Character_sprite\\High_주인공.png')
+
+    def draw(self):
+        self.image.draw(100, 60)
+
+def input_button():
+    global running
+    events = get_events()
+    for event in events:
+        if event.type == SDL_QUIT:
+            running = False
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
+            running = False
+
+
+open_canvas()
+
+character = Main_character()
+
+running = True
+
+while running:
+    input_button()
+
+    character.draw()
+
+    update_canvas()
+
+close_canvas()
