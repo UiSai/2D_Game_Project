@@ -3,9 +3,13 @@ from pico2d import *
 class Main_character:
     def __init__(self):
         self.image = load_image('H:\\2DGP\\2D_Game_Project\\resource\\Character_sprite\\High_주인공.png')
+        self.x, self.y = (100, 60)
 
     def draw(self):
         self.image.draw(100, 60)
+
+    def move_right(self):
+        self.image.draw()
 
 def input_button():
     global running
@@ -15,7 +19,10 @@ def input_button():
             running = False
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_RIGHT:
 
+def right_move():
+    pass
 
 open_canvas()
 
