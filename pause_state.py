@@ -3,14 +3,14 @@ from pico2d import *
 
 import title_state
 
-name = "StartState"
+name = "PauseState"
 image = None
-logo_time = 0.0
+pause_second = 0.0
 
 
 def enter():
     global image
-    image = load_image('kpu_credit.png')
+    image = load_image('pausee.png')
 
 
 def exit():
@@ -19,13 +19,7 @@ def exit():
 
 
 def update():
-    global logo_time
-
-    if(logo_time > 1.0):
-        logo_time = 0
-        game_framework.push_state(title_state)
-    delay(0.01)
-    logo_time += 0.01
+    pass
 
 
 def draw():
@@ -33,8 +27,6 @@ def draw():
     clear_canvas()
     image.draw(400, 300)
     update_canvas()
-
-
 
 
 def handle_events():
@@ -45,6 +37,8 @@ def handle_events():
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
             game_framework.quit()
+        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_p):
+            game_framework.pop_state()
 
 
 def pause(): pass
