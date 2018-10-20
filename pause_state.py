@@ -36,8 +36,6 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
-            game_framework.quit()
-        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_p):
             game_framework.pop_state()
 
 

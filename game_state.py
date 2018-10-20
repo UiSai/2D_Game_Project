@@ -1,5 +1,10 @@
 from pico2d import *
 
+import pause_state
+import game_framework
+
+name = 'GameState'
+
 class Main_character:
     def __init__(self):
         self.image = load_image('H:\\2DGP\\2D_Game_Project\\resource\\Character_sprite\\High_주인공.png')
@@ -18,7 +23,7 @@ def input_button():
         if event.type == SDL_QUIT:
             running = False
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            running = False
+            game_framework.push_state(pause_state)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_RIGHT:
 
 def right_move():
