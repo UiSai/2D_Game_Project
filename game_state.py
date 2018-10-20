@@ -9,9 +9,10 @@ player = None
 grass = None
 font = None
 
+
 class Background:
     def __init__(self):
-        self.image = load_image('H:\\2DGP\\2D_Game_Project\\resource\\Background\\d_grass.png')
+        self.image = load_image('resource\\Background\\d_grass.png')
 
     def draw(self):
         self.image.draw(250, 60)
@@ -25,7 +26,7 @@ class Background:
 
 class Player:
     def __init__(self):
-        self.image = load_image('H:\\2DGP\\2D_Game_Project\\resource\\Character_sprite\\High_주인공.png')
+        self.image = load_image('resource\\Character_sprite\\High_주인공.png')
         self.x, self.y = (100, 60)
 
     def draw(self):
@@ -36,6 +37,28 @@ class Player:
 
     def move_right(self):
         pass
+
+
+"""
+class Boy:
+    def __init__(self):
+        self.x, self.y = 0, 90
+        self.frame = 0
+        self.image = load_image('run_animation.png')
+        self.dir = 1
+
+    def update(self):
+        self.frame = (self.frame + 1) % 8
+        self.x += self.dir
+        if self.x >= 800:
+            self.dir = -1
+        elif self.x <= 0:
+            self.dir = 1
+
+    def draw(self):
+        self.image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
+"""
+
 
 def input_button():
     global running
@@ -48,8 +71,10 @@ def input_button():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_RIGHT:
             pass
 
+
 def right_move():
     pass
+
 
 def enter():
     global player, grass
@@ -59,8 +84,8 @@ def enter():
 
 def exit():
     global player, grass
-    del(player)
-    del(grass)
+    del (player)
+    del (grass)
 
 
 def pause():
@@ -79,6 +104,7 @@ def handle_events():
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
             game_framework.push_state(pause_state)
+
 
 def update():
     player.draw()

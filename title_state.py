@@ -1,7 +1,6 @@
-import game_framework
 from pico2d import *
 
-import main_state
+import game_framework
 import game_state
 
 name = "TitleState"
