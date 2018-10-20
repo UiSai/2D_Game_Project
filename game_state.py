@@ -9,18 +9,19 @@ player = None
 grass = None
 font = None
 
-class BG_floor_grass:
+class Background:
     def __init__(self):
         self.image = load_image('H:\\2DGP\\2D_Game_Project\\resource\\Background\\d_grass.png')
-        self.x, self.y = (250 ,60)
 
     def draw(self):
         self.image.draw(250, 60)
+        self.image.draw(500, 60)
+        self.image.draw(750, 60)
+        self.image.draw(1000, 60)
 
-class Background:
-    def __init__(self):
-        self.image = load_image()
+    def update(self):
         pass
+
 
 class Player:
     def __init__(self):
@@ -34,7 +35,7 @@ class Player:
         pass
 
     def move_right(self):
-        self.image.draw()
+        pass
 
 def input_button():
     global running
@@ -53,12 +54,12 @@ def right_move():
 def enter():
     global player, grass
     player = Player()
-    grass = BG_floor_grass()
+    grass = Background()
 
 
 def exit():
     global player, grass
-    del(boy)
+    del(player)
     del(grass)
 
 
@@ -80,7 +81,7 @@ def handle_events():
             game_framework.push_state(pause_state)
 
 def update():
-    player.update()
+    player.draw()
 
 
 def draw():
