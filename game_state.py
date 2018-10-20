@@ -8,6 +8,7 @@ name = 'GameState'
 player = None
 grass = None
 font = None
+move_direction = None
 
 
 class Background:
@@ -27,16 +28,22 @@ class Background:
 class Player:
     def __init__(self):
         self.image = load_image('resource\\Character_sprite\\High_주인공.png')
-        self.x, self.y = (100, 60)
+        self.x, self.y = (100, 300)
+        self.move_value = 0
+        self.direction = 0
 
     def draw(self):
-        self.image.draw(500, 400)
+        self.image.draw(self.x, self.y)
 
     def update(self):
-        pass
+        global move_direction
 
-    def move_right(self):
-        pass
+        if move_direction == 'right':
+            self.move_value = 5
+            self.x += self.move_value
+            delay(0.05)
+        elif move_direction == None:
+            self.move_value = 0
 
 
 """
@@ -60,30 +67,16 @@ class Boy:
 """
 
 
-def input_button():
-    global running
-    events = get_events()
-    for event in events:
-        if event.type == SDL_QUIT:
-            running = False
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            game_framework.push_state(pause_state)
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_RIGHT:
-            pass
-
-
-def right_move():
-    pass
-
-
 def enter():
     global player, grass
+
     player = Player()
     grass = Background()
 
 
 def exit():
     global player, grass
+
     del (player)
     del (grass)
 
@@ -96,7 +89,8 @@ def resume():
     pass
 
 
-def handle_events():
+def input_buttons():
+    global move_direction, key_release
     events = get_events()
 
     for event in events:
@@ -104,10 +98,14 @@ def handle_events():
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
             game_framework.push_state(pause_state)
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_RIGHT:
+            move_direction = 'right'
+        elif event.type == SDL_KEYUP and event.key == SDLK_RIGHT:
+            move_direction = None
 
 
 def update():
-    player.draw()
+    player.update()
 
 
 def draw():

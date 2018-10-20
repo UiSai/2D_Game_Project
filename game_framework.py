@@ -4,7 +4,7 @@ class GameState:
         self.exit = state.exit
         self.pause = state.pause
         self.resume = state.resume
-        self.handle_events = state.handle_events
+        self.input_buttons = state.input_buttons
         self.update = state.update
         self.draw = state.draw
 
@@ -27,8 +27,8 @@ class TestGameState:
     def resume(self):
         print("State [%s] Resumed" % self.name)
 
-    def handle_events(self):
-        print("State [%s] handle_events" % self.name)
+    def input_buttons(self):
+        print("State [%s] input_buttons" % self.name)
 
     def update(self):
         print("State [%s] update" % self.name)
@@ -82,13 +82,13 @@ def quit():
     running = False
 
 
-def run(start_state):
+def run(start_state: object) -> object:
     global running, stack
     running = True
     stack = [start_state]
     start_state.enter()
     while (running):
-        stack[-1].handle_events()
+        stack[-1].input_buttons()
         stack[-1].update()
         stack[-1].draw()
     # repeatedly delete the top of the stack
