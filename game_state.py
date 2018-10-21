@@ -9,6 +9,8 @@ player = None
 grass = None
 font = None
 move_direction = None
+move_state = False
+scan = SDL_GetKeyboardState(None)
 
 
 class Background:
@@ -27,10 +29,10 @@ class Background:
 
 class Player:
     def __init__(self):
-        self.image = load_image('resource\\Character_sprite\\High_주인공.png')
         self.x, self.y = (100, 300)
         self.move_value = 0
         self.direction = 0
+        self.image = load_image('resource\\Character_sprite\\High_주인공.png')
 
     def draw(self):
         self.image.draw(self.x, self.y)
@@ -39,11 +41,13 @@ class Player:
         global move_direction
 
         if move_direction == 'right':
-            self.move_value = 5
+            self.move_value = 1
             self.x += self.move_value
-            delay(0.05)
         elif move_direction == None:
-            self.move_value = 0
+            self.move_value = 0  #이동속도
+        elif move_direction == 'left':
+            self.move_value = 1
+            self.x -= self.move_value
 
 
 """
@@ -90,18 +94,26 @@ def resume():
 
 
 def input_buttons():
-    global move_direction, key_release
+    global move_direction, move_state
     events = get_events()
 
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
-            game_framework.push_state(pause_state)
+            game_framework.push_state(pause_state)  #여기까지 시스템
         elif event.type == SDL_KEYDOWN and event.key == SDLK_RIGHT:
             move_direction = 'right'
-        elif event.type == SDL_KEYUP and event.key == SDLK_RIGHT:
+            move_state = True
+        elif event.type == SDL_KEYUP and event.key == SDLK_RIGHT and move_direction == 'right':
             move_direction = None
+            move_state = False
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_LEFT:
+            move_direction = 'left'
+            move_state = True
+        elif event.type == SDL_KEYUP and event.key == SDLK_LEFT and move_direction == 'left':
+            move_direction = None
+            move_state = False
 
 
 def update():
