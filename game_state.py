@@ -10,18 +10,18 @@ grass = None
 font = None
 move_direction = None
 move_state = False
-scan = SDL_GetKeyboardState(None)
 
 
 class Background:
     def __init__(self):
         self.image = load_image('resource\\Background\\d_grass.png')
+        self.first_floor = 60
 
     def draw(self):
-        self.image.draw(250, 60)
-        self.image.draw(500, 60)
-        self.image.draw(750, 60)
-        self.image.draw(1000, 60)
+        self.image.draw(250, self.first_floor)
+        self.image.draw(500, self.first_floor)
+        self.image.draw(750, self.first_floor)
+        self.image.draw(1000, self.first_floor)
 
     def update(self):
         pass
@@ -29,10 +29,11 @@ class Background:
 
 class Player:
     def __init__(self):
-        self.x, self.y = (100, 300)
+        self.x, self.y = (100, 280)
         self.move_value = 0
         self.direction = 0
         self.image = load_image('resource\\Character_sprite\\High_주인공.png')
+        self.jump_height = self.y
 
     def draw(self):
         self.image.draw(self.x, self.y)
@@ -43,14 +44,21 @@ class Player:
         if move_direction == 'right':
             self.move_value = 1
             self.x += self.move_value
-        elif move_direction == None:
-            self.move_value = 0  #이동속도
+        elif move_direction is None:
+            self.move_value = 0  # 이동속도
         elif move_direction == 'left':
             self.move_value = 1
             self.x -= self.move_value
+        elif move_direction == 'jump':
+            self.move_value = 1
+            if self.y - 160 >= grass.first_floor:
+                if self.y - 160 <= self.jump_height:
+                    self.y += self.move_value
 
 
 """
+                elif self.y - 160 > self.jump_height:
+                    self.y -= self.move_value
 class Boy:
     def __init__(self):
         self.x, self.y = 0, 90
@@ -95,16 +103,17 @@ def resume():
 
 def input_buttons():
     global move_direction, move_state
+
     events = get_events()
 
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
-            game_framework.push_state(pause_state)  #여기까지 시스템
+            game_framework.push_state(pause_state)  # 여기까지 시스템
         elif event.type == SDL_KEYDOWN and event.key == SDLK_RIGHT:
             move_direction = 'right'
-            move_state = True
+            move_state = True  # 필요없지만 혹시 모르니 남겨둔다
         elif event.type == SDL_KEYUP and event.key == SDLK_RIGHT and move_direction == 'right':
             move_direction = None
             move_state = False
@@ -114,6 +123,9 @@ def input_buttons():
         elif event.type == SDL_KEYUP and event.key == SDLK_LEFT and move_direction == 'left':
             move_direction = None
             move_state = False
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_x and move_direction != 'jump':
+            move_direction = 'jump'
+            move_state = True
 
 
 def update():
