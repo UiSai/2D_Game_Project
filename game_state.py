@@ -10,6 +10,7 @@ grass = None
 font = None
 move_direction = None
 move_state = False
+jump_state = False
 
 
 class Background:
@@ -39,7 +40,7 @@ class Player:
         self.image.draw(self.x, self.y)
 
     def update(self):
-        global move_direction
+        global move_direction, jump_state
 
         if move_direction == 'right':
             self.move_value = 1
@@ -51,9 +52,13 @@ class Player:
             self.x -= self.move_value
         elif move_direction == 'jump':
             self.move_value = 1
-            if self.y - 160 >= grass.first_floor:
-                if self.y - 160 <= self.jump_height:
-                    self.y += self.move_value
+            if self.y - 160 < self.jump_height and jump_state is True:
+                self.y += self.move_value
+            elif self.y - 160 == self.jump_height and jump_state is True:
+                jump_state = False
+                self.y -= self.move_value
+            elif grass.first_floor + 60 < self.y - 160 <= self.jump_height and jump_state is False:
+                self.y -= self.move_value
 
 
 """
@@ -102,7 +107,7 @@ def resume():
 
 
 def input_buttons():
-    global move_direction, move_state
+    global move_direction, move_state, jump_state
 
     events = get_events()
 
@@ -125,7 +130,7 @@ def input_buttons():
             move_state = False
         elif event.type == SDL_KEYDOWN and event.key == SDLK_x and move_direction != 'jump':
             move_direction = 'jump'
-            move_state = True
+            jump_state = True
 
 
 def update():
