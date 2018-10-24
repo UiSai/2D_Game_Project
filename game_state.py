@@ -3,6 +3,8 @@ from pico2d import *
 import pause_state
 import game_framework
 
+from player import Player
+
 name = 'GameState'
 
 player = None
@@ -27,7 +29,7 @@ class Background:
     def update(self):
         pass
 
-
+"""
 class Player:
     def __init__(self):
         self.x, self.y = (100, 280)
@@ -57,8 +59,16 @@ class Player:
             elif self.y - 160 == self.jump_height and jump_state is True:
                 jump_state = False
                 self.y -= self.move_value
-            elif grass.first_floor + 60 < self.y - 160 <= self.jump_height and jump_state is False:
+            elif grass.first_floor + 60 < self.y - 160 < self.jump_height and jump_state is False:
                 self.y -= self.move_value
+            elif self.y - 160 == self.jump_height and jump_state is False:
+                move_direction = None
+        elif move_direction == 'right_jump':
+            self.move_value = 1
+            self.x += self.move_value
+            self.y += self.move_value
+"""
+
 
 
 """
@@ -116,21 +126,8 @@ def input_buttons():
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
             game_framework.push_state(pause_state)  # 여기까지 시스템
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_RIGHT:
-            move_direction = 'right'
-            move_state = True  # 필요없지만 혹시 모르니 남겨둔다
-        elif event.type == SDL_KEYUP and event.key == SDLK_RIGHT and move_direction == 'right':
-            move_direction = None
-            move_state = False
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_LEFT:
-            move_direction = 'left'
-            move_state = True
-        elif event.type == SDL_KEYUP and event.key == SDLK_LEFT and move_direction == 'left':
-            move_direction = None
-            move_state = False
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_x and move_direction != 'jump':
-            move_direction = 'jump'
-            jump_state = True
+        else:
+            player.input_buttons(event)
 
 
 def update():
@@ -142,3 +139,23 @@ def draw():
     grass.draw()
     player.draw()
     update_canvas()
+
+    """
+    elif event.type == SDL_KEYDOWN and event.key == SDLK_RIGHT:
+        move_direction = 'right'
+        move_state = True  # 필요없지만 혹시 모르니 남겨둔다
+        if jump_state is True and move_state is True:
+            move_direction = 'right_jump'
+    elif event.type == SDL_KEYUP and event.key == SDLK_RIGHT and move_direction == 'right':
+        move_direction = None
+        move_state = False
+    elif event.type == SDL_KEYDOWN and event.key == SDLK_LEFT:
+        move_direction = 'left'
+        move_state = True
+    elif event.type == SDL_KEYUP and event.key == SDLK_LEFT and move_direction == 'left':
+        move_direction = None
+        move_state = False
+    elif event.type == SDL_KEYDOWN and event.key == SDLK_x and move_direction != 'jump':
+        move_direction = 'jump'
+        jump_state = True  # 일반적 이동
+    """
