@@ -65,7 +65,7 @@ class RunState:
             delay(0.01)
 
 
-class JumpState:
+class JumpUpState:
 
     @staticmethod
     def enter(player):
@@ -78,21 +78,52 @@ class JumpState:
     @staticmethod
     def do(player):
         player.frame = (player.frame + 1) % 8
-        player.y += player.velocity
+        if player.velocity == 2:
+            player.y += player.velocity
+        else:
+            player.y -= player.velocity
 
     @staticmethod
     def draw(player):
         if player.velocity == 2:
             player.image.clip_draw(player.frame * 150, 0, 150, 320, player.x, player.y)
         else:
-            player.image.clip_draw(player.frame * 150, 100, 150, 320, player.x, player.y)
+            player.image.clip_draw(player.frame * 150, 0, 150, 320, player.x, player.y)
+
+
+class JumpDownState:
+
+    @staticmethod
+    def enter(player):
+        player.frame = 0
+
+
+    @staticmethod
+    def exit(player):
+        pass
+
+    @staticmethod
+    def do(player):
+        player.frame = (player.frame + 1) % 8
+        if player.velocity == 2 and player.y >= 280:  # 280은 지형의 높이.
+            player.y -= player.velocity
+        else:
+            player.cur_state = IdleState
+
+    @staticmethod
+    def draw(player):
+        if player.velocity == 2:
+            player.image.clip_draw(player.frame * 150, 0, 150, 320, player.x, player.y)
+        else:
+            player.image.clip_draw(player.frame * 150, 0, 150, 320, player.x, player.y)
 
 
 next_state_table = {
     IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
-                JUMP_DOWN: JumpState, JUMP_UP: JumpState},
+                JUMP_DOWN: JumpUpState, JUMP_UP: IdleState},
     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState},
-    JumpState: {JUMP_UP: IdleState, JUMP_DOWN: IdleState}
+    JumpUpState: {JUMP_UP: JumpDownState, JUMP_DOWN: JumpUpState},
+    JumpDownState: {JUMP_UP: JumpDownState, JUMP_DOWN: JumpDownState}
 }
     
     
@@ -136,7 +167,7 @@ class Player:
             elif key_event == LEFT_UP:
                 self.velocity += 1
             elif key_event == JUMP_DOWN:
-                self.velocity += 2
+                self.velocity = 2
             elif key_event == JUMP_UP:
-                self.velocity -= 2
+                self.velocity = 2
             self.add_event(key_event)

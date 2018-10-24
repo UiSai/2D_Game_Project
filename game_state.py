@@ -132,6 +132,7 @@ def input_buttons():
 
 def update():
     player.update()
+    print(player.cur_state)
 
 
 def draw():
