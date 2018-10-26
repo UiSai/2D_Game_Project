@@ -1,7 +1,6 @@
 from pico2d import *
 
-
-RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, JUMP_DOWN, JUMP_UP = range(6)
+RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, JUMP_DOWN, JUMP_UP, RIGHT_DASH_DOWN, RIGHT_DASH_UP, LEFT_DASH_DOWN, LEFT_DASH_UP = range(10)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
@@ -9,7 +8,11 @@ key_event_table = {
     (SDL_KEYDOWN, SDLK_x): JUMP_DOWN,
     (SDL_KEYUP, SDLK_RIGHT): RIGHT_UP,
     (SDL_KEYUP, SDLK_LEFT): LEFT_UP,
-    (SDL_KEYUP, SDLK_x): JUMP_UP
+    (SDL_KEYUP, SDLK_x): JUMP_UP,
+    (SDL_KEYDOWN, SDLK_RIGHT, SDLK_LSHIFT): RIGHT_DASH_DOWN,
+    (SDL_KEYUP, SDLK_RIGHT, SDLK_LSHIFT): RIGHT_DASH_UP,
+    (SDL_KEYDOWN, SDLK_LEFT, SDLK_LSHIFT): LEFT_DASH_DOWN,
+    (SDL_KEYUP, SDLK_LEFT, SDLK_LSHIFT): LEFT_DASH_UP
 }
 
 
@@ -97,7 +100,6 @@ class JumpDownState:
     def enter(player):
         player.frame = 0
 
-
     @staticmethod
     def exit(player):
         pass
@@ -170,4 +172,12 @@ class Player:
                 self.velocity = 2
             elif key_event == JUMP_UP:
                 self.velocity = 2
+            elif key_event == RIGHT_DASH_DOWN:
+                self.velocity += 5
+            elif key_event == RIGHT_DASH_UP:
+                self.velocity -= 5
+            elif key_event == LEFT_DASH_UP:
+                self.velocity += 5
+            elif key_event == LEFT_DASH_DOWN:
+                self.velocity -= 5
             self.add_event(key_event)
