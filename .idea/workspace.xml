@@ -18,38 +18,110 @@
           <entry key="project.closed" value="13" />
           <entry key="project.open.time.0" value="2" />
           <entry key="project.open.time.4" value="10" />
-          <entry key="project.open.time.5" value="1" />
+          <entry key="project.open.time.5" value="2" />
           <entry key="project.open.time.7" value="1" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="15" />
+          <entry key="project.opened" value="16" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="48" />
+          <entry key="py" value="55" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="48" />
+          <entry key="Python" value="55" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="23" />
-          <entry key="py" value="13466" />
+          <entry key="py" value="13729" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="23" />
-          <entry key="Python" value="13466" />
+          <entry key="Python" value="13729" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/game_world.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="57">
+              <caret line="3" column="17" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/game_state.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-287">
+              <caret line="104" column="21" selection-start-line="104" selection-start-column="21" selection-end-line="104" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../-KPU-2D_Game_Programming/Drills/Drill-11/boy.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="955">
+              <caret line="205" column="30" lean-forward="true" selection-start-line="205" selection-start-column="30" selection-end-line="205" selection-end-column="30" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
+                <marker date="1540466139546" expanded="true" signature="5899:6231" ph="..." />
+                <marker date="1540466139546" expanded="true" signature="6560:6682" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/player.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="782">
+              <caret line="92" column="39" lean-forward="true" selection-start-line="92" selection-start-column="39" selection-end-line="92" selection-end-column="39" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
+                <marker date="1540731023548" expanded="true" signature="1643:3252" ph="..." />
+                <marker date="1540731023548" expanded="true" signature="1765:1774" ph="..." />
+                <marker date="1540731023548" expanded="true" signature="3250:3252" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../-KPU-2D_Game_Programming/Drills/Drill-07/Drill-07.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="76">
+              <caret line="4" selection-start-line="4" selection-end-line="12" selection-end-column="40" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/run.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="152">
+              <caret line="8" column="14" lean-forward="true" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+              <folding>
+                <element signature="e#0#21#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -82,6 +154,7 @@
       <find>timer</find>
       <find>Da</find>
       <find>print</find>
+      <find>exit</find>
     </findStrings>
     <replaceStrings>
       <replace>move_state</replace>
@@ -111,10 +184,10 @@
         <option value="$PROJECT_DIR$/../-KPU-2D_Game_Programming/Drills/Lec-10/boy.py" />
         <option value="$PROJECT_DIR$/Player.py" />
         <option value="$PROJECT_DIR$/game_state.py" />
-        <option value="$PROJECT_DIR$/player.py" />
         <option value="$PROJECT_DIR$/../-KPU-2D_Game_Programming/Drills/Drill-11/mygame.py" />
         <option value="$PROJECT_DIR$/../-KPU-2D_Game_Programming/Drills/Drill-11/main_state.py" />
         <option value="$PROJECT_DIR$/../-KPU-2D_Game_Programming/Drills/Drill-11/boy.py" />
+        <option value="$PROJECT_DIR$/player.py" />
       </list>
     </option>
   </component>
@@ -129,17 +202,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="2D_Game_Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2D_Game_Project" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
       <pane id="Scope">
         <subPane subId="Scope 'Default Changelist'; set:Default Changelist; class com.intellij.packageDependencies.ChangeListScope">
           <expand>
@@ -155,6 +217,17 @@
             <path>
               <item name="2D_Game_Project" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="2D_Game_Project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="2D_Game_Project" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -177,7 +250,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.mygame (2)">
+  <component name="RunManager" selected="Python.run">
     <configuration name="boy" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="2D_Game_Project" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -292,8 +365,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.mygame (2)" />
         <item itemvalue="Python.run" />
+        <item itemvalue="Python.mygame (2)" />
         <item itemvalue="Python.mygame" />
         <item itemvalue="Python.mygame (1)" />
         <item itemvalue="Python.boy" />
@@ -324,13 +397,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24973656" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24973656" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32899022" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32899022" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32899022" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3995657" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -397,13 +471,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../-KPU-2D_Game_Programming/Drills/Drill-09/Drill-09.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="61" selection-start-line="61" selection-end-line="61" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../-KPU-2D_Game_Programming/Drills/Drill-10/show_files.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -501,20 +568,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/game_state.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="130" selection-start-line="130" selection-end-line="130" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../-KPU-2D_Game_Programming/Drills/Drill-11/ball.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
@@ -536,27 +589,48 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/player.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="121" selection-start-line="121" selection-end-line="121" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../-KPU-2D_Game_Programming/Drills/Drill-11/mygame.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="38">
           <caret line="5" column="29" selection-start-line="5" selection-start-column="29" selection-end-line="5" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../-KPU-2D_Game_Programming/Drills/Drill-11/main_state.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="700">
+          <caret line="62" column="26" selection-start-line="62" selection-start-column="26" selection-end-line="62" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="8" column="14" lean-forward="true" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/game_world.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="3" column="17" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game_state.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-287">
+          <caret line="104" column="21" selection-start-line="104" selection-start-column="21" selection-end-line="104" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../-KPU-2D_Game_Programming/Drills/Drill-11/boy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="834">
-          <caret line="119" column="26" selection-start-line="119" selection-start-column="26" selection-end-line="119" selection-end-column="26" />
+        <state relative-caret-position="955">
+          <caret line="205" column="30" lean-forward="true" selection-start-line="205" selection-start-column="30" selection-end-line="205" selection-end-column="30" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
             <marker date="1540466139546" expanded="true" signature="5899:6231" ph="..." />
@@ -565,12 +639,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../-KPU-2D_Game_Programming/Drills/Drill-11/main_state.py">
+    <entry file="file://$PROJECT_DIR$/../-KPU-2D_Game_Programming/Drills/Drill-09/Drill-09.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="700">
-          <caret line="62" column="26" selection-start-line="62" selection-start-column="26" selection-end-line="62" selection-end-column="26" />
+        <state relative-caret-position="855">
+          <caret line="46" column="33" lean-forward="true" selection-start-line="46" selection-start-column="33" selection-end-line="46" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../-KPU-2D_Game_Programming/Drills/Drill-07/Drill-07.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="4" selection-start-line="4" selection-end-line="12" selection-end-column="40" />
           <folding>
-            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/player.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="782">
+          <caret line="92" column="39" lean-forward="true" selection-start-line="92" selection-start-column="39" selection-end-line="92" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+            <marker date="1540731023548" expanded="true" signature="1643:3252" ph="..." />
+            <marker date="1540731023548" expanded="true" signature="1765:1774" ph="..." />
+            <marker date="1540731023548" expanded="true" signature="3250:3252" ph="..." />
           </folding>
         </state>
       </provider>

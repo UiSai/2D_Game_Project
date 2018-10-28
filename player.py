@@ -1,6 +1,9 @@
 from pico2d import *
 
-RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, JUMP_DOWN, JUMP_UP, RIGHT_DASH_DOWN, RIGHT_DASH_UP, LEFT_DASH_DOWN, LEFT_DASH_UP = range(10)
+import datetime
+import game_world
+
+RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, JUMP_DOWN, JUMP_UP = range(6)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
@@ -9,22 +12,18 @@ key_event_table = {
     (SDL_KEYUP, SDLK_RIGHT): RIGHT_UP,
     (SDL_KEYUP, SDLK_LEFT): LEFT_UP,
     (SDL_KEYUP, SDLK_x): JUMP_UP,
-    (SDL_KEYDOWN, SDLK_RIGHT, SDLK_LSHIFT): RIGHT_DASH_DOWN,
-    (SDL_KEYUP, SDLK_RIGHT, SDLK_LSHIFT): RIGHT_DASH_UP,
-    (SDL_KEYDOWN, SDLK_LEFT, SDLK_LSHIFT): LEFT_DASH_DOWN,
-    (SDL_KEYUP, SDLK_LEFT, SDLK_LSHIFT): LEFT_DASH_UP
 }
 
 
 class IdleState:
 
     @staticmethod
-    def enter(player):
+    def enter(player, event):
         player.frame = 0
         player.timer = 1000
 
     @staticmethod
-    def exit(player):
+    def exit(player, event):
         pass
 
     @staticmethod
@@ -44,19 +43,19 @@ class IdleState:
 class RunState:
 
     @staticmethod
-    def enter(player):
+    def enter(player, event):
         player.frame = 0
         player.dir = player.velocity
 
     @staticmethod
-    def exit(player):
+    def exit(player, event):
         pass
 
     @staticmethod
     def do(player):
         player.frame = (player.frame + 1) % 8
         player.x += player.velocity
-        player.x = clamp(25, player.x, 960 - 75)
+        player.x = clamp(25, player.x, 960)
 
     @staticmethod
     def draw(player):
@@ -71,11 +70,11 @@ class RunState:
 class JumpUpState:
 
     @staticmethod
-    def enter(player):
+    def enter(player, event):
         player.frame = 0
 
     @staticmethod
-    def exit(player):
+    def exit(player, event):
         pass
 
     @staticmethod
@@ -85,6 +84,16 @@ class JumpUpState:
             player.y += player.velocity
         else:
             player.y -= player.velocity
+        """
+        for i in range(0, 100 + 1, 5):
+            t = i / 100
+            x = (1 - t) * p1[0] + t * p2[0]
+            y = (1 - t) * p1[1] + t * p2[1]  #parametric representation
+        if p1[0] > p2[0]:
+            run_to_left_animation(x, y)
+        else:
+            run_to_right_animation(x, y)
+        """
 
     @staticmethod
     def draw(player):
@@ -97,11 +106,11 @@ class JumpUpState:
 class JumpDownState:
 
     @staticmethod
-    def enter(player):
+    def enter(player, event):
         player.frame = 0
 
     @staticmethod
-    def exit(player):
+    def exit(player, event):
         pass
 
     @staticmethod
@@ -136,14 +145,10 @@ class Player:
         self.image = load_image('resource\\Character_sprite\\Player_animation.png')
         self.dir = 1
         self.velocity = 0
+        self.frame = 0
         self.event_que = []
         self.cur_state = IdleState
-        self.cur_state.enter(self)
-
-    def change_state(self,  state):
-        self.cur_state.exit(self)
-        self.cur_state = state
-        self.cur_state.enter(self)
+        self.cur_state.enter(self, None)
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -152,7 +157,9 @@ class Player:
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
-            self.change_state(next_state_table[self.cur_state][event])
+            self.cur_state.exit(self, event)
+            self.cur_state = next_state_table[self.cur_state][event]
+            self.cur_state.enter(self, event)
 
     def draw(self):
         self.cur_state.draw(self)
@@ -172,12 +179,4 @@ class Player:
                 self.velocity = 2
             elif key_event == JUMP_UP:
                 self.velocity = 2
-            elif key_event == RIGHT_DASH_DOWN:
-                self.velocity += 5
-            elif key_event == RIGHT_DASH_UP:
-                self.velocity -= 5
-            elif key_event == LEFT_DASH_UP:
-                self.velocity += 5
-            elif key_event == LEFT_DASH_DOWN:
-                self.velocity -= 5
             self.add_event(key_event)
