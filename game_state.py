@@ -18,13 +18,14 @@ jump_state = False
 class Background:
     def __init__(self):
         self.image = load_image('resource\\Background\\d_grass.png')
-        self.first_floor = 60
+        self.first_floor = 40
 
     def draw(self):
-        self.image.draw(250, self.first_floor)
-        self.image.draw(500, self.first_floor)
-        self.image.draw(750, self.first_floor)
-        self.image.draw(1000, self.first_floor)
+        self.image.draw(150, self.first_floor)
+        self.image.draw(450, self.first_floor)
+        self.image.draw(700, self.first_floor)
+        self.image.draw(950, self.first_floor)
+        self.image.draw(1200, self.first_floor)
 
     def update(self):
         pass

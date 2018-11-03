@@ -1,6 +1,5 @@
 from pico2d import *
 
-import datetime
 import game_world
 
 RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, JUMP_DOWN, JUMP_UP = range(6)
@@ -33,10 +32,10 @@ class IdleState:
     @staticmethod
     def draw(player):
         if player.dir == 1:
-            player.image.clip_draw(player.frame * 150, 0, 150, 320, player.x, player.y)
+            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)
             delay(0.1)
         else:
-            player.image.clip_draw(player.frame * 150, 0, 150, 320, player.x, player.y)
+            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)
             delay(0.1)
 
 
@@ -60,10 +59,10 @@ class RunState:
     @staticmethod
     def draw(player):
         if player.velocity == 1:
-            player.image.clip_draw(player.frame * 150, 0, 150, 320, player.x, player.y)
+            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)
             delay(0.01)
         else:
-            player.image.clip_draw(player.frame * 150, 0, 150, 320, player.x, player.y)  # 왼쪽 이동 스프라이트
+            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)  # 왼쪽 이동 스프라이트
             delay(0.01)
 
 
@@ -72,8 +71,9 @@ class JumpState:
     @staticmethod
     def enter(player, event):
         player.frame = 0
-        player.jump_height = 100
-        player.jump_height_list = [player.y, player.y + player.jump_height]
+        player.jump_max_height = 100
+        player.jump_height_list = [player.y, player.y + player.jump_max_height]
+        # player.jumping_x = [player.x, player.x + player.jump_max_height]
         player.jumping = False
         player.i = 0
 
@@ -84,17 +84,12 @@ class JumpState:
     @staticmethod
     def do(player):
         player.frame = (player.frame + 1) % 8
-        """
-        if player.velocity == 2:
-            player.y += player.velocity
-        else:
-            player.y -= player.velocity
-        """
-        if player.y <= player.ground_y + player.jump_height:
+        if player.y <= player.ground_y + player.jump_max_height:
             player.i += 3
             t = player.i / 100
             player.y = (1 - t) * player.jump_height_list[0] + t * player.jump_height_list[1]
-            player.image.clip_draw(player.frame * 150, 0, 150, 320, player.x, player.y)
+            # player.x = (1 - t) * player.jumping_x[0] + t * player.jumping_x[1]
+            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)
         else:
             player.jumping is True
             player.add_event(5)
@@ -102,9 +97,9 @@ class JumpState:
     @staticmethod
     def draw(player):
         if player.velocity == 2:
-            player.image.clip_draw(player.frame * 150, 0, 150, 320, player.x, player.y)
+            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)
         else:
-            player.image.clip_draw(player.frame * 150, 0, 150, 320, player.x, player.y)  # 왼쪽 스프라이트
+            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)  # 왼쪽 스프라이트
 
 
 class FallingState:
@@ -122,17 +117,11 @@ class FallingState:
     @staticmethod
     def do(player):
         player.frame = (player.frame + 1) % 8
-        """
-        if player.velocity == 2 and player.y >= 280:  # 280은 지형의 높이.
-            player.y -= player.velocity
-        else:
-            player.cur_state = IdleState
-        """
         if player.y >= player.ground_y:
             player.i += 3
             t = player.i / 100
             player.y = (1 - t) * player.jump_height_list[0] + t * player.jump_height_list[1]
-            player.image.clip_draw(player.frame * 150, 0, 150, 320, player.x, player.y)
+            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)
         else:
             player.jumping is False
             player.cur_state = IdleState
@@ -140,9 +129,9 @@ class FallingState:
     @staticmethod
     def draw(player):
         if player.velocity == 2:
-            player.image.clip_draw(player.frame * 150, 0, 150, 320, player.x, player.y)
+            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)
         else:
-            player.image.clip_draw(player.frame * 150, 0, 150, 320, player.x, player.y)  # 왼쪽 스프라이트
+            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)  # 왼쪽 스프라이트
 
 
 next_state_table = {
@@ -150,15 +139,17 @@ next_state_table = {
                 JUMP_DOWN: JumpState, JUMP_UP: IdleState},
     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState,
                JUMP_DOWN: JumpState, JUMP_UP: RunState},
-    JumpState: {JUMP_DOWN: JumpState, JUMP_UP: FallingState},
-    FallingState: {JUMP_DOWN: FallingState, JUMP_UP: FallingState}
+    JumpState: {JUMP_DOWN: JumpState, JUMP_UP: FallingState, RIGHT_DOWN: JumpState, LEFT_DOWN: JumpState,
+                RIGHT_UP: JumpState, LEFT_UP: JumpState},
+    FallingState: {JUMP_DOWN: FallingState, JUMP_UP: FallingState, RIGHT_DOWN: JumpState, LEFT_DOWN: JumpState,
+                   RIGHT_UP: JumpState, LEFT_UP: JumpState}
 }
 
 
 class Player:
 
     def __init__(self):
-        self.x, self.y = 100, 280
+        self.x, self.y = 100, 130  # 280은 지형의 높이.
         self.ground_y = self.y
         self.image = load_image('resource\\Character_sprite\\Player_animation.png')
         self.dir = 1
@@ -168,7 +159,7 @@ class Player:
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
         self.jumping = False
-        self.jump_height = 500
+        self.jump_max_height = 500
         self.jump_height_list = []
         self.testlist = [1]
 
@@ -190,16 +181,16 @@ class Player:
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
             if key_event == RIGHT_DOWN:
-                self.velocity += 1
-            elif key_event == LEFT_DOWN:
-                self.velocity -= 1
-            elif key_event == RIGHT_UP:
-                self.velocity -= 1
-            elif key_event == LEFT_UP:
-                self.velocity += 1
-            elif key_event == JUMP_DOWN:
                 self.velocity += 5
-            elif key_event == JUMP_UP:
+            elif key_event == LEFT_DOWN:
                 self.velocity -= 5
+            elif key_event == RIGHT_UP:
+                self.velocity -= 5
+            elif key_event == LEFT_UP:
+                self.velocity += 5
+            elif key_event == JUMP_DOWN:
+                self.velocity += 10
+            elif key_event == JUMP_UP:
+                self.velocity -= 10
             self.add_event(key_event)
 
