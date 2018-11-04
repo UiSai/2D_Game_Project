@@ -2,7 +2,7 @@ from pico2d import *
 
 import game_world
 
-RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, JUMP_DOWN, JUMP_UP = range(6)
+RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, JUMP_DOWN, JUMP_UP, JUMPR_DOWN, JUMPL_DOWN, JUMPR_UP, JUMPL_UP = range(10)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
@@ -11,6 +11,10 @@ key_event_table = {
     (SDL_KEYUP, SDLK_RIGHT): RIGHT_UP,
     (SDL_KEYUP, SDLK_LEFT): LEFT_UP,
     (SDL_KEYUP, SDLK_x): JUMP_UP,
+    (SDL_KEYDOWN, SDLK_s): JUMPL_DOWN,
+    (SDL_KEYDOWN, SDLK_d): JUMPR_DOWN,
+    (SDL_KEYUP, SDLK_s): JUMPL_UP,
+    (SDL_KEYUP, SDLK_d): JUMPR_UP
 }
 
 
@@ -73,13 +77,14 @@ class JumpState:
         player.frame = 0
         player.jump_max_height = 100
         player.jump_height_list = [player.y, player.y + player.jump_max_height]
-        # player.jumping_x = [player.x, player.x + player.jump_max_height]
+        player.jumping_x = [player.x, player.x]
         player.jumping = False
         player.i = 0
 
     @staticmethod
     def exit(player, event):
-        pass
+        if event == RIGHT_DOWN:
+            player.x_in_jumping += 3
 
     @staticmethod
     def do(player):
@@ -88,11 +93,85 @@ class JumpState:
             player.i += 3
             t = player.i / 100
             player.y = (1 - t) * player.jump_height_list[0] + t * player.jump_height_list[1]
-            # player.x = (1 - t) * player.jumping_x[0] + t * player.jumping_x[1]
+            player.x = (1 - t) * player.jumping_x[0] + t * player.jumping_x[1]
             player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)
         else:
             player.jumping is True
             player.add_event(5)
+
+    @staticmethod
+    def draw(player):
+        if player.velocity == 2:
+            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)
+        else:
+            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)  # 왼쪽 스프라이트
+
+
+class JumpLState:
+
+    @staticmethod
+    def enter(player, event):
+        player.frame = 0
+        player.jump_max_height = 100
+        player.jump_height_list = [player.y, player.y + player.jump_max_height]
+        player.jumping_x = [player.x, player.x - player.jump_max_height]
+        player.jumping = False
+        player.i = 0
+
+    @staticmethod
+    def exit(player, event):
+        if event == RIGHT_DOWN:
+            player.x_in_jumping += 3
+
+    @staticmethod
+    def do(player):
+        player.frame = (player.frame + 1) % 8
+        if player.y <= player.ground_y + player.jump_max_height:
+            player.i += 3
+            t = player.i / 100
+            player.y = (1 - t) * player.jump_height_list[0] + t * player.jump_height_list[1]
+            player.x = (1 - t) * player.jumping_x[0] + t * player.jumping_x[1]
+            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)
+        else:
+            player.jumping is True
+            player.add_event(1)
+
+    @staticmethod
+    def draw(player):
+        if player.velocity == 2:
+            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)
+        else:
+            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)  # 왼쪽 스프라이트
+
+
+class JumpRState:
+
+    @staticmethod
+    def enter(player, event):
+        player.frame = 0
+        player.jump_max_height = 100
+        player.jump_height_list = [player.y, player.y + player.jump_max_height]
+        player.jumping_x = [player.x, player.x + player.jump_max_height]
+        player.jumping = False
+        player.i = 0
+
+    @staticmethod
+    def exit(player, event):
+        if event == RIGHT_DOWN:
+            player.x_in_jumping += 3
+
+    @staticmethod
+    def do(player):
+        player.frame = (player.frame + 1) % 8
+        if player.y <= player.ground_y + player.jump_max_height:
+            player.i += 3
+            t = player.i / 100
+            player.y = (1 - t) * player.jump_height_list[0] + t * player.jump_height_list[1]
+            player.x = (1 - t) * player.jumping_x[0] + t * player.jumping_x[1]
+            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)
+        else:
+            player.jumping is True
+            player.add_event(1)
 
     @staticmethod
     def draw(player):
@@ -108,6 +187,7 @@ class FallingState:
     def enter(player, event):
         player.frame = 0
         player.jump_height_list = [player.y, player.ground_y]
+        player.jumping_x = [player.x, player.x]
         player.i = 0
 
     @staticmethod
@@ -121,6 +201,7 @@ class FallingState:
             player.i += 3
             t = player.i / 100
             player.y = (1 - t) * player.jump_height_list[0] + t * player.jump_height_list[1]
+            player.x = (1 - t) * player.jumping_x[0] + t * player.jumping_x[1]
             player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)
         else:
             player.jumping is False
@@ -135,12 +216,18 @@ class FallingState:
 
 
 next_state_table = {
-    IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
-                JUMP_DOWN: JumpState, JUMP_UP: IdleState},
+    IdleState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
+                JUMP_DOWN: JumpState, JUMP_UP: IdleState, JUMPL_DOWN: JumpLState, JUMPR_DOWN: JumpRState,
+                JUMPL_UP: IdleState, JUMPR_UP: IdleState},
     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState,
-               JUMP_DOWN: JumpState, JUMP_UP: RunState},
+               JUMP_DOWN: JumpState, JUMP_UP: RunState, JUMPL_DOWN: JumpLState, JUMPR_DOWN: JumpRState,
+               JUMPL_UP: IdleState, JUMPR_UP: IdleState},
     JumpState: {JUMP_DOWN: JumpState, JUMP_UP: FallingState, RIGHT_DOWN: JumpState, LEFT_DOWN: JumpState,
                 RIGHT_UP: JumpState, LEFT_UP: JumpState},
+    JumpRState: {JUMPR_DOWN: JumpRState, JUMPR_UP: FallingState, RIGHT_DOWN: JumpRState, LEFT_DOWN: JumpRState,
+                 RIGHT_UP: JumpRState, LEFT_UP: JumpRState},
+    JumpLState: {JUMPL_DOWN: JumpLState, JUMPL_UP: FallingState, RIGHT_DOWN: JumpLState, LEFT_DOWN: JumpLState,
+                 RIGHT_UP: JumpLState, LEFT_UP: JumpLState},
     FallingState: {JUMP_DOWN: FallingState, JUMP_UP: FallingState, RIGHT_DOWN: JumpState, LEFT_DOWN: JumpState,
                    RIGHT_UP: JumpState, LEFT_UP: JumpState}
 }
@@ -149,7 +236,7 @@ next_state_table = {
 class Player:
 
     def __init__(self):
-        self.x, self.y = 100, 130  # 280은 지형의 높이.
+        self.x, self.y = 100, 130  # 130은 지형의 높이.
         self.ground_y = self.y
         self.image = load_image('resource\\Character_sprite\\Player_animation.png')
         self.dir = 1
@@ -161,7 +248,7 @@ class Player:
         self.jumping = False
         self.jump_max_height = 500
         self.jump_height_list = []
-        self.testlist = [1]
+        self.x_in_jumping = self.x
 
     def add_event(self, event):
         self.event_que.insert(0, event)

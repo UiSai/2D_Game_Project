@@ -4,6 +4,7 @@ import pause_state
 import game_framework
 
 from player import Player
+from enemy import Enemy
 
 name = 'GameState'
 
@@ -13,6 +14,7 @@ font = None
 move_direction = None
 move_state = False
 jump_state = False
+enemy = None
 
 
 class Background:
@@ -71,42 +73,20 @@ class Player:
 """
 
 
-
-"""
-                elif self.y - 160 > self.jump_height:
-                    self.y -= self.move_value
-class Boy:
-    def __init__(self):
-        self.x, self.y = 0, 90
-        self.frame = 0
-        self.image = load_image('run_animation.png')
-        self.dir = 1
-
-    def update(self):
-        self.frame = (self.frame + 1) % 8
-        self.x += self.dir
-        if self.x >= 800:
-            self.dir = -1
-        elif self.x <= 0:
-            self.dir = 1
-
-    def draw(self):
-        self.image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
-"""
-
-
 def enter():
-    global player, grass
+    global player, grass, enemy
 
     player = Player()
     grass = Background()
+    enemy = Enemy()
 
 
 def exit():
-    global player, grass
+    global player, grass, enemy
 
     del (player)
     del (grass)
+    del (enemy)
 
 
 def pause():
@@ -140,6 +120,7 @@ def draw():
     clear_canvas()
     grass.draw()
     player.draw()
+    enemy.draw()
     update_canvas()
 
     """
