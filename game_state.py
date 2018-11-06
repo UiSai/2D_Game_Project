@@ -4,7 +4,7 @@ import pause_state
 import game_framework
 
 from player import Player
-from enemy import Enemy
+from en_mouse import Enemy
 
 name = 'GameState'
 
@@ -48,7 +48,7 @@ class Player:
         global move_direction, jump_state
 
         if move_direction == 'right':
-            self.move_value = 1
+            self.move_avalue = 1
             self.x += self.move_value
         elif move_direction is None:
             self.move_value = 0  # 이동속도
@@ -114,6 +114,7 @@ def input_buttons():
 def update():
     player.update()
     print(player.cur_state)
+    print(player.x, player.y, player.velocity)
 
 
 def draw():
