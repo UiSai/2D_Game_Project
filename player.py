@@ -1,4 +1,5 @@
 from pico2d import *
+#from temp_rangeattack import RangeAttack
 
 import game_world
 
@@ -8,9 +9,11 @@ Run_speed_MPS = 5
 Run_speed_PPS = (Run_speed_MPS * Pixel_per_Meter)
 Air_speed_MPS = 10
 Air_speed_PPS = (Air_speed_MPS * Pixel_per_Meter)
+RangeAttack_speed_MPS = 15
+RangeAttack_speed_PPS = (RangeAttack_speed_MPS * Pixel_per_Meter)
 
 
-Right_DOWN, Left_DOWN, Right_UP, Left_UP, Up_DOWN, Up_UP, Air_DOWN = range(7)
+Right_DOWN, Left_DOWN, Right_UP, Left_UP, Up_DOWN, Up_UP, Air_DOWN, MAttack, RAttack = range(9)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_RIGHT): Right_DOWN,
@@ -19,7 +22,9 @@ key_event_table = {
     (SDL_KEYDOWN, SDLK_a): Air_DOWN,
     (SDL_KEYUP, SDLK_RIGHT): Right_UP,
     (SDL_KEYUP, SDLK_LEFT): Left_UP,
-    (SDL_KEYUP, SDLK_UP): Up_UP
+    (SDL_KEYUP, SDLK_UP): Up_UP,
+    (SDL_KEYDOWN, SDLK_z): MAttack,
+    (SDL_KEYDOWN, SDLK_x): RAttack
 }
 
 
@@ -32,8 +37,8 @@ class IdleState:
 
     @staticmethod
     def exit(player, event):
-        #if event == MAttack
-            pass
+        if event == RAttack:
+            player.RangeAttack()
 
     @staticmethod
     def do(player):
@@ -81,7 +86,7 @@ class AirState:
     @staticmethod
     def enter(player, event):
         player.frame = 0
-        player.y += 10
+        player.In_Air = True
 
     @staticmethod
     def exit(player, event):
@@ -159,7 +164,7 @@ class FallingState:
 
 next_state_table = {
     IdleState: {Right_UP: IdleState, Left_UP: IdleState, Right_DOWN: MoveState, Left_DOWN: MoveState,
-                Air_DOWN: AirState},
+                Air_DOWN: AirState, RAttack: IdleState},
     MoveState: {Right_UP: IdleState, Left_UP: IdleState, Left_DOWN: IdleState, Right_DOWN: IdleState,
                 Air_DOWN: AirState},
     AirState: {Right_UP: AirState, Left_UP: AirState, Right_DOWN: AirMoveState, Left_DOWN: AirMoveState,
@@ -188,6 +193,15 @@ class Player:
     def add_event(self, event):
         self.event_que.insert(0, event)
 
+    def MeleeAttack(self):
+        pass
+
+    def RangeAttack(self):
+        print('test')
+        Arrow = RangeAttack(self.x, self.y, self.dir * RangeAttack_speed_PPS * 10)
+        game_world.add_object(Arrow, 1)
+        print(RangeAttack_speed_PPS)
+
     def update(self):
         self.cur_state.do(self)
         if len(self.event_que) > 0:
@@ -210,6 +224,8 @@ class Player:
                 self.velocity -= Run_speed_PPS
             elif key_event == Left_UP:
                 self.velocity += Run_speed_PPS
+            elif key_event == Air_DOWN and self.cur_state == IdleState:
+                self.y += 10
             elif key_event == Right_DOWN and self.cur_state == AirState:
                 self.velocity += Air_speed_PPS
             elif key_event == Left_DOWN and self.cur_state == AirState:
@@ -220,3 +236,19 @@ class Player:
                 self.velocity += Air_speed_PPS
             self.add_event(key_event)
 
+
+class RangeAttack:
+    image = None
+
+    def __init__(self, x = 400, y = 300, velocity = 1):
+        if RangeAttack.image == None:
+            RangeAttack.image = load_image('resource\\RangeAttack.png')
+        self.x, self.y, self.velocity = x, y, velocity
+
+    def draw(self):
+        self.image.draw(self.x, self.y)
+
+    def update(self):
+        self.x += self.velocity
+        if self.x < 25 or self.x > 1600 - 25:
+            game_world.remove_object(self)

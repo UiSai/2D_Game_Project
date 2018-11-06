@@ -2,6 +2,7 @@ from pico2d import *
 
 import pause_state
 import game_framework
+import game_world
 
 from player import Player
 from en_mouse import Enemy
@@ -80,13 +81,12 @@ def enter():
     grass = Background()
     enemy = Enemy()
 
+    game_world.add_object(grass, 0)
+    game_world.add_object(player, 1)
+
 
 def exit():
-    global player, grass, enemy
-
-    del (player)
-    del (grass)
-    del (enemy)
+    game_world.clear()
 
 
 def pause():
@@ -112,16 +112,14 @@ def input_buttons():
 
 
 def update():
-    player.update()
-    print(player.cur_state)
-    print(player.x, player.y, player.velocity)
+    for game_object in game_world.all_objects():
+        game_object.update()
 
 
 def draw():
     clear_canvas()
-    grass.draw()
-    player.draw()
-    enemy.draw()
+    for game_object in game_world.all_objects():
+        game_object.draw()
     update_canvas()
 
     """
