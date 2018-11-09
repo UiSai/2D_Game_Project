@@ -2,13 +2,18 @@ from pico2d import *
 
 import game_world
 
+first_floor_mouse_y = 80
+
+Pixel_per_Meter = 1 / 1.23  # 1픽셀에 1.23미터
+Move_speed_MPS = 5
+Move_speed_PPS = (Move_speed_MPS * Pixel_per_Meter)
+
 
 class IdleState:
 
     @staticmethod
     def enter(enemy, event):
         enemy.frame = 0
-        enemy.timer = 1000
 
     @staticmethod
     def exit(enemy, event):
@@ -25,7 +30,7 @@ class IdleState:
         else:
             enemy.image.clip_draw(enemy.frame * 61, 0, 280, 50, enemy.x, enemy.y)
 
-"""
+
 class MoveState:
 
     @staticmethod
@@ -53,6 +58,7 @@ class MoveState:
             delay(0.01)
 
 
+"""
 class AttackState:
 
     @staticmethod
@@ -92,9 +98,10 @@ class AttackState:
 
 
 class Enemy:
+    global first_floor_mouse_y
 
     def __init__(self):
-        self.x, self.y = 800, 80  # 120은 지형의 높이.
+        self.x, self.y = 800, first_floor_mouse_y  # 120은 지형의 높이.
         self.ground_y = self.y
         self.image = load_image('resource\\High_mouse.png')
         self.dir = 1

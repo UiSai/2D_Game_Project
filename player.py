@@ -3,6 +3,7 @@ from pico2d import *
 
 import game_world
 
+first_floor_player_y = 130
 
 Pixel_per_Meter = 1 / 1.23  # 1픽셀에 1.23미터
 Run_speed_MPS = 5
@@ -177,9 +178,10 @@ next_state_table = {
 
 
 class Player:
+    global first_floor_player_y
 
     def __init__(self):
-        self.x, self.y = 100, 130  # 130은 지형의 높이.
+        self.x, self.y = 100, first_floor_player_y  # 130은 지형의 높이.
         self.ground_y = self.y
         self.image = load_image('resource\\Character_sprite\\Player_animation.png')
         self.dir = 1
