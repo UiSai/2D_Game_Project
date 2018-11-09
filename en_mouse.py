@@ -36,7 +36,7 @@ class MoveState:
     @staticmethod
     def enter(enemy, event):
         enemy.frame = 0
-        enemy.dir = enemy.velocity
+        enemy.dir = 0  # 이동방향. 0은 왼쪽. 1은 오른쪽.
 
     @staticmethod
     def exit(enemy, event):

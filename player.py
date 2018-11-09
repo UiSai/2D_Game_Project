@@ -2,6 +2,7 @@ from pico2d import *
 #from temp_rangeattack import RangeAttack
 
 import game_world
+import game_framework
 
 first_floor_player_y = 130
 
@@ -12,6 +13,10 @@ Air_speed_MPS = 10
 Air_speed_PPS = (Air_speed_MPS * Pixel_per_Meter)
 RangeAttack_speed_MPS = 15
 RangeAttack_speed_PPS = (RangeAttack_speed_MPS * Pixel_per_Meter)
+
+TIME_PER_ACTION = 0.5
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+FRAMES_PER_ACTION = 8
 
 
 Right_DOWN, Left_DOWN, Right_UP, Left_UP, Up_DOWN, Up_UP, Air_DOWN, MAttack, RAttack = range(9)
@@ -34,7 +39,6 @@ class IdleState:
     @staticmethod
     def enter(player, event):
         player.frame = 0
-        player.timer = 1000
 
     @staticmethod
     def exit(player, event):
@@ -43,16 +47,14 @@ class IdleState:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 1) % 8
+        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
 
     @staticmethod
     def draw(player):
         if player.dir == 1:
-            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)
-            delay(0.1)
+            player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)
         else:
-            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)
-            delay(0.1)
+            player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)
 
 
 class MoveState:
@@ -68,18 +70,16 @@ class MoveState:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 1) % 8
+        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.x += player.velocity
         player.x = clamp(25, player.x, 960)
 
     @staticmethod
     def draw(player):
         if player.velocity == Run_speed_PPS:
-            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)  # 걷기 오른쪽 이동
-            delay(0.01)
+            player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 걷기 오른쪽 이동
         else:
-            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)  # 걷기 왼쪽 이동
-            delay(0.01)
+            player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 걷기 왼쪽 이동
 
 
 class AirState:
@@ -95,14 +95,14 @@ class AirState:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 1) % 8
+        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
 
     @staticmethod
     def draw(player):
         if player.dir == 1:
-            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)
+            player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)
         else:
-            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)  # 왼쪽 스프라이트
+            player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 왼쪽 스프라이트
 
 
 class AirMoveState:
@@ -118,16 +118,16 @@ class AirMoveState:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 1) % 8
+        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.x += player.velocity
         player.x = clamp(25, player.x, 960)
 
     @staticmethod
     def draw(player):
         if player.velocity > Air_speed_PPS:
-            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)  # 공중 오른쪽 이동
+            player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 공중 오른쪽 이동
         else:
-            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)  # 공중 왼쪽 이동
+            player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 공중 왼쪽 이동
 
 
 class FallingState:
@@ -144,13 +144,13 @@ class FallingState:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + 1) % 8
+        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         if player.y >= player.ground_y:
             player.i += 3
             t = player.i / 100
             player.y = (1 - t) * player.fall_calculate_list[1] + t * player.fall_calculate_list[2]
             player.x = (1 - t) * player.fall_calculate_list[0] + t * player.fall_calculate_list[0]
-            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)
+            player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)
         else:
             player.In_Air = False
             player.cur_state = IdleState
@@ -158,22 +158,22 @@ class FallingState:
     @staticmethod
     def draw(player):
         if player.velocity == 2:
-            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)
+            player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)
         else:
-            player.image.clip_draw(player.frame * 61, 0, 61, 130, player.x, player.y)  # 왼쪽 스프라이트
+            player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 왼쪽 스프라이트
 
 
 next_state_table = {
     IdleState: {Right_UP: IdleState, Left_UP: IdleState, Right_DOWN: MoveState, Left_DOWN: MoveState,
                 Air_DOWN: AirState, RAttack: IdleState},
     MoveState: {Right_UP: IdleState, Left_UP: IdleState, Left_DOWN: IdleState, Right_DOWN: IdleState,
-                Air_DOWN: AirState},
+                Air_DOWN: AirState, RAttack: MoveState},
     AirState: {Right_UP: AirState, Left_UP: AirState, Right_DOWN: AirMoveState, Left_DOWN: AirMoveState,
-               Air_DOWN: FallingState},
+               Air_DOWN: FallingState, RAttack: AirState},
     FallingState: {Right_DOWN: FallingState, Left_DOWN: FallingState, Right_UP: FallingState, Left_UP: FallingState,
-                   Air_DOWN: AirState},
+                   Air_DOWN: AirState, RAttack: FallingState},
     AirMoveState: {Right_UP: AirState, Left_UP: AirState, Left_DOWN: AirMoveState, Right_DOWN: AirMoveState,
-                   Air_DOWN: FallingState}
+                   Air_DOWN: FallingState, RAttack: AirMoveState}
 }
 
 
@@ -240,12 +240,14 @@ class Player:
 
 
 class RangeAttack:
+    global RangeAttack_speed_PPS
+
     image = None
 
     def __init__(self, x = 400, y = 300, velocity = 1):
         if RangeAttack.image == None:
             RangeAttack.image = load_image('resource\\RangeAttack.png')
-        self.x, self.y, self.velocity = x, y, velocity
+        self.x, self.y, self.velocity = x, y, RangeAttack_speed_PPS
 
     def draw(self):
         self.image.draw(self.x, self.y)
