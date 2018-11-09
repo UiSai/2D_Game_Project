@@ -11,6 +11,8 @@ Run_speed_MPS = 5
 Run_speed_PPS = (Run_speed_MPS * Pixel_per_Meter)
 Air_speed_MPS = 10
 Air_speed_PPS = (Air_speed_MPS * Pixel_per_Meter)
+Rise_speed_PPS = (2 * Pixel_per_Meter)
+
 RangeAttack_speed_MPS = 15
 RangeAttack_speed_PPS = (RangeAttack_speed_MPS * Pixel_per_Meter)
 
@@ -63,7 +65,7 @@ class MoveState:
     @staticmethod
     def enter(player, event):
         player.frame = 0
-        player.dir = player.velocity
+        # player.dir = player.velocity
         player.In_Air = False
 
     @staticmethod
@@ -118,26 +120,26 @@ class AirMoveState:
     @staticmethod
     def enter(player, event):
         player.frame = 0
-        player.dir = player.velocity
 
     @staticmethod
     def exit(player, event):
         if event == RAttack:
             player.RangeAttack()
 
-
     @staticmethod
     def do(player):
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.x += player.velocity
         player.x = clamp(25, player.x, 960)
-        print(player.velocity)
-        print(player.In_Air)
+        if player.dir == 2:
+            player.y += player.Rise_velocity
 
     @staticmethod
     def draw(player):
         if player.velocity > Air_speed_PPS:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 공중 오른쪽 이동
+        elif player.dir == 2:
+            player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 상승
         else:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 공중 왼쪽 이동
 
@@ -183,11 +185,11 @@ next_state_table = {
     MoveState: {Right_UP: IdleState, Left_UP: IdleState, Left_DOWN: IdleState, Right_DOWN: IdleState,
                 Air_DOWN: AirState, RAttack: MoveState},
     AirState: {Right_UP: AirState, Left_UP: AirState, Right_DOWN: AirMoveState, Left_DOWN: AirMoveState,
-               Air_DOWN: FallingState, RAttack: AirState},
+               Air_DOWN: FallingState, RAttack: AirState, Up_DOWN: AirMoveState},
     FallingState: {Right_DOWN: FallingState, Left_DOWN: FallingState, Right_UP: FallingState, Left_UP: FallingState,
                    Air_DOWN: AirState, RAttack: FallingState},
     AirMoveState: {Right_UP: AirState, Left_UP: AirState, Left_DOWN: AirMoveState, Right_DOWN: AirMoveState,
-                   Air_DOWN: FallingState, RAttack: AirMoveState}
+                   Up_DOWN: AirMoveState, Up_UP: AirState}
 }
 
 
@@ -205,6 +207,7 @@ class Player:
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
         self.In_Air = False
+        self.Rise_velocity = 0
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -250,6 +253,12 @@ class Player:
                 self.velocity -= Air_speed_PPS
             elif key_event == Left_UP and self.In_Air:
                 self.velocity += Air_speed_PPS
+            elif key_event == Up_DOWN and self.In_Air:
+                self.dir = 2
+                self.Rise_velocity += Rise_speed_PPS
+            elif key_event == Up_UP and self.In_Air:
+                self.dir = 0
+                self.Rise_velocity -= Rise_speed_PPS
             self.add_event(key_event)
 
 
