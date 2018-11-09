@@ -181,14 +181,14 @@ class FallingState:
 
 next_state_table = {
     IdleState: {Right_UP: IdleState, Left_UP: IdleState, Right_DOWN: MoveState, Left_DOWN: MoveState,
-                Air_DOWN: AirState, RAttack: IdleState},
+                Air_DOWN: AirState, RAttack: IdleState, Up_DOWN: IdleState, Up_UP: IdleState},
     MoveState: {Right_UP: IdleState, Left_UP: IdleState, Left_DOWN: IdleState, Right_DOWN: IdleState,
-                Air_DOWN: AirState, RAttack: MoveState},
+                Air_DOWN: AirState, RAttack: MoveState, Up_DOWN: MoveState, Up_UP: MoveState},
     AirState: {Right_UP: AirState, Left_UP: AirState, Right_DOWN: AirMoveState, Left_DOWN: AirMoveState,
                Air_DOWN: FallingState, RAttack: AirState, Up_DOWN: AirMoveState},
     FallingState: {Right_DOWN: FallingState, Left_DOWN: FallingState, Right_UP: FallingState, Left_UP: FallingState,
                    Air_DOWN: AirState, RAttack: FallingState},
-    AirMoveState: {Right_UP: AirState, Left_UP: AirState, Left_DOWN: AirMoveState, Right_DOWN: AirMoveState,
+    AirMoveState: {Right_UP: AirMoveState, Left_UP: AirMoveState, Left_DOWN: AirMoveState, Right_DOWN: AirMoveState,
                    Up_DOWN: AirMoveState, Up_UP: AirState}
 }
 
