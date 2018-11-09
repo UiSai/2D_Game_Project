@@ -66,7 +66,9 @@ class MoveState:
 
     @staticmethod
     def exit(player, event):
-        pass
+        if event == RAttack:
+            player.RangeAttack()
+
 
     @staticmethod
     def do(player):
@@ -91,7 +93,9 @@ class AirState:
 
     @staticmethod
     def exit(player, event):
-        pass
+        if event == RAttack:
+            player.RangeAttack()
+
 
     @staticmethod
     def do(player):
@@ -114,7 +118,9 @@ class AirMoveState:
 
     @staticmethod
     def exit(player, event):
-        pass
+        if event == RAttack:
+            player.RangeAttack()
+
 
     @staticmethod
     def do(player):
@@ -140,7 +146,9 @@ class FallingState:
 
     @staticmethod
     def exit(player, event):
-        pass
+        if event == RAttack:
+            player.RangeAttack()
+
 
     @staticmethod
     def do(player):
