@@ -39,6 +39,7 @@ class IdleState:
     @staticmethod
     def enter(player, event):
         player.frame = 0
+        player.In_Air = False
 
     @staticmethod
     def exit(player, event):
@@ -63,6 +64,7 @@ class MoveState:
     def enter(player, event):
         player.frame = 0
         player.dir = player.velocity
+        player.In_Air = False
 
     @staticmethod
     def exit(player, event):
@@ -75,6 +77,7 @@ class MoveState:
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.x += player.velocity
         player.x = clamp(25, player.x, 960)
+        print(player.velocity)
 
     @staticmethod
     def draw(player):
@@ -89,7 +92,7 @@ class AirState:
     @staticmethod
     def enter(player, event):
         player.frame = 0
-        player.In_Air = True
+        player.In_Air = True  # 정확한 False 처리가 필요함.(현재는 일부 State의 enter에서 처리중)
 
     @staticmethod
     def exit(player, event):
@@ -100,6 +103,7 @@ class AirState:
     @staticmethod
     def do(player):
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        print(player.In_Air)
 
     @staticmethod
     def draw(player):
@@ -127,6 +131,8 @@ class AirMoveState:
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.x += player.velocity
         player.x = clamp(25, player.x, 960)
+        print(player.velocity)
+        print(player.In_Air)
 
     @staticmethod
     def draw(player):
@@ -226,23 +232,23 @@ class Player:
     def input_buttons(self, event):
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
-            if key_event == Right_DOWN:
+            if key_event == Right_DOWN and not self.In_Air:
                 self.velocity += Run_speed_PPS
-            elif key_event == Left_DOWN:
+            elif key_event == Left_DOWN and not self.In_Air:
                 self.velocity -= Run_speed_PPS
-            elif key_event == Right_UP:
+            elif key_event == Right_UP and not self.In_Air:
                 self.velocity -= Run_speed_PPS
-            elif key_event == Left_UP:
+            elif key_event == Left_UP and not self.In_Air:
                 self.velocity += Run_speed_PPS
-            elif key_event == Air_DOWN and self.cur_state == IdleState:
+            elif key_event == Air_DOWN and not self.In_Air:
                 self.y += 10
-            elif key_event == Right_DOWN and self.cur_state == AirState:
+            elif key_event == Right_DOWN and self.In_Air:
                 self.velocity += Air_speed_PPS
-            elif key_event == Left_DOWN and self.cur_state == AirState:
+            elif key_event == Left_DOWN and self.In_Air:
                 self.velocity -= Air_speed_PPS
-            elif key_event == Right_UP and self.cur_state == AirState:
+            elif key_event == Right_UP and self.In_Air:
                 self.velocity -= Air_speed_PPS
-            elif key_event == Left_UP and self.cur_state == AirState:
+            elif key_event == Left_UP and self.In_Air:
                 self.velocity += Air_speed_PPS
             self.add_event(key_event)
 
