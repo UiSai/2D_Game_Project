@@ -6,6 +6,7 @@ import game_world
 
 from player import Player
 from en_mouse import Enemy
+from stage1_BG import Background
 
 name = 'GameState'
 
@@ -17,21 +18,6 @@ move_state = False
 jump_state = False
 enemy = None
 
-
-class Background:
-    def __init__(self):
-        self.image = load_image('resource\\Background\\d_grass.png')
-        self.first_floor = 40
-
-    def draw(self):
-        self.image.draw(150, self.first_floor)
-        self.image.draw(450, self.first_floor)
-        self.image.draw(700, self.first_floor)
-        self.image.draw(950, self.first_floor)
-        self.image.draw(1200, self.first_floor)
-
-    def update(self):
-        pass
 
 """
 class Player:
@@ -78,10 +64,10 @@ def enter():
     global player, grass, enemy
 
     player = Player()
-    grass = Background()
+    background = Background()
     enemy = Enemy()
 
-    game_world.add_object(grass, 0)
+    game_world.add_object(background, 0)
     game_world.add_object(player, 1)
     game_world.add_object(enemy, 1)
 
