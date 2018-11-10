@@ -83,6 +83,7 @@ def enter():
 
     game_world.add_object(grass, 0)
     game_world.add_object(player, 1)
+    game_world.add_object(enemy, 1)
 
 
 def exit():
@@ -114,6 +115,7 @@ def input_buttons():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
+        print(player.cur_state, player.velocity)
 
 
 def draw():

@@ -1,12 +1,19 @@
 from pico2d import *
 
-import game_world
+import game_framework
 
-first_floor_mouse_y = 80
+
+Left, Right, Neutral = 0, 1, 2
+first_floor_mouse_y = 85
 
 Pixel_per_Meter = 1 / 1.23  # 1픽셀에 1.23미터
-Move_speed_MPS = 5
+Move_speed_MPS = 200
 Move_speed_PPS = (Move_speed_MPS * Pixel_per_Meter)
+Active_Range_x = 200
+
+TIME_PER_ACTION = 0.5
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+FRAMES_PER_ACTION = 8
 
 
 class IdleState:
@@ -21,22 +28,22 @@ class IdleState:
 
     @staticmethod
     def do(enemy):
-        enemy.frame = (enemy.frame + 1) % 8
+        enemy.frame = (enemy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
 
     @staticmethod
     def draw(enemy):
-        if enemy.dir == 1:
-            enemy.image.clip_draw(enemy.frame * 61, 0, 280, 50, enemy.x, enemy.y)
+        if enemy.dir == Right:
+            enemy.image.clip_draw(int(enemy.frame) * 61, 0, 280, 50, enemy.x, enemy.y)  # 오른쪽 이동
         else:
-            enemy.image.clip_draw(enemy.frame * 61, 0, 280, 50, enemy.x, enemy.y)
+            enemy.image.clip_draw(int(enemy.frame) * 61, 0, 280, 50, enemy.x, enemy.y)
 
 
 class MoveState:
 
     @staticmethod
     def enter(enemy, event):
-        enemy.frame = 0
-        enemy.dir = 0  # 이동방향. 0은 왼쪽. 1은 오른쪽.
+        enemy.dir = Right
+        enemy.velocity += Move_speed_PPS
 
     @staticmethod
     def exit(enemy, event):
@@ -44,18 +51,23 @@ class MoveState:
 
     @staticmethod
     def do(enemy):
-        enemy.frame = (enemy.frame + 1) % 8
-        enemy.x += enemy.velocity
-        enemy.x = clamp(25, enemy.x, 960)
+        enemy.frame = (enemy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        if enemy.x < enemy.start_x + Active_Range_x and enemy.dir == Right:
+            enemy.x += enemy.velocity * game_framework.frame_time
+        elif enemy.x > enemy.start_x + Active_Range_x and enemy.dir == Right:
+            enemy.dir = Left
+        elif enemy.x > enemy.start_x - Active_Range_x and enemy.dir == Left:
+            enemy.x -= enemy.velocity * game_framework.frame_time
+        elif enemy.dir < enemy.start_x - Active_Range_x and enemy.dir == Left:
+            enemy.dir = Right
+            enemy.x -= enemy.velocity * game_framework.frame_time
 
     @staticmethod
     def draw(enemy):
-        if enemy.velocity == 1:
-            enemy.image.clip_draw(enemy.frame * 61, 0, 61, 130, enemy.x, enemy.y)
-            delay(0.01)
+        if enemy.dir == Right:
+            enemy.image.clip_draw(int(enemy.frame) * 0, 0, 280, 50, enemy.x, enemy.y)
         else:
-            enemy.image.clip_draw(enemy.frame * 61, 0, 61, 130, enemy.x, enemy.y)  # 왼쪽 이동 스프라이트
-            delay(0.01)
+            enemy.image.clip_draw(int(enemy.frame) * 0, 0, 280, 50, enemy.x, enemy.y)  # 왼쪽 이동 스프라이트
 
 
 """
@@ -98,17 +110,16 @@ class AttackState:
 
 
 class Enemy:
-    global first_floor_mouse_y
-
     def __init__(self):
         self.x, self.y = 800, first_floor_mouse_y  # 120은 지형의 높이.
         self.ground_y = self.y
+        self.start_x = self.x
         self.image = load_image('resource\\High_mouse.png')
-        self.dir = 1
+        self.dir = Neutral
         self.velocity = 0
         self.frame = 0
         self.event_que = []
-        self.cur_state = IdleState
+        self.cur_state = MoveState
         self.cur_state.enter(self, None)
 
     def add_event(self, event):
@@ -126,6 +137,5 @@ class Enemy:
         self.cur_state.draw(self)
 
     def input_buttons(self, event):
-        self.add_event(key_event)
         pass
 

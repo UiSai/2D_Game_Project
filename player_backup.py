@@ -8,9 +8,9 @@ first_floor_player_y = 130
 Left, Right, Up, Fall, Neutral = 0, 1, 2, 3, 4
 
 Pixel_per_Meter = 1 / 1.23  # 1픽셀에 1.23미터
-Move_speed_MPS = 500
-Move_speed_PPS = (Move_speed_MPS * Pixel_per_Meter)
-Air_speed_MPS = 1000
+Run_speed_MPS = 5
+Run_speed_PPS = (Run_speed_MPS * Pixel_per_Meter)
+Air_speed_MPS = 10
 Air_speed_PPS = (Air_speed_MPS * Pixel_per_Meter)
 Rise_speed_PPS = (2 * Pixel_per_Meter)
 Fall_speed_PPS = (5 * Pixel_per_Meter)
@@ -42,16 +42,8 @@ class IdleState:
 
     @staticmethod
     def enter(player, event):
-        if event == Right_DOWN:
-            player.velocity += Move_speed_PPS
-        elif event == Left_DOWN:
-            player.velocity -= Move_speed_PPS
-        elif event == Right_UP:
-            player.velocity -= Move_speed_PPS
-        elif event == Left_UP:
-            player.velocity += Move_speed_PPS
-        elif event == Air_DOWN:
-            player.y += 10
+        player.frame = 0
+        player.In_Air = False
 
     @staticmethod
     def exit(player, event):
@@ -74,16 +66,9 @@ class MoveState:
 
     @staticmethod
     def enter(player, event):
-        if event == Right_DOWN:
-            player.velocity += Move_speed_PPS
-        elif event == Left_DOWN:
-            player.velocity -= Move_speed_PPS
-        elif event == Right_UP:
-            player.velocity -= Move_speed_PPS
-        elif event == Left_UP:
-            player.velocity += Move_speed_PPS
-        elif event == Air_DOWN:
-            player.y += 10
+        player.frame = 0
+        # player.dir = player.velocity
+        player.In_Air = False
 
     @staticmethod
     def exit(player, event):
@@ -94,12 +79,12 @@ class MoveState:
     @staticmethod
     def do(player):
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
-        player.x += player.velocity * game_framework.frame_time
-        player.x = clamp(25, player.x, 1255)
+        player.x += player.velocity
+        player.x = clamp(25, player.x, 960)
 
     @staticmethod
     def draw(player):
-        if player.velocity == Move_speed_PPS:
+        if player.velocity == Run_speed_PPS:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 걷기 오른쪽 이동
         else:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 걷기 왼쪽 이동
@@ -109,25 +94,8 @@ class AirState:
 
     @staticmethod
     def enter(player, event):
+        player.frame = 0
         player.In_Air = True  # 정확한 False 처리가 필요함.(현재는 일부 State의 enter에서 처리중)
-        if event == Right_DOWN:
-            player.dir = Right
-            player.velocity += Air_speed_PPS
-        elif event == Left_DOWN:
-            player.dir = Left
-            player.velocity -= Air_speed_PPS
-        elif event == Right_UP:
-            player.dir = Neutral
-            player.velocity -= Air_speed_PPS
-        elif event == Left_UP:
-            player.dir = Neutral
-            player.velocity += Air_speed_PPS
-        elif event == Up_DOWN:
-            player.dir = Up
-            player.Rise_velocity += Rise_speed_PPS
-        elif event == Up_UP:
-            player.dir = Neutral
-            player.Rise_velocity -= Rise_speed_PPS
 
     @staticmethod
     def exit(player, event):
@@ -151,24 +119,7 @@ class AirMoveState:
 
     @staticmethod
     def enter(player, event):
-        if event == Right_DOWN:
-            player.dir = Right
-            player.velocity += Air_speed_PPS
-        elif event == Left_DOWN:
-            player.dir = Left
-            player.velocity -= Air_speed_PPS
-        elif event == Right_UP:
-            player.dir = Neutral
-            player.velocity -= Air_speed_PPS
-        elif event == Left_UP:
-            player.dir = Neutral
-            player.velocity += Air_speed_PPS
-        elif event == Up_DOWN:
-            player.dir = Up
-            player.Rise_velocity += Rise_speed_PPS
-        elif event == Up_UP:
-            player.dir = Neutral
-            player.Rise_velocity -= Rise_speed_PPS
+        player.frame = 0
 
     @staticmethod
     def exit(player, event):
@@ -178,8 +129,8 @@ class AirMoveState:
     @staticmethod
     def do(player):
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
-        player.x += player.velocity * game_framework.frame_time
-        player.x = clamp(25, player.x, 1255)  # 넘어가면 강제로 조절함
+        player.x += player.velocity
+        player.x = clamp(25, player.x, 960)
         if player.dir == Up:
             player.y += player.Rise_velocity
 
@@ -197,14 +148,8 @@ class FallingState:
 
     @staticmethod
     def enter(player, event):
-        if event == Right_DOWN:
-            player.velocity += Move_speed_PPS
-        elif event == Left_DOWN:
-            player.velocity -= Move_speed_PPS
-        elif event == Right_UP:
-            player.velocity -= Move_speed_PPS
-        elif event == Left_UP:
-            player.velocity += Move_speed_PPS
+        player.frame = 0
+
 
     @staticmethod
     def exit(player, event):
@@ -217,9 +162,9 @@ class FallingState:
         if player.y >= player.ground_y:
             player.y -= Fall_speed_PPS
             if player.dir == Right:
-                player.x += Move_speed_PPS
+                player.x += Run_speed_PPS
             elif player.dir == Left:
-                player.x -= Move_speed_PPS
+                player.x -= Run_speed_PPS
         else:
             player.In_Air = False
             player.cur_state = IdleState
@@ -233,16 +178,16 @@ class FallingState:
 
 
 next_state_table = {
-    IdleState: {Right_UP: MoveState, Left_UP: MoveState, Right_DOWN: MoveState, Left_DOWN: MoveState,
+    IdleState: {Right_UP: IdleState, Left_UP: IdleState, Right_DOWN: MoveState, Left_DOWN: MoveState,
                 Air_DOWN: AirState, RAttack: IdleState, Up_DOWN: IdleState, Up_UP: IdleState},
     MoveState: {Right_UP: IdleState, Left_UP: IdleState, Left_DOWN: IdleState, Right_DOWN: IdleState,
                 Air_DOWN: AirState, RAttack: MoveState, Up_DOWN: MoveState, Up_UP: MoveState},
-    AirState: {Right_UP: AirMoveState, Left_UP: AirMoveState, Right_DOWN: AirMoveState, Left_DOWN: AirMoveState,
-               Air_DOWN: FallingState, RAttack: AirState, Up_DOWN: AirMoveState, Up_UP: AirMoveState},
-    AirMoveState: {Right_UP: AirMoveState, Left_UP: AirMoveState, Left_DOWN: AirState, Right_DOWN: AirState,
-                   Up_DOWN: AirMoveState, Up_UP: AirMoveState, Air_DOWN: FallingState},
+    AirState: {Right_UP: AirState, Left_UP: AirState, Right_DOWN: AirMoveState, Left_DOWN: AirMoveState,
+               Air_DOWN: FallingState, RAttack: AirState, Up_DOWN: AirMoveState},
     FallingState: {Right_DOWN: FallingState, Left_DOWN: FallingState, Right_UP: FallingState, Left_UP: FallingState,
-                   Air_DOWN: AirState, RAttack: FallingState, Up_DOWN: FallingState, Up_UP: FallingState}
+                   Air_DOWN: AirState, RAttack: FallingState, Up_DOWN: FallingState, Up_UP: FallingState},
+    AirMoveState: {Right_UP: AirMoveState, Left_UP: AirMoveState, Left_DOWN: AirMoveState, Right_DOWN: AirMoveState,
+                   Up_DOWN: AirMoveState, Up_UP: AirState, Air_DOWN: FallingState}
 }
 
 
@@ -284,6 +229,34 @@ class Player:
     def input_buttons(self, event):
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
+            if key_event == Right_DOWN and not self.In_Air:
+                self.velocity += Run_speed_PPS
+            elif key_event == Left_DOWN and not self.In_Air:
+                self.velocity -= Run_speed_PPS
+            elif key_event == Right_UP and not self.In_Air:
+                self.velocity -= Run_speed_PPS
+            elif key_event == Left_UP and not self.In_Air:
+                self.velocity += Run_speed_PPS
+            elif key_event == Air_DOWN and not self.In_Air:
+                self.y += 10
+            elif key_event == Right_DOWN and self.In_Air:
+                self.dir = Right
+                self.velocity += Air_speed_PPS
+            elif key_event == Left_DOWN and self.In_Air:
+                self.dir = Left
+                self.velocity -= Air_speed_PPS
+            elif key_event == Right_UP and self.In_Air:
+                self.dir = Neutral
+                self.velocity -= Air_speed_PPS
+            elif key_event == Left_UP and self.In_Air:
+                self.dir = Neutral
+                self.velocity += Air_speed_PPS
+            elif key_event == Up_DOWN and self.In_Air:
+                self.dir = Up
+                self.Rise_velocity += Rise_speed_PPS
+            elif key_event == Up_UP and self.In_Air:
+                self.dir = Neutral
+                self.Rise_velocity -= Rise_speed_PPS
             self.add_event(key_event)
 
 
