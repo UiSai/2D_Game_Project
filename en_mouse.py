@@ -125,6 +125,9 @@ class Enemy:
     def add_event(self, event):
         self.event_que.insert(0, event)
 
+    def get_bb(self):
+        return self.x - 140, self.y - 25, self.x + 140, self.y + 25
+
     def update(self):
         self.cur_state.do(self)
         if len(self.event_que) > 0:

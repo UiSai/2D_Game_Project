@@ -270,6 +270,9 @@ class Player:
         Arrow = RangeAttack(self.x, self.y, self.dir * RangeAttack_speed_PPS * 10)
         game_world.add_object(Arrow, 1)
 
+    def get_bb(self):
+        return self.x - 50, self.y - 50, self.x + 50, self.y + 50
+
     def update(self):
         self.cur_state.do(self)
         if len(self.event_que) > 0:

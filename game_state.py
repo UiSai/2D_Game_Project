@@ -11,13 +11,24 @@ from stage1_BG import Background
 name = 'GameState'
 
 player = None
-grass = None
+background = None
 font = None
 move_direction = None
 move_state = False
 jump_state = False
 enemy = None
 
+
+def collide(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a > right_b: return False
+    if right_a < left_b: return False
+    if top_a < bottom_b: return False
+    if bottom_a > top_b: return False
+
+    return True
 
 """
 class Player:
@@ -61,7 +72,7 @@ class Player:
 
 
 def enter():
-    global player, grass, enemy
+    global player, background, enemy
 
     player = Player()
     background = Background()
@@ -102,6 +113,17 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
         print(player.cur_state, player.velocity)
+
+    if collide(player, enemy):
+        game_world.remove_object(enemy)
+"""
+for enemies in enemy:
+    enemy.remove(enemy)
+    
+for ball in balls:
+    if collide(grass, ball):
+        ball.stop()
+"""
 
 
 def draw():
