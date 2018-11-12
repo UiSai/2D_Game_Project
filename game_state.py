@@ -5,12 +5,14 @@ import game_framework
 import game_world
 
 from player import Player
+from arrow import Arrow
 from en_mouse import Enemy
 from stage1_BG import Background
 
 name = 'GameState'
 
 player = None
+arrows = []
 background = None
 font = None
 move_direction = None
@@ -72,9 +74,10 @@ class Player:
 
 
 def enter():
-    global player, background, enemy
+    global player, background, enemy, arrows
 
     player = Player()
+    arrows = [Arrow(player.x, player.y) for i in range(10)]
     background = Background()
     enemy = Enemy()
 
@@ -112,11 +115,16 @@ def input_buttons():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
-        print(player.cur_state, player.velocity)
+        #print(player.cur_state, player.velocity)
         print(enemy.HP)
+        #print(arrows.x, arrows.y)
+        #print(arrows.get_bb())
 
+    for arrow in arrows:
+        if collide(arrow, enemy):
+            game_world.remove_object(enemy)
     if collide(player, enemy):
-        enemy.HP -= 1
+        game_world.remove_object(enemy)
 """
 for enemies in enemy:
     enemy.remove(enemy)

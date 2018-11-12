@@ -1,4 +1,5 @@
 from pico2d import *
+from arrow import Arrow
 #from temp_rangeattack import RangeAttack
 
 import game_world
@@ -15,8 +16,8 @@ Air_speed_PPS = (Air_speed_MPS * Pixel_per_Meter)
 Rise_speed_PPS = (2 * Pixel_per_Meter)
 Fall_speed_PPS = (5 * Pixel_per_Meter)
 
-RangeAttack_speed_MPS = 15
-RangeAttack_speed_PPS = (RangeAttack_speed_MPS * Pixel_per_Meter)
+Arrow_speed_MPS = 15
+Arrow_speed_PPS = (Arrow_speed_MPS * Pixel_per_Meter)
 
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
@@ -267,8 +268,8 @@ class Player:
         pass
 
     def RangeAttack(self):
-        Arrow = RangeAttack(self.x, self.y, self.dir * RangeAttack_speed_PPS * 10)
-        game_world.add_object(Arrow, 1)
+        arrow = Arrow(self.x, self.y)
+        game_world.add_object(arrow, 1)
 
     def get_bb(self):
         return self.x - 50, self.y - 50, self.x + 50, self.y + 50
@@ -290,6 +291,7 @@ class Player:
             self.add_event(key_event)
 
 
+"""
 class RangeAttack:
     image = None
 
@@ -300,8 +302,14 @@ class RangeAttack:
 
     def draw(self):
         self.image.draw(self.x, self.y)
+        draw_rectangle(*self.get_bb())
+        print(self.x, self.y)
+
+    def get_bb(self):
+        return self.x - 10, self.y - 100, self.x + 10, self.y + 100
 
     def update(self):
-        self.x += self.velocity
+        self.x += self.velocity * game_framework.frame_time
         if self.x < 25 or self.x > 1600 - 25:
             game_world.remove_object(self)
+"""
