@@ -113,13 +113,14 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
         print(player.cur_state, player.velocity)
+        print(enemy.HP)
 
     if collide(player, enemy):
-        game_world.remove_object(enemy)
+        enemy.HP -= 1
 """
 for enemies in enemy:
     enemy.remove(enemy)
-    
+    # game_world.remove_object(enemy)
 for ball in balls:
     if collide(grass, ball):
         ball.stop()

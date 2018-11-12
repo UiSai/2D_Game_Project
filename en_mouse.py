@@ -1,7 +1,7 @@
 from pico2d import *
 
 import game_framework
-
+import game_world
 
 Left, Right, Neutral = 0, 1, 2
 first_floor_mouse_y = 85
@@ -121,6 +121,7 @@ class Enemy:
         self.event_que = []
         self.cur_state = MoveState
         self.cur_state.enter(self, None)
+        self.HP = 5
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -135,6 +136,8 @@ class Enemy:
             self.cur_state.exit(self, event)
             self.cur_state = next_state_table[self.cur_state][event]
             self.cur_state.enter(self, event)
+        if self.HP <= 0:
+            game_world.remove_object(self)
 
     def draw(self):
         self.cur_state.draw(self)
