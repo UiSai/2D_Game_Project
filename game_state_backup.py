@@ -12,7 +12,7 @@ from stage1_BG import Background
 name = 'GameState'
 
 player = None
-arrows = []
+arrow = None
 background = None
 font = None
 move_direction = None
@@ -74,10 +74,10 @@ class Player:
 
 
 def enter():
-    global player, background, enemy, arrows
+    global player, background, enemy, arrow
 
     player = Player()
-    arrows = [Arrow(player.x, player.y) for i in range(10)]
+    arrow = Arrow(player.x, player.y)
     background = Background()
     enemy = Enemy()
 
@@ -113,22 +113,17 @@ def input_buttons():
 
 
 def update():
-    global arrows
-
     for game_object in game_world.all_objects():
         game_object.update()
         #print(player.cur_state, player.velocity)
         print(enemy.HP)
-    print('start')
-    """
-    for arrow in arrows:
-        print("x, y : ", arrow.x, arrow.y)
-        print("bb : ", arrow.get_bb())
-        if collide(game_world.objects[[2][arrow]], enemy) and player.Exist_rangeattack is True:
-            game_world.remove_object(enemy)
+        print(arrow.x, arrow.y)
+        print(arrow.get_bb())
+
+    if collide(arrow, enemy):
+        game_world.remove_object(enemy)
     if collide(player, enemy):
         game_world.remove_object(enemy)
-"""
 """
 for enemies in enemy:
     enemy.remove(enemy)

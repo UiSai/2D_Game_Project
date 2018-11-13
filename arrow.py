@@ -7,7 +7,7 @@ Arrow_speed_MPS = 15
 Arrow_speed_PPS = (Arrow_speed_MPS * Pixel_per_Meter)
 
 
-class Arrow():
+class Arrow:
     image = None
 
     def __init__(self, x, y):

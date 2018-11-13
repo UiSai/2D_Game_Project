@@ -1,7 +1,9 @@
 
 # layer 0: Background Objects
 # layer 1: Foreground Objects
-objects = [[],[]]
+# layer 2: Player's range attack Objects
+# layer 3: enemy's range attack Objects
+objects = [[], []]
 
 
 def add_object(o, layer):

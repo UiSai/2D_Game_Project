@@ -153,22 +153,17 @@ class AirMoveState:
     @staticmethod
     def enter(player, event):
         if event == Right_DOWN:
-            player.dir = Right
             player.velocity += Air_speed_PPS
         elif event == Left_DOWN:
-            player.dir = Left
             player.velocity -= Air_speed_PPS
         elif event == Right_UP:
-            player.dir = Neutral
             player.velocity -= Air_speed_PPS
         elif event == Left_UP:
-            player.dir = Neutral
             player.velocity += Air_speed_PPS
-        elif event == Up_DOWN:
-            player.dir = Up
+
+        if event == Up_DOWN:
             player.Rise_velocity += Rise_speed_PPS
         elif event == Up_UP:
-            player.dir = Neutral
             player.Rise_velocity -= Rise_speed_PPS
 
     @staticmethod
@@ -181,17 +176,27 @@ class AirMoveState:
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.x += player.velocity * game_framework.frame_time
         player.x = clamp(25, player.x, 1255)  # 넘어가면 강제로 조절함
-        if player.dir == Up:
-            player.y += player.Rise_velocity
+        player.y += player.Rise_velocity
 
     @staticmethod
     def draw(player):
-        if player.velocity > Air_speed_PPS:
+        if player.velocity > 0:
+            player.dir = Right
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 공중 오른쪽 이동
-        elif player.dir == Up:
-            player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 상승
-        else:
+        elif player.velocity < 0:
+            player.dir = Left
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 공중 왼쪽 이동
+        else:
+            if player.Rise_velocity > 0:
+                if player.dir == Left:
+                    player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 왼쪽을 보는 상승
+                elif player.dir == Right:
+                    player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 오른쪽을 보는 상승
+            else:
+                if player.dir == Left:
+                    player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 왼쪽을 보고 서있다
+                elif player.dir == Right:
+                    player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 오른쪽을 보고 서있다
 
 
 class FallingState:
@@ -240,7 +245,7 @@ next_state_table = {
                 Air_DOWN: AirState, RAttack: MoveState, Up_DOWN: MoveState, Up_UP: MoveState},
     AirState: {Right_UP: AirMoveState, Left_UP: AirMoveState, Right_DOWN: AirMoveState, Left_DOWN: AirMoveState,
                Air_DOWN: FallingState, RAttack: AirState, Up_DOWN: AirMoveState, Up_UP: AirMoveState},
-    AirMoveState: {Right_UP: AirMoveState, Left_UP: AirMoveState, Left_DOWN: AirState, Right_DOWN: AirState,
+    AirMoveState: {Right_UP: AirMoveState, Left_UP: AirMoveState, Left_DOWN: AirMoveState, Right_DOWN: AirMoveState,
                    Up_DOWN: AirMoveState, Up_UP: AirMoveState, Air_DOWN: FallingState},
     FallingState: {Right_DOWN: FallingState, Left_DOWN: FallingState, Right_UP: FallingState, Left_UP: FallingState,
                    Air_DOWN: AirState, RAttack: FallingState, Up_DOWN: FallingState, Up_UP: FallingState}
@@ -260,6 +265,7 @@ class Player:
         self.cur_state.enter(self, None)
         self.In_Air = False
         self.Rise_velocity = 0
+        self.Exist_rangeattack = False
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -269,7 +275,9 @@ class Player:
 
     def RangeAttack(self):
         arrow = Arrow(self.x, self.y)
-        game_world.add_object(arrow, 1)
+        game_world.add_object(arrow, 2)
+        self.Exist_rangeattack = True
+        print('pause')
 
     def get_bb(self):
         return self.x - 50, self.y - 50, self.x + 50, self.y + 50
