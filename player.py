@@ -38,7 +38,7 @@ key_event_table = {
     (SDL_KEYDOWN, SDLK_x): RAttack
 }
 
-
+"""
 class IdleState:
 
     @staticmethod
@@ -69,9 +69,9 @@ class IdleState:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)
         else:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)
+"""
 
-
-class MoveState:
+class GroundState:
 
     @staticmethod
     def enter(player, event):
@@ -100,12 +100,17 @@ class MoveState:
 
     @staticmethod
     def draw(player):
-        if player.velocity == Move_speed_PPS:
+        if player.velocity > 0:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 걷기 오른쪽 이동
-        else:
+        elif player.velocity < 0:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 걷기 왼쪽 이동
+        else:
+            if player.dir == Left:
+                player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 왼쪽을 보고 서있다
+            elif player.dir == Right:
+                player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 오른쪽을 보고 서있다
 
-
+"""
 class AirState:
 
     @staticmethod
@@ -146,9 +151,9 @@ class AirState:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)
         else:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 왼쪽 스프라이트
+"""
 
-
-class AirMoveState:
+class AirState:
 
     @staticmethod
     def enter(player, event):
@@ -228,7 +233,7 @@ class FallingState:
                 player.x -= Move_speed_PPS
         else:
             player.In_Air = False
-            player.cur_state = IdleState
+            player.cur_state = GroundState
 
     @staticmethod
     def draw(player):
@@ -238,6 +243,15 @@ class FallingState:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 왼쪽 스프라이트
 
 
+next_state_table = {
+    GroundState: {Right_UP: GroundState, Left_UP: GroundState, Left_DOWN: GroundState, Right_DOWN: GroundState,
+                Air_DOWN: AirState, RAttack: GroundState, Up_DOWN: GroundState, Up_UP: GroundState},
+    AirState: {Right_UP: AirState, Left_UP: AirState, Right_DOWN: AirState, Left_DOWN: AirState,
+               Air_DOWN: FallingState, RAttack: AirState, Up_DOWN: AirState, Up_UP: AirState},
+    FallingState: {Right_DOWN: FallingState, Left_DOWN: FallingState, Right_UP: FallingState, Left_UP: FallingState,
+                   Air_DOWN: AirState, RAttack: FallingState, Up_DOWN: FallingState, Up_UP: FallingState}
+}
+"""
 next_state_table = {
     IdleState: {Right_UP: MoveState, Left_UP: MoveState, Right_DOWN: MoveState, Left_DOWN: MoveState,
                 Air_DOWN: AirState, RAttack: IdleState, Up_DOWN: IdleState, Up_UP: IdleState},
@@ -250,6 +264,7 @@ next_state_table = {
     FallingState: {Right_DOWN: FallingState, Left_DOWN: FallingState, Right_UP: FallingState, Left_UP: FallingState,
                    Air_DOWN: AirState, RAttack: FallingState, Up_DOWN: FallingState, Up_UP: FallingState}
 }
+"""
 
 
 class Player:
@@ -261,7 +276,7 @@ class Player:
         self.velocity = 0
         self.frame = 0
         self.event_que = []
-        self.cur_state = IdleState
+        self.cur_state = GroundState
         self.cur_state.enter(self, None)
         self.In_Air = False
         self.Rise_velocity = 0
