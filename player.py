@@ -13,8 +13,8 @@ Move_speed_MPS = 500
 Move_speed_PPS = (Move_speed_MPS * Pixel_per_Meter)
 Air_speed_MPS = 1000
 Air_speed_PPS = (Air_speed_MPS * Pixel_per_Meter)
-Rise_speed_PPS = (2 * Pixel_per_Meter)
-Fall_speed_PPS = (5 * Pixel_per_Meter)
+Rise_speed_PPS = (200 * Pixel_per_Meter)
+Fall_speed_PPS = (500 * Pixel_per_Meter)
 
 Arrow_speed_MPS = 15
 Arrow_speed_PPS = (Arrow_speed_MPS * Pixel_per_Meter)
@@ -71,6 +71,7 @@ class IdleState:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)
 """
 
+
 class GroundState:
 
     @staticmethod
@@ -90,7 +91,6 @@ class GroundState:
     def exit(player, event):
         if event == RAttack:
             player.RangeAttack()
-
 
     @staticmethod
     def do(player):
@@ -153,6 +153,7 @@ class AirState:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 왼쪽 스프라이트
 """
 
+
 class AirState:
 
     @staticmethod
@@ -181,7 +182,7 @@ class AirState:
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.x += player.velocity * game_framework.frame_time
         player.x = clamp(25, player.x, 1255)  # 넘어가면 강제로 조절함
-        player.y += player.Rise_velocity
+        player.y += player.Rise_velocity * game_framework.frame_time
 
     @staticmethod
     def draw(player):
@@ -226,11 +227,11 @@ class FallingState:
     def do(player):
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         if player.y >= player.ground_y:
-            player.y -= Fall_speed_PPS
+            player.y -= Fall_speed_PPS * game_framework.frame_time
             if player.dir == Right:
-                player.x += Move_speed_PPS
+                player.x += Move_speed_PPS * game_framework.frame_time
             elif player.dir == Left:
-                player.x -= Move_speed_PPS
+                player.x -= Move_speed_PPS * game_framework.frame_time
         else:
             player.In_Air = False
             player.cur_state = GroundState
@@ -245,7 +246,7 @@ class FallingState:
 
 next_state_table = {
     GroundState: {Right_UP: GroundState, Left_UP: GroundState, Left_DOWN: GroundState, Right_DOWN: GroundState,
-                Air_DOWN: AirState, RAttack: GroundState, Up_DOWN: GroundState, Up_UP: GroundState},
+                  Air_DOWN: AirState, RAttack: GroundState, Up_DOWN: GroundState, Up_UP: GroundState},
     AirState: {Right_UP: AirState, Left_UP: AirState, Right_DOWN: AirState, Left_DOWN: AirState,
                Air_DOWN: FallingState, RAttack: AirState, Up_DOWN: AirState, Up_UP: AirState},
     FallingState: {Right_DOWN: FallingState, Left_DOWN: FallingState, Right_UP: FallingState, Left_UP: FallingState,
@@ -274,12 +275,13 @@ class Player:
         self.image = load_image('resource\\Character_sprite\\Player_animation.png')
         self.dir = Right
         self.velocity = 0
+        self.Rise_velocity = 0
+        self.Falling_velocity = 0
         self.frame = 0
         self.event_que = []
         self.cur_state = GroundState
         self.cur_state.enter(self, None)
         self.In_Air = False
-        self.Rise_velocity = 0
         self.Exist_rangeattack = False
 
     def add_event(self, event):
@@ -304,6 +306,7 @@ class Player:
             self.cur_state.exit(self, event)
             self.cur_state = next_state_table[self.cur_state][event]
             self.cur_state.enter(self, event)
+        print(self.dir)
 
     def draw(self):
         self.cur_state.draw(self)
