@@ -103,12 +103,12 @@ class GroundState:
         if player.velocity > 0:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 걷기 오른쪽 이동
         elif player.velocity < 0:
-            player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 걷기 왼쪽 이동
+            player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 걷기 왼쪽 이동
         else:
-            if player.dir == Left:
-                player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 왼쪽을 보고 서있다
-            elif player.dir == Right:
+            if player.dir == Right:
                 player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 오른쪽을 보고 서있다
+            elif player.dir == Left:
+                player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽을 보고 서있다
 
 """
 class AirState:
@@ -186,21 +186,21 @@ class AirState:
 
     @staticmethod
     def draw(player):
-        if player.velocity > 0:
+        if player.velocity < 0:
+            player.dir = Left
+            player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 공중 왼쪽 이동
+        elif player.velocity > 0:
             player.dir = Right
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 공중 오른쪽 이동
-        elif player.velocity < 0:
-            player.dir = Left
-            player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 공중 왼쪽 이동
         else:
             if player.Rise_velocity > 0:
                 if player.dir == Left:
-                    player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 왼쪽을 보는 상승
+                    player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽을 보는 상승
                 elif player.dir == Right:
                     player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 오른쪽을 보는 상승
             else:
                 if player.dir == Left:
-                    player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 왼쪽을 보고 서있다
+                    player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽을 보고 서있다
                 elif player.dir == Right:
                     player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 오른쪽을 보고 서있다
 
@@ -241,7 +241,7 @@ class FallingState:
         if player.dir == Right:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)
         else:
-            player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 왼쪽 스프라이트
+            player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽 스프라이트
 
 
 next_state_table = {
