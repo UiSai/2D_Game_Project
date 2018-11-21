@@ -110,49 +110,6 @@ class GroundState:
             elif player.dir == Left:
                 player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽을 보고 서있다
 
-"""
-class AirState:
-
-    @staticmethod
-    def enter(player, event):
-        player.In_Air = True  # 정확한 False 처리가 필요함.(현재는 일부 State의 enter에서 처리중)
-        if event == Right_DOWN:
-            player.dir = Right
-            player.velocity += Air_speed_PPS
-        elif event == Left_DOWN:
-            player.dir = Left
-            player.velocity -= Air_speed_PPS
-        elif event == Right_UP:
-            player.dir = Neutral
-            player.velocity -= Air_speed_PPS
-        elif event == Left_UP:
-            player.dir = Neutral
-            player.velocity += Air_speed_PPS
-        elif event == Up_DOWN:
-            player.dir = Up
-            player.Rise_velocity += Rise_speed_PPS
-        elif event == Up_UP:
-            player.dir = Neutral
-            player.Rise_velocity -= Rise_speed_PPS
-
-    @staticmethod
-    def exit(player, event):
-        if event == RAttack:
-            player.RangeAttack()
-
-
-    @staticmethod
-    def do(player):
-        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
-
-    @staticmethod
-    def draw(player):
-        if player.dir == Right:
-            player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)
-        else:
-            player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 왼쪽 스프라이트
-"""
-
 
 class AirState:
 
@@ -252,20 +209,6 @@ next_state_table = {
     FallingState: {Right_DOWN: FallingState, Left_DOWN: FallingState, Right_UP: FallingState, Left_UP: FallingState,
                    Air_DOWN: AirState, RAttack: FallingState, Up_DOWN: FallingState, Up_UP: FallingState}
 }
-"""
-next_state_table = {
-    IdleState: {Right_UP: MoveState, Left_UP: MoveState, Right_DOWN: MoveState, Left_DOWN: MoveState,
-                Air_DOWN: AirState, RAttack: IdleState, Up_DOWN: IdleState, Up_UP: IdleState},
-    MoveState: {Right_UP: IdleState, Left_UP: IdleState, Left_DOWN: IdleState, Right_DOWN: IdleState,
-                Air_DOWN: AirState, RAttack: MoveState, Up_DOWN: MoveState, Up_UP: MoveState},
-    AirState: {Right_UP: AirMoveState, Left_UP: AirMoveState, Right_DOWN: AirMoveState, Left_DOWN: AirMoveState,
-               Air_DOWN: FallingState, RAttack: AirState, Up_DOWN: AirMoveState, Up_UP: AirMoveState},
-    AirMoveState: {Right_UP: AirMoveState, Left_UP: AirMoveState, Left_DOWN: AirMoveState, Right_DOWN: AirMoveState,
-                   Up_DOWN: AirMoveState, Up_UP: AirMoveState, Air_DOWN: FallingState},
-    FallingState: {Right_DOWN: FallingState, Left_DOWN: FallingState, Right_UP: FallingState, Left_UP: FallingState,
-                   Air_DOWN: AirState, RAttack: FallingState, Up_DOWN: FallingState, Up_UP: FallingState}
-}
-"""
 
 
 class Player:
