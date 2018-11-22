@@ -40,6 +40,9 @@ class Block:
 
 class Background:
     def __init__(self):
+        self.bgm = load_music('resource\\Sound\\bgm.mp3')
+        self.bgm.set_volume(64)
+        self.bgm.repeat_play()
         self.grass = load_image('resource\\Background\\d_grass.png')
         self.tree_1 = load_image('resource\\Background\\tree.png')
         self.tree_2 = load_image('resource\\Background\\tree2.png')

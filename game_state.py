@@ -41,6 +41,7 @@ def enter():
     background = Background()
     enemy = Enemy()
 
+
     game_world.add_object(background, 0)
     game_world.add_object(player, 1)
     game_world.add_object(enemy, 1)
