@@ -5,18 +5,22 @@ import game_state
 
 name = "TitleState"
 image = None
+bgm = None
 
 
 def enter():
-    global image
+    global image, bgm
     image = load_image('resource\\Title.png')
     easter = False
     easter_commend = []
+    bgm = load_music("resource\\Sound\\title.mp3")
+    bgm.set_volume(64)
+    bgm.repeat_play()
 
 
 def exit():
-    global image
-    del(image)
+    global image, bgm
+    del(image, bgm)
 
 
 def input_buttons():
