@@ -13,6 +13,7 @@ def enter():
     easter = False
     easter_commend = []
 
+
 def exit():
     global image
     del(image)
