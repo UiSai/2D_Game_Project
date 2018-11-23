@@ -9,7 +9,7 @@ image = None
 
 def enter():
     global image
-    image = load_image('resource\\title.png')
+    image = load_image('resource\\Title.png')
     easter = False
     easter_commend = []
 
