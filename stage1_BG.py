@@ -1,4 +1,5 @@
 from pico2d import *
+import title_state
 
 import game_world
 import game_framework
@@ -46,10 +47,16 @@ class Background:
         self.first_floor_of_grass = 40
         self.first_floor_of_tree = 460
         self.block = 1
-
-        # self.bgm = load_music('resource\\Sound\\bgm.mp3')
-        # self.bgm.set_volume(64)
-        # self.bgm.repeat_play()
+        """
+        if not title_state.easter:
+            self.bgm = load_music('resource\\Sound\\bgm.mp3')
+            self.bgm.set_volume(64)
+            self.bgm.repeat_play()
+        else:
+            self.bgm = load_music('resource\\Sound\\bgm02.mp3')
+            self.bgm.set_volume(64)
+            self.bgm.repeat_play()
+        """
 
     def draw(self):
         Block.draw(self)

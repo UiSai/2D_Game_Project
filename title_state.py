@@ -10,7 +10,8 @@ image = None
 def enter():
     global image
     image = load_image('resource\\title.png')
-
+    easter = False
+    easter_commend = []
 
 def exit():
     global image
