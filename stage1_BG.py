@@ -40,15 +40,16 @@ class Block:
 
 class Background:
     def __init__(self):
-        self.bgm = load_music('resource\\Sound\\bgm.mp3')
-        self.bgm.set_volume(64)
-        self.bgm.repeat_play()
         self.grass = load_image('resource\\Background\\d_grass.png')
         self.tree_1 = load_image('resource\\Background\\tree.png')
         self.tree_2 = load_image('resource\\Background\\tree2.png')
         self.first_floor_of_grass = 40
         self.first_floor_of_tree = 460
         self.block = 1
+
+        # self.bgm = load_music('resource\\Sound\\bgm.mp3')
+        # self.bgm.set_volume(64)
+        # self.bgm.repeat_play()
 
     def draw(self):
         Block.draw(self)

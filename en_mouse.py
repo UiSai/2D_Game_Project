@@ -140,8 +140,9 @@ class Enemy:
             game_world.remove_object(self)
 
     def draw(self):
-        self.cur_state.draw(self)
-        draw_rectangle(*self.get_bb())
+        if(self.HP>0):
+            self.cur_state.draw(self)
+            draw_rectangle(*self.get_bb())
 
     def input_buttons(self, event):
         pass

@@ -5,20 +5,17 @@ import game_framework
 import game_world
 
 from player import Player
-from arrow import Arrow
 from en_mouse import Enemy
 from stage1_BG import Background
 
 name = 'GameState'
 
 player = None
-arrows = []
 background = None
 font = None
 move_direction = None
 move_state = False
 jump_state = False
-enemy = None
 
 
 def collide(a, b):
@@ -34,13 +31,11 @@ def collide(a, b):
 
 
 def enter():
-    global player, background, enemy, arrows
+    global player, background, enemy
 
     player = Player()
-    arrows = [Arrow(player.x, player.y) for i in range(10)]
     background = Background()
     enemy = Enemy()
-
 
     game_world.add_object(background, 0)
     game_world.add_object(player, 1)
@@ -74,14 +69,22 @@ def input_buttons():
 
 
 def update():
-    global arrows
 
     for game_object in game_world.all_objects():
         game_object.update()
-        #print(player.cur_state, player.velocity)
-        print(enemy.HP)
-    print('start')
-    """
+
+    for i in range(10):
+        if player.arrow[i].exist and enemy.HP>0:
+            if collide(player.arrow[i], enemy):
+                enemy.HP -= 1
+                player.arrow[i].exist = False
+                player.arrow_num = clamp(0, i-1, 9)
+            if player.arrow[i].x < 25 or player.arrow[i].x > 1280 - 25:
+                game_world.remove_object(player.arrow[i])
+                player.arrow[i].exist = False
+                player.arrow_num = i-1
+                player.arrow_num = clamp(0, i-1, 9)
+"""
     for arrow in arrows:
         print("x, y : ", arrow.x, arrow.y)
         print("bb : ", arrow.get_bb())
@@ -89,15 +92,9 @@ def update():
             game_world.remove_object(enemy)
     if collide(player, enemy):
         game_world.remove_object(enemy)
+
 """
-"""
-for enemies in enemy:
-    enemy.remove(enemy)
-    # game_world.remove_object(enemy)
-for ball in balls:
-    if collide(grass, ball):
-        ball.stop()
-"""
+
 
 
 def draw():

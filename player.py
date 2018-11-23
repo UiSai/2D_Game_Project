@@ -1,5 +1,5 @@
 from pico2d import *
-from arrow import Arrow
+from arrow import RangeAttack
 #from temp_rangeattack import RangeAttack
 
 import game_world
@@ -38,7 +38,6 @@ key_event_table = {
     (SDL_KEYDOWN, SDLK_x): RAttack
 }
 
-"""
 class IdleState:
 
     @staticmethod
@@ -69,7 +68,7 @@ class IdleState:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)
         else:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)
-"""
+
 
 
 class GroundState:
@@ -203,17 +202,17 @@ class FallingState:
 
 next_state_table = {
     GroundState: {Right_UP: GroundState, Left_UP: GroundState, Left_DOWN: GroundState, Right_DOWN: GroundState,
-                  Air_DOWN: AirState, RAttack: GroundState, Up_DOWN: GroundState, Up_UP: GroundState},
+                  Air_DOWN: AirState, RAttack: GroundState, Up_DOWN: GroundState, Up_UP: GroundState, MAttack:GroundState},
     AirState: {Right_UP: AirState, Left_UP: AirState, Right_DOWN: AirState, Left_DOWN: AirState,
-               Air_DOWN: FallingState, RAttack: AirState, Up_DOWN: AirState, Up_UP: AirState},
+               Air_DOWN: FallingState, RAttack: AirState, Up_DOWN: AirState, Up_UP: AirState, MAttack:GroundState},
     FallingState: {Right_DOWN: FallingState, Left_DOWN: FallingState, Right_UP: FallingState, Left_UP: FallingState,
-                   Air_DOWN: AirState, RAttack: FallingState, Up_DOWN: FallingState, Up_UP: FallingState}
+                   Air_DOWN: AirState, RAttack: FallingState, Up_DOWN: FallingState, Up_UP: FallingState, MAttack:GroundState}
 }
 
 
 class Player:
     def __init__(self):
-        self.x, self.y = 100, first_floor_player_y  # 130은 지형의 높이.
+        self.x, self.y = 100, first_floor_player_y  # 130은 지형의 높이
         self.ground_y = self.y
         self.image = load_image('resource\\Character_sprite\\Player_animation.png')
         self.dir = Right
@@ -225,7 +224,9 @@ class Player:
         self.cur_state = GroundState
         self.cur_state.enter(self, None)
         self.In_Air = False
-        self.Exist_rangeattack = False
+        self.arrow = [RangeAttack(self.x, self.y) for i in range(10)]
+        self.arrow_num = 0
+
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -234,10 +235,15 @@ class Player:
         pass
 
     def RangeAttack(self):
-        arrow = Arrow(self.x, self.y)
-        game_world.add_object(arrow, 2)
-        self.Exist_rangeattack = True
-        print('pause')
+        for i in range(10):
+            if not (self.arrow[i].exist):
+                self.arrow[i].exist = True
+                self.arrow[i].x, self.arrow[i].y= self.x, self.y
+
+                self.arrow_num = clamp(0, i, 9)
+                game_world.add_object(self.arrow[i], 1)
+                break
+
 
     def get_bb(self):
         return self.x - 50, self.y - 50, self.x + 50, self.y + 50
@@ -249,7 +255,6 @@ class Player:
             self.cur_state.exit(self, event)
             self.cur_state = next_state_table[self.cur_state][event]
             self.cur_state.enter(self, event)
-        print(self.dir)
 
     def draw(self):
         self.cur_state.draw(self)
@@ -260,25 +265,6 @@ class Player:
             self.add_event(key_event)
 
 
-"""
-class RangeAttack:
-    image = None
 
-    def __init__(self, x = 400, y = 300, velocity = 1):
-        if RangeAttack.image == None:
-            RangeAttack.image = load_image('resource\\RangeAttack.png')
-        self.x, self.y, self.velocity = x, y, RangeAttack_speed_PPS
 
-    def draw(self):
-        self.image.draw(self.x, self.y)
-        draw_rectangle(*self.get_bb())
-        print(self.x, self.y)
 
-    def get_bb(self):
-        return self.x - 10, self.y - 100, self.x + 10, self.y + 100
-
-    def update(self):
-        self.x += self.velocity * game_framework.frame_time
-        if self.x < 25 or self.x > 1600 - 25:
-            game_world.remove_object(self)
-"""
