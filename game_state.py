@@ -74,16 +74,16 @@ def update():
         game_object.update()
 
     for i in range(10):
-        if player.arrow[i].exist and enemy.HP>0:
+        if player.arrow[i].exist and enemy.HP > 0:
             if collide(player.arrow[i], enemy):
                 enemy.HP -= 1
                 player.arrow[i].exist = False
-                player.arrow_num = clamp(0, i-1, 9)
-            if player.arrow[i].x < 25 or player.arrow[i].x > 1280 - 25:
-                game_world.remove_object(player.arrow[i])
-                player.arrow[i].exist = False
-                player.arrow_num = i-1
-                player.arrow_num = clamp(0, i-1, 9)
+                player.arrow_num = clamp(0, i - 1, 9)
+        if player.arrow[i].x < 25 or player.arrow[i].x > 1280 - 25:
+            game_world.remove_object(player.arrow[i])
+            player.arrow[i].exist = False
+            player.arrow_num = i - 1
+            player.arrow_num = clamp(0, i - 1, 9)
 """
     for arrow in arrows:
         print("x, y : ", arrow.x, arrow.y)

@@ -100,6 +100,17 @@ class GroundState:
     @staticmethod
     def draw(player):
         if player.velocity > 0:
+            player.image.clip_draw(int(player.frame) * 40, 0, 40, 80, player.x, player.y)  # 걷기 오른쪽 이동
+        elif player.velocity < 0:
+            player.image.clip_draw(int(player.frame) * 40, 80, 40, 80, player.x, player.y)  # 걷기 왼쪽 이동
+        else:
+            if player.dir == Right:
+                player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 오른쪽을 보고 서있다
+            elif player.dir == Left:
+                player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽을 보고 서있다
+
+"""
+        if player.velocity > 0:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 걷기 오른쪽 이동
         elif player.velocity < 0:
             player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 걷기 왼쪽 이동
@@ -108,7 +119,7 @@ class GroundState:
                 player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 오른쪽을 보고 서있다
             elif player.dir == Left:
                 player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽을 보고 서있다
-
+"""
 
 class AirState:
 
