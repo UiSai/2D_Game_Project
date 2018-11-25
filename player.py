@@ -21,7 +21,7 @@ Arrow_speed_PPS = (Arrow_speed_MPS * Pixel_per_Meter)
 
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-FRAMES_PER_ACTION = 8
+FRAMES_PER_ACTION = 8  # 8
 
 
 Right_DOWN, Left_DOWN, Right_UP, Left_UP, Up_DOWN, Up_UP, Air_DOWN, MAttack, RAttack = range(9)
@@ -100,7 +100,7 @@ class GroundState:
     @staticmethod
     def draw(player):
         if player.velocity > 0:
-            player.image.clip_draw(int(player.frame) * 40, 0, 40, 80, player.x, player.y)  # 걷기 오른쪽 이동
+            player.image.clip_draw(int(player.frame) * 70, 0, 40, 80, player.x, player.y)  # 걷기 오른쪽 이동
         elif player.velocity < 0:
             player.image.clip_draw(int(player.frame) * 40, 80, 40, 80, player.x, player.y)  # 걷기 왼쪽 이동
         else:
@@ -225,7 +225,7 @@ class Player:
     def __init__(self):
         self.x, self.y = 100, first_floor_player_y  # 130은 지형의 높이
         self.ground_y = self.y
-        self.image = load_image('resource\\Character_sprite\\Player_animation.png')
+        self.image = load_image('resource\\Character_sprite\\JumpTest.png')
         self.dir = Right
         self.velocity = 0
         self.Rise_velocity = 0
@@ -250,6 +250,7 @@ class Player:
             if not (self.arrow[i].exist):
                 self.arrow[i].exist = True
                 self.arrow[i].x, self.arrow[i].y= self.x, self.y
+                self.arrow[i].dir = self.dir
 
                 self.arrow_num = clamp(0, i, 9)
                 game_world.add_object(self.arrow[i], 1)
