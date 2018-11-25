@@ -77,7 +77,9 @@ class GroundState:
     def enter(player, event):
         if event == Right_DOWN:
             player.velocity += Move_speed_PPS
+            player.dir = Right
         elif event == Left_DOWN:
+            player.dir = Left
             player.velocity -= Move_speed_PPS
         elif event == Right_UP:
             player.velocity -= Move_speed_PPS
@@ -96,6 +98,7 @@ class GroundState:
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.x += player.velocity * game_framework.frame_time
         player.x = clamp(25, player.x, 1255)
+        print(player.dir)
 
     @staticmethod
     def draw(player):
@@ -225,7 +228,7 @@ class Player:
     def __init__(self):
         self.x, self.y = 100, first_floor_player_y  # 130은 지형의 높이
         self.ground_y = self.y
-        self.image = load_image('resource\\Character_sprite\\JumpTest.png')
+        self.image = load_image('resource\\Character_sprite\\Player_animation.png')
         self.dir = Right
         self.velocity = 0
         self.Rise_velocity = 0
