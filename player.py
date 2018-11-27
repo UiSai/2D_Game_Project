@@ -109,6 +109,7 @@ class GroundState:
         if player.MAttack_Status:
             player.MeleeTimer += game_framework.frame_time
             if player.MeleeTimer >= 0.3:
+                player.MeleeTimer = 0
                 player.MAttack_Status = False
 
         print(player.dir)
