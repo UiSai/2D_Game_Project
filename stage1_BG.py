@@ -43,7 +43,7 @@ class Block:
 
 class Background:
     def __init__(self):
-        self.grass = load_image('resource\\Background\\d_grass.png')
+        self.grass = load_image('resource\\Background\\grass_modify.png')
         self.tree_1 = load_image('resource\\Background\\tree.png')
         self.tree_2 = load_image('resource\\Background\\tree2.png')
         self.first_floor_of_grass = 40
