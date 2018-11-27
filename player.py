@@ -16,7 +16,7 @@ Air_speed_PPS = (Air_speed_MPS * Pixel_per_Meter)
 Rise_speed_PPS = (200 * Pixel_per_Meter)
 Fall_speed_PPS = (500 * Pixel_per_Meter)
 
-Arrow_speed_MPS = 15
+Arrow_speed_MPS = 100
 Arrow_speed_PPS = (Arrow_speed_MPS * Pixel_per_Meter)
 
 TIME_PER_ACTION = 0.5
@@ -38,6 +38,8 @@ key_event_table = {
     (SDL_KEYDOWN, SDLK_x): RAttack
 }
 
+
+"""
 class IdleState:
 
     @staticmethod
@@ -68,7 +70,7 @@ class IdleState:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)
         else:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)
-
+"""
 
 
 class GroundState:
@@ -87,6 +89,8 @@ class GroundState:
             player.velocity += Move_speed_PPS
         elif event == Air_DOWN:
             player.y += 10
+        elif event == MAttack:
+            player.MAttack_Status = True
 
     @staticmethod
     def exit(player, event):
@@ -99,18 +103,26 @@ class GroundState:
         player.x += player.velocity * game_framework.frame_time
         player.x = clamp(25, player.x, 1255)
         print(player.dir)
+        print(player.MAttack_Status)
 
     @staticmethod
     def draw(player):
-        if player.velocity > 0:
-            player.image.clip_draw(int(player.frame) * 70, 0, 40, 80, player.x, player.y)  # 걷기 오른쪽 이동
-        elif player.velocity < 0:
-            player.image.clip_draw(int(player.frame) * 40, 80, 40, 80, player.x, player.y)  # 걷기 왼쪽 이동
+        if not player.MAttack_Status:
+            if player.velocity > 0:
+                player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 걷기 오른쪽 이동
+            elif player.velocity < 0:
+                player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 걷기 왼쪽 이동
+            else:
+                if player.dir == Right:
+                    player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 오른쪽을 보고 서있다
+                elif player.dir == Left:
+                    player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽을 보고 서있다
         else:
-            if player.dir == Right:
-                player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 오른쪽을 보고 서있다
-            elif player.dir == Left:
-                player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽을 보고 서있다
+            if player.dir == Left:
+                player.image.clip_draw(int(player.frame) * 61, 0, 30, 130, player.x + 100, player.y + 100)
+                player.MAttack_Status = False
+            else:
+                player.image.clip_draw(int(player.frame) * 61, 0, 30, 130, player.x - 100, player.y - 100)
 
 """
         if player.velocity > 0:
@@ -123,6 +135,7 @@ class GroundState:
             elif player.dir == Left:
                 player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽을 보고 서있다
 """
+
 
 class AirState:
 
@@ -240,13 +253,16 @@ class Player:
         self.In_Air = False
         self.arrow = [RangeAttack(self.x, self.y) for i in range(10)]
         self.arrow_num = 0
+        self.MAttack_Status = False
 
 
     def add_event(self, event):
         self.event_que.insert(0, event)
 
+
     def MeleeAttack(self):
         pass
+
 
     def RangeAttack(self):
         for i in range(10):
