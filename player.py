@@ -4,7 +4,7 @@ from arrow import RangeAttack
 
 import game_world
 import game_framework
-import stage1_BG
+import game_state
 
 first_floor_player_y = 130
 Left, Right, Up, Fall, Neutral = 0, 1, 2, 3, 4
@@ -103,7 +103,9 @@ class GroundState:
     def do(player):
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.x += player.velocity * game_framework.frame_time
-        #player.x = clamp(25, player.x, 1255)
+
+        if game_state.background.block == 1:
+            player.x = clamp(25, player.x, 1255)
         if player.MAttack_Status:
             player.MeleeTimer += game_framework.frame_time
             if player.MeleeTimer >= 0.3:
@@ -233,8 +235,6 @@ class FallingState:
             player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽 스프라이트
 
 
-
-
 next_state_table = {
     GroundState: {Right_UP: GroundState, Left_UP: GroundState, Left_DOWN: GroundState, Right_DOWN: GroundState,
                   Air_DOWN: AirState, RAttack: GroundState, Up_DOWN: GroundState, Up_UP: GroundState, MAttack:GroundState},
@@ -265,14 +265,11 @@ class Player:
         self.MeleeTimer = 0
         self.HP = 6
 
-
     def add_event(self, event):
         self.event_que.insert(0, event)
 
-
     def MeleeAttack(self):
         pass
-
 
     def RangeAttack(self):
         for i in range(10):
@@ -284,7 +281,6 @@ class Player:
                 self.arrow_num = clamp(0, i, 9)
                 game_world.add_object(self.arrow[i], 1)
                 break
-
 
     def get_bb(self):
         if self.MAttack_Status:
@@ -299,12 +295,6 @@ class Player:
             self.cur_state.exit(self, event)
             self.cur_state = next_state_table[self.cur_state][event]
             self.cur_state.enter(self, event)
-        """
-        if self.x >= 1270:
-            stage1_BG.background.block += 1
-        elif self.x <= 10:
-            stage1_BG.background.block -= 1
-        """
 
     def draw(self):
         self.cur_state.draw(self)
