@@ -262,6 +262,7 @@ class Player:
         self.arrow_num = 0
         self.MAttack_Status = False
         self.MeleeTimer = 0
+        self.HP = 6
 
 
     def add_event(self, event):

@@ -1,6 +1,7 @@
 from pico2d import *
 
 import pause_state
+import gameover_state
 import game_framework
 import game_world
 
@@ -44,6 +45,7 @@ def enter():
 
 def exit():
     game_world.clear()
+    print('clear')
 
 
 def pause():
@@ -92,7 +94,7 @@ def update():
             player.arrow_num = clamp(0, i - 1, 9)
 
     if player.HP <= 0:
-
+        game_framework.change_state(gameover_state)
 """
     for arrow in arrows:
         print("x, y : ", arrow.x, arrow.y)

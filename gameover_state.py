@@ -1,9 +1,10 @@
 from pico2d import *
 
 import game_framework
+import title_state
 import game_state
 
-name = "TitleState"
+name = "GameOverState"
 image = None
 bgm = None
 
@@ -11,13 +12,12 @@ bgm = None
 def enter():
     global image, bgm
     image = load_image('resource\\Title.png')
-    easter = False
-    easter_commend = []
+    print('Game Over')
     bgm = load_music("resource\\Sound\\title.mp3")
     bgm.set_volume(64)
     bgm.repeat_play()
 
-    print('Title')
+    # game_world.clear()
 
 
 def exit():
@@ -35,6 +35,8 @@ def input_buttons():
             if (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
                 game_framework.quit()
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_z):
+                game_framework.change_state(title_state)
+            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_x):
                 game_framework.change_state(game_state)
 
 
