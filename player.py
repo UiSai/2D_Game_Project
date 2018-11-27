@@ -21,7 +21,7 @@ Arrow_speed_PPS = (Arrow_speed_MPS * Pixel_per_Meter)
 
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-FRAMES_PER_ACTION = 8  # 8
+FRAMES_PER_ACTION = 8
 
 
 Right_DOWN, Left_DOWN, Right_UP, Left_UP, Up_DOWN, Up_UP, Air_DOWN, MAttack, RAttack = range(9)
@@ -90,6 +90,7 @@ class GroundState:
         elif event == Air_DOWN:
             player.y += 10
         elif event == MAttack:
+            player.MeleeAttack()
             player.MAttack_Status = True
 
     @staticmethod
@@ -102,6 +103,11 @@ class GroundState:
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.x += player.velocity * game_framework.frame_time
         player.x = clamp(25, player.x, 1255)
+        if player.MAttack_Status:
+            player.MeleeTimer += game_framework.frame_time
+            if player.MeleeTimer >= 0.3:
+                player.MAttack_Status = False
+
         print(player.dir)
         print(player.MAttack_Status)
 
@@ -119,10 +125,9 @@ class GroundState:
                     player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽을 보고 서있다
         else:
             if player.dir == Left:
-                player.image.clip_draw(int(player.frame) * 61, 0, 30, 130, player.x + 100, player.y + 100)
-                player.MAttack_Status = False
+                    player.image.clip_draw(int(player.frame) * 61, 0, 30, 130, player.x + 100, player.y + 100)
             else:
-                player.image.clip_draw(int(player.frame) * 61, 0, 30, 130, player.x - 100, player.y - 100)
+                    player.image.clip_draw(int(player.frame) * 61, 0, 30, 130, player.x - 100, player.y - 100)
 
 """
         if player.velocity > 0:
@@ -227,6 +232,8 @@ class FallingState:
             player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽 스프라이트
 
 
+
+
 next_state_table = {
     GroundState: {Right_UP: GroundState, Left_UP: GroundState, Left_DOWN: GroundState, Right_DOWN: GroundState,
                   Air_DOWN: AirState, RAttack: GroundState, Up_DOWN: GroundState, Up_UP: GroundState, MAttack:GroundState},
@@ -254,6 +261,7 @@ class Player:
         self.arrow = [RangeAttack(self.x, self.y) for i in range(10)]
         self.arrow_num = 0
         self.MAttack_Status = False
+        self.MeleeTimer = 0
 
 
     def add_event(self, event):
