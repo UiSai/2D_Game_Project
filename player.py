@@ -104,16 +104,9 @@ class GroundState:
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.x += player.velocity * game_framework.frame_time
 
-        if game_state.background.block == 1:
-            player.x = clamp(25, player.x, 1255)
-        if player.MAttack_Status:
-            player.MeleeTimer += game_framework.frame_time
-            if player.MeleeTimer >= 0.3:
-                player.MeleeTimer = 0
-                player.MAttack_Status = False
+        player.clamp_and_melee()
 
-        print(player.dir)
-        print(player.MAttack_Status)
+
 
     @staticmethod
     def draw(player):
@@ -176,6 +169,8 @@ class AirState:
         # player.x = clamp(25, player.x, 1255)  # 넘어가면 강제로 조절함
         player.y += player.Rise_velocity * game_framework.frame_time
 
+        player.clamp_and_melee()
+
     @staticmethod
     def draw(player):
         if player.velocity < 0:
@@ -227,6 +222,8 @@ class FallingState:
         else:
             player.In_Air = False
             player.cur_state = GroundState
+
+        player.clamp_and_melee()
 
     @staticmethod
     def draw(player):
@@ -299,6 +296,15 @@ class Player:
 
     def draw(self):
         self.cur_state.draw(self)
+
+    def clamp_and_melee(self):
+        if game_state.background.block == 1:
+            self.x = clamp(25, self.x, 1290)
+        if self.MAttack_Status:
+            self.MeleeTimer += game_framework.frame_time
+            if self.MeleeTimer >= 0.3:
+                self.MeleeTimer = 0
+                self.MAttack_Status = False
 
     def input_buttons(self, event):
         if (event.type, event.key) in key_event_table:
