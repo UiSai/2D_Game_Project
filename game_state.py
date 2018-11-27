@@ -74,11 +74,12 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
-    if collide(player, enemy):
-        if player.MAttack_Status:
-            enemy.HP -= 5
-        else:
-            player.HP -= 1
+    if enemy.exist:
+        if collide(player, enemy):
+            if player.MAttack_Status:
+                enemy.HP -= 5
+            else:
+                player.HP -= 1
 
     for i in range(10):
         if player.arrow[i].exist and enemy.HP > 0:
@@ -101,6 +102,7 @@ def update():
     elif player.x <= 0:
         background.block -= 1
         player.x = 1279
+
 """
     for arrow in arrows:
         print("x, y : ", arrow.x, arrow.y)
@@ -109,7 +111,6 @@ def update():
             game_world.remove_object(enemy)
     if collide(player, enemy):
         game_world.remove_object(enemy)
-
 """
 
 

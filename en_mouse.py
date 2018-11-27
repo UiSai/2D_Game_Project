@@ -122,6 +122,7 @@ class Enemy:
         self.cur_state = MoveState
         self.cur_state.enter(self, None)
         self.HP = 5
+        self.exist = True
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -138,9 +139,10 @@ class Enemy:
             self.cur_state.enter(self, event)
         if self.HP <= 0:
             game_world.remove_object(self)
+            self.exist = False
 
     def draw(self):
-        if(self.HP>0):
+        if self.HP > 0:
             self.cur_state.draw(self)
             draw_rectangle(*self.get_bb())
 
