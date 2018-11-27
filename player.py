@@ -285,7 +285,10 @@ class Player:
 
 
     def get_bb(self):
-        return self.x - 50, self.y - 50, self.x + 50, self.y + 50
+        if self.MAttack_Status:
+            return self.x - 50, self.y - 50, self.x + 75, self.y + 50
+        else:
+            return self.x - 25, self.y - 50, self.x + 25, self.y + 50
 
     def update(self):
         self.cur_state.do(self)
