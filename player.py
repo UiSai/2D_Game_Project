@@ -4,6 +4,7 @@ from arrow import RangeAttack
 
 import game_world
 import game_framework
+import stage1_BG
 
 first_floor_player_y = 130
 Left, Right, Up, Fall, Neutral = 0, 1, 2, 3, 4
@@ -102,7 +103,7 @@ class GroundState:
     def do(player):
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.x += player.velocity * game_framework.frame_time
-        player.x = clamp(25, player.x, 1255)
+        #player.x = clamp(25, player.x, 1255)
         if player.MAttack_Status:
             player.MeleeTimer += game_framework.frame_time
             if player.MeleeTimer >= 0.3:
@@ -169,7 +170,7 @@ class AirState:
     def do(player):
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.x += player.velocity * game_framework.frame_time
-        player.x = clamp(25, player.x, 1255)  # 넘어가면 강제로 조절함
+        # player.x = clamp(25, player.x, 1255)  # 넘어가면 강제로 조절함
         player.y += player.Rise_velocity * game_framework.frame_time
 
     @staticmethod
@@ -277,7 +278,7 @@ class Player:
         for i in range(10):
             if not (self.arrow[i].exist):
                 self.arrow[i].exist = True
-                self.arrow[i].x, self.arrow[i].y= self.x, self.y
+                self.arrow[i].x, self.arrow[i].y = self.x, self.y
                 self.arrow[i].dir = self.dir
 
                 self.arrow_num = clamp(0, i, 9)
@@ -298,6 +299,12 @@ class Player:
             self.cur_state.exit(self, event)
             self.cur_state = next_state_table[self.cur_state][event]
             self.cur_state.enter(self, event)
+        """
+        if self.x >= 1270:
+            stage1_BG.background.block += 1
+        elif self.x <= 10:
+            stage1_BG.background.block -= 1
+        """
 
     def draw(self):
         self.cur_state.draw(self)

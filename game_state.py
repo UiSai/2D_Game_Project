@@ -45,7 +45,6 @@ def enter():
 
 def exit():
     game_world.clear()
-    print('clear')
 
 
 def pause():
@@ -95,6 +94,13 @@ def update():
 
     if player.HP <= 0:
         game_framework.change_state(gameover_state)
+
+    if player.x >= 1280:
+        background.block += 1
+        player.x = 1
+    elif player.x <= 0:
+        background.block -= 1
+        player.x = 1279
 """
     for arrow in arrows:
         print("x, y : ", arrow.x, arrow.y)

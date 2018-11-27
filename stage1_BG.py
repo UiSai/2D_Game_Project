@@ -3,6 +3,8 @@ import title_state
 
 import game_world
 import game_framework
+import game_state
+import player
 
 
 class Block:
