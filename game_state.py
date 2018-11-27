@@ -70,7 +70,6 @@ def input_buttons():
 
 
 def update():
-
     for game_object in game_world.all_objects():
         game_object.update()
 
@@ -116,7 +115,12 @@ def update():
 
 
 def draw():
+    global player
+
     clear_canvas()
     for game_object in game_world.all_objects():
         game_object.draw()
+
+    player.health_point()
+
     update_canvas()

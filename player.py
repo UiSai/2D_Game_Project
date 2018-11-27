@@ -248,6 +248,8 @@ class Player:
         self.x, self.y = 100, first_floor_player_y  # 130은 지형의 높이
         self.ground_y = self.y
         self.image = load_image('resource\\Character_sprite\\Player_animation.png')
+        self.hhealth_image = load_image('resource\\Half_HP.png')
+        self.health_image = load_image('resource\\HP.png')
         self.dir = Right
         self.velocity = 0
         self.Rise_velocity = 0
@@ -305,6 +307,21 @@ class Player:
             if self.MeleeTimer >= 0.3:
                 self.MeleeTimer = 0
                 self.MAttack_Status = False
+
+    def health_point(self):
+        if self.HP >= 1:
+            self.hhealth_image.draw(50, 920)
+            if self.HP >= 2:
+                self.health_image.draw(50, 920)
+                if self.HP >= 3:
+                    self.hhealth_image.draw(100, 920)
+                    if self.HP >= 4:
+                        self.health_image.draw(100, 920)
+                        if self.HP >= 5:
+                            self.hhealth_image.draw(150, 920)
+                            if self.HP >= 6:
+                                self.health_image.draw(150, 920)
+
 
     def input_buttons(self, event):
         if (event.type, event.key) in key_event_table:
