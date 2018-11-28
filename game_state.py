@@ -8,11 +8,13 @@ import game_world
 from player import Player
 from en_mouse import Enemy
 from stage1_BG import Background
+from item import Item_Health
 
 name = 'GameState'
 
 player = None
 background = None
+health_item = None
 font = None
 move_direction = None
 move_state = False
@@ -32,15 +34,17 @@ def collide(a, b):
 
 
 def enter():
-    global player, background, enemy
+    global player, background, mouse, health_item
 
     player = Player()
     background = Background()
-    enemy = Enemy()
+    mouse = Enemy()
+    #health_item = Item_Health()
 
     game_world.add_object(background, 0)
     game_world.add_object(player, 1)
-    game_world.add_object(enemy, 1)
+    game_world.add_object(mouse, 1)
+    #game_world.add_object(health_item, 1)
 
 
 def exit():
@@ -73,17 +77,26 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
-    if enemy.exist:
-        if collide(player, enemy):
+    if mouse.exist and not player.Invincible_Status:
+        if collide(player, mouse):
             if player.MAttack_Status:
-                enemy.HP -= player.MA_Damage
+                mouse.HP -= player.MA_Damage
             else:
                 player.HP -= 1
+                player.Invincible_Status = True
+    """
+    if health_item.exist:
+        if collide(player, health_item):
+            if player.HP < 5:
+                player.HP += 2
+            else:
+                player.HP -= 1
+    """
 
     for i in range(10):
-        if player.arrow[i].exist and enemy.HP > 0:
-            if collide(player.arrow[i], enemy):
-                enemy.HP -= player.RA_Damage
+        if player.arrow[i].exist and mouse.HP > 0:
+            if collide(player.arrow[i], mouse):
+                mouse.HP -= player.RA_Damage
                 player.arrow[i].exist = False
                 player.arrow_num = clamp(0, i - 1, 9)
         if player.arrow[i].x < 25 or player.arrow[i].x > 1280 - 25:
@@ -101,17 +114,6 @@ def update():
     elif player.x <= 0:
         background.block -= 1
         player.x = 1279
-
-"""
-    for arrow in arrows:
-        print("x, y : ", arrow.x, arrow.y)
-        print("bb : ", arrow.get_bb())
-        if collide(game_world.objects[[2][arrow]], enemy) and player.Exist_rangeattack is True:
-            game_world.remove_object(enemy)
-    if collide(player, enemy):
-        game_world.remove_object(enemy)
-"""
-
 
 
 def draw():

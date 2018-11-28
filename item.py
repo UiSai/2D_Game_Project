@@ -13,6 +13,7 @@ class Item_Health:
         self.exist = True
         self.x = x
         self.y = y
+        self.exist = True
 
     def draw(self):
         if self.exist:

@@ -104,7 +104,7 @@ class GroundState:
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.x += player.velocity * game_framework.frame_time
 
-        player.clamp_and_melee()
+        player.clamp_and_timer()
 
 
 
@@ -251,6 +251,7 @@ class Player:
         self.hhealth_image = load_image('resource\\Half_HP.png')
         self.health_image = load_image('resource\\HP.png')
         self.dir = Right
+        self.HP = 6
         self.MA_Damage = 5
         self.RA_Damage = 1
         self.velocity = 0
@@ -264,8 +265,9 @@ class Player:
         self.arrow = [RangeAttack(self.x, self.y) for i in range(10)]
         self.arrow_num = 0
         self.MAttack_Status = False
+        self.Invincible_Status = False
         self.MeleeTimer = 0
-        self.HP = 6
+        self.Invincible_Timer = 0
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -301,14 +303,19 @@ class Player:
     def draw(self):
         self.cur_state.draw(self)
 
-    def clamp_and_melee(self):
+    def clamp_and_timer(self):
         if game_state.background.block == 1:
             self.x = clamp(25, self.x, 1290)
         if self.MAttack_Status:
             self.MeleeTimer += game_framework.frame_time
             if self.MeleeTimer >= 0.3:
-                self.MeleeTimer = 0
                 self.MAttack_Status = False
+                self.MeleeTimer = 0
+        if self.Invincible_Status:
+            self.Invincible_Timer += game_framework.frame_time
+            if self.Invincible_Timer >= 2:
+                self.Invincible_Status = False
+                self.Invincible_Timer = 0
 
     def health_point(self):
         if self.HP >= 1:
