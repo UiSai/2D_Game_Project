@@ -14,7 +14,7 @@ name = 'GameState'
 
 player = None
 background = None
-health_item = None
+item = None
 font = None
 move_direction = None
 move_state = False
@@ -34,17 +34,16 @@ def collide(a, b):
 
 
 def enter():
-    global player, background, mouse, health_item
+    global player, background, mouse, item
 
     player = Player()
     background = Background()
     mouse = Enemy()
-    #health_item = Item_Health()
+    item = Item_Health()
 
     game_world.add_object(background, 0)
     game_world.add_object(player, 1)
     game_world.add_object(mouse, 1)
-    #game_world.add_object(health_item, 1)
 
 
 def exit():
@@ -84,14 +83,10 @@ def update():
             else:
                 player.HP -= 1
                 player.Invincible_Status = True
-    """
-    if health_item.exist:
-        if collide(player, health_item):
-            if player.HP < 5:
-                player.HP += 2
-            else:
-                player.HP -= 1
-    """
+
+    if item.exist:
+        if collide(player, item):
+            item.effect()
 
     for i in range(10):
         if player.arrow[i].exist and mouse.HP > 0:

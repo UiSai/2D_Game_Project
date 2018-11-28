@@ -1,6 +1,5 @@
 from pico2d import *
 from arrow import RangeAttack
-#from temp_rangeattack import RangeAttack
 
 import game_world
 import game_framework
@@ -106,8 +105,6 @@ class GroundState:
 
         player.clamp_and_timer()
 
-
-
     @staticmethod
     def draw(player):
         if not player.MAttack_Status:
@@ -125,18 +122,6 @@ class GroundState:
                     player.image.clip_draw(int(player.frame) * 61, 0, 30, 130, player.x + 100, player.y + 100)
             else:
                     player.image.clip_draw(int(player.frame) * 61, 0, 30, 130, player.x - 100, player.y - 100)
-
-"""
-        if player.velocity > 0:
-            player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 걷기 오른쪽 이동
-        elif player.velocity < 0:
-            player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 걷기 왼쪽 이동
-        else:
-            if player.dir == Right:
-                player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 오른쪽을 보고 서있다
-            elif player.dir == Left:
-                player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽을 보고 서있다
-"""
 
 
 class AirState:
@@ -169,7 +154,7 @@ class AirState:
         # player.x = clamp(25, player.x, 1255)  # 넘어가면 강제로 조절함
         player.y += player.Rise_velocity * game_framework.frame_time
 
-        player.clamp_and_melee()
+        player.clamp_and_timer()
 
     @staticmethod
     def draw(player):
@@ -223,7 +208,7 @@ class FallingState:
             player.In_Air = False
             player.cur_state = GroundState
 
-        player.clamp_and_melee()
+        player.clamp_and_timer()
 
     @staticmethod
     def draw(player):
