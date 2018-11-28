@@ -251,6 +251,8 @@ class Player:
         self.hhealth_image = load_image('resource\\Half_HP.png')
         self.health_image = load_image('resource\\HP.png')
         self.dir = Right
+        self.MA_Damage = 5
+        self.RA_Damage = 1
         self.velocity = 0
         self.Rise_velocity = 0
         self.Falling_velocity = 0
@@ -273,7 +275,7 @@ class Player:
 
     def RangeAttack(self):
         for i in range(10):
-            if not (self.arrow[i].exist):
+            if not self.arrow[i].exist:
                 self.arrow[i].exist = True
                 self.arrow[i].x, self.arrow[i].y = self.x, self.y
                 self.arrow[i].dir = self.dir
@@ -321,7 +323,6 @@ class Player:
                             self.hhealth_image.draw(150, 920)
                             if self.HP >= 6:
                                 self.health_image.draw(150, 920)
-
 
     def input_buttons(self, event):
         if (event.type, event.key) in key_event_table:

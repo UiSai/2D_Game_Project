@@ -76,14 +76,14 @@ def update():
     if enemy.exist:
         if collide(player, enemy):
             if player.MAttack_Status:
-                enemy.HP -= 5
+                enemy.HP -= player.MA_Damage
             else:
                 player.HP -= 1
 
     for i in range(10):
         if player.arrow[i].exist and enemy.HP > 0:
             if collide(player.arrow[i], enemy):
-                enemy.HP -= 1
+                enemy.HP -= player.RA_Damage
                 player.arrow[i].exist = False
                 player.arrow_num = clamp(0, i - 1, 9)
         if player.arrow[i].x < 25 or player.arrow[i].x > 1280 - 25:

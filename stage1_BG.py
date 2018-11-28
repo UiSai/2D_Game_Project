@@ -1,11 +1,7 @@
 from pico2d import *
-import title_state
 
-import game_world
-import game_framework
-import game_state
-import player
 
+import item
 
 class Block:
     @staticmethod
@@ -31,6 +27,8 @@ class Block:
             background.grass.draw(700, background.first_floor_of_grass)
             background.grass.draw(950, background.first_floor_of_grass)
             background.grass.draw(1200, background.first_floor_of_grass)
+
+            item.Item_Health.draw(100, background.first_floor_of_grass)
         elif background.block == 2:
             background.tree_2.draw(1000, background.first_floor_of_tree)
 
