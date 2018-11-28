@@ -28,7 +28,7 @@ class Block:
             background.grass.draw(950, background.first_floor_of_grass)
             background.grass.draw(1200, background.first_floor_of_grass)
 
-            item.Item_Health.draw(100, background.first_floor_of_grass)
+            item.Item_Health(300, background.first_floor_of_grass).draw()
         elif background.block == 2:
             background.tree_2.draw(1000, background.first_floor_of_tree)
 
