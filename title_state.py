@@ -6,10 +6,11 @@ import game_state
 name = "TitleState"
 image = None
 bgm = None
-
+easter = None
 
 def enter():
-    global image, bgm
+    global image, bgm, easter
+
     image = load_image('resource\\Title.png')
     easter = False
     easter_commend = []

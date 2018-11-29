@@ -78,8 +78,8 @@ class GroundState:
     @staticmethod
     def enter(player, event):
         if event == Right_DOWN:
-            player.velocity += Move_speed_PPS
             player.dir = Right
+            player.velocity += Move_speed_PPS
         elif event == Left_DOWN:
             player.dir = Left
             player.velocity -= Move_speed_PPS
@@ -89,6 +89,8 @@ class GroundState:
             player.velocity += Move_speed_PPS
         elif event == Air_DOWN:
             player.y += 10
+            if player.velocity > 0:
+                player.velocity = 0
         elif event == MAttack:
             player.MeleeAttack()
             player.MAttack_Status = True
@@ -136,7 +138,6 @@ class AirState:
             player.velocity -= Air_speed_PPS
         elif event == Left_UP:
             player.velocity += Air_speed_PPS
-
         if event == Up_DOWN:
             player.Rise_velocity += Rise_speed_PPS
         elif event == Up_UP:
@@ -192,6 +193,7 @@ class FallingState:
 
     @staticmethod
     def exit(player, event):
+        player.velocity = 0
         if event == RAttack:
             player.RangeAttack()
 
@@ -200,14 +202,17 @@ class FallingState:
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         if player.y >= player.ground_y:
             player.y -= Fall_speed_PPS * game_framework.frame_time
-            if player.dir == Right:
-                player.x += Move_speed_PPS * game_framework.frame_time
-            elif player.dir == Left:
-                player.x -= Move_speed_PPS * game_framework.frame_time
         else:
             player.In_Air = False
             player.cur_state = GroundState
+            #game_framework.change_state(GroundState)
 
+        """
+                    if player.dir == Right:
+                player.x += Move_speed_PPS * game_framework.frame_time
+            elif player.dir == Left:
+                player.x -= Move_speed_PPS * game_framework.frame_time
+        """
         player.clamp_and_timer()
 
     @staticmethod
@@ -279,6 +284,7 @@ class Player:
 
     def update(self):
         self.cur_state.do(self)
+        print(self.dir)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
             self.cur_state.exit(self, event)

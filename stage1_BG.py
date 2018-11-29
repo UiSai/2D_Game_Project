@@ -1,6 +1,6 @@
 from pico2d import *
-
-#import item
+import title_state
+import item
 
 class Block:
     @staticmethod
@@ -26,8 +26,6 @@ class Block:
             background.grass.draw(700, background.first_floor_of_grass)
             background.grass.draw(950, background.first_floor_of_grass)
             background.grass.draw(1200, background.first_floor_of_grass)
-
-            #item.Item_Health(300, 100).draw()
         elif background.block == 2:
             background.tree_2.draw(1000, background.first_floor_of_tree)
 
@@ -46,7 +44,7 @@ class Background:
         self.first_floor_of_grass = 40
         self.first_floor_of_tree = 460
         self.block = 1
-        """
+
         if not title_state.easter:
             self.bgm = load_music('resource\\Sound\\bgm.mp3')
             self.bgm.set_volume(64)
@@ -55,7 +53,6 @@ class Background:
             self.bgm = load_music('resource\\Sound\\bgm02.mp3')
             self.bgm.set_volume(64)
             self.bgm.repeat_play()
-        """
 
     def draw(self):
         Block.draw(self)

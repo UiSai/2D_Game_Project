@@ -8,7 +8,7 @@ import game_world
 from player import Player
 from en_mouse import Enemy
 from stage1_BG import Background
-from item import Item_Health
+from item import *
 
 name = 'GameState'
 
@@ -39,11 +39,12 @@ def enter():
     player = Player()
     background = Background()
     mouse = Enemy()
-    item = Item_Health()
+    item = Item_Health(200, 200)
 
     game_world.add_object(background, 0)
     game_world.add_object(player, 1)
     game_world.add_object(mouse, 1)
+    game_world.add_object(item, 1)
 
 
 def exit():
@@ -109,6 +110,7 @@ def update():
     elif player.x <= 0:
         background.block -= 1
         player.x = 1279
+
 
 
 def draw():
