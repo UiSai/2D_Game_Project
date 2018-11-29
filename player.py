@@ -79,6 +79,27 @@ class GroundState:
     def enter(player, event):
         if event == Right_DOWN:
             player.dir = Right
+            # player.Move_Status = True
+            player.velocity = Move_speed_PPS
+        elif event == Left_DOWN:
+            player.dir = Left
+            # player.Move_Status = True
+            player.velocity = -Move_speed_PPS
+        elif event == Right_UP and player.dir == Right:
+            player.velocity = 0
+        elif event == Left_UP and player.dir == Left:
+            player.velocity = 0
+        if event == Air_DOWN:
+            player.y += 10
+        elif event == MAttack:
+            player.MeleeAttack()
+            player.MAttack_Status = True
+
+    """
+    @staticmethod
+    def enter(player, event):
+        if event == Right_DOWN:
+            player.dir = Right
             player.velocity += Move_speed_PPS
         elif event == Left_DOWN:
             player.dir = Left
@@ -87,13 +108,12 @@ class GroundState:
             player.velocity -= Move_speed_PPS
         elif event == Left_UP:
             player.velocity += Move_speed_PPS
-        elif event == Air_DOWN:
+        if event == Air_DOWN:
             player.y += 10
-            if player.velocity > 0:
-                player.velocity = 0
         elif event == MAttack:
             player.MeleeAttack()
             player.MAttack_Status = True
+    """
 
     @staticmethod
     def exit(player, event):
@@ -127,7 +147,26 @@ class GroundState:
 
 
 class AirState:
-
+    @staticmethod
+    def enter(player, event):
+        if event == Right_DOWN:
+            player.dir = Right
+            player.velocity = Air_speed_PPS
+        elif event == Left_DOWN:
+            player.dir = Left
+            player.velocity = -Air_speed_PPS
+        elif event == Right_UP and player.dir == Right:
+            player.velocity = 0
+        elif event == Left_UP and player.dir == Left:
+            player.velocity = 0
+        elif event == Air_DOWN:
+            if not player.velocity == 0:
+                player.velocity = 0
+        if event == Up_DOWN:
+            player.Rise_velocity += Rise_speed_PPS
+        elif event == Up_UP:
+            player.Rise_velocity -= Rise_speed_PPS
+    """
     @staticmethod
     def enter(player, event):
         if event == Right_DOWN:
@@ -138,11 +177,14 @@ class AirState:
             player.velocity -= Air_speed_PPS
         elif event == Left_UP:
             player.velocity += Air_speed_PPS
+        elif event == Air_DOWN:
+            if not player.velocity == 0:
+                player.velocity = 0
         if event == Up_DOWN:
             player.Rise_velocity += Rise_speed_PPS
         elif event == Up_UP:
             player.Rise_velocity -= Rise_speed_PPS
-
+    """
     @staticmethod
     def exit(player, event):
         if event == RAttack:
@@ -193,13 +235,13 @@ class FallingState:
 
     @staticmethod
     def exit(player, event):
-        player.velocity = 0
         if event == RAttack:
             player.RangeAttack()
 
     @staticmethod
     def do(player):
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        player.x += player.velocity * game_framework.frame_time
         if player.y >= player.ground_y:
             player.y -= Fall_speed_PPS * game_framework.frame_time
         else:
@@ -217,7 +259,7 @@ class FallingState:
 
     @staticmethod
     def draw(player):
-        if player.dir == Right:
+        if player.velocity > 0:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)
         else:
             player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽 스프라이트
@@ -254,6 +296,7 @@ class Player:
         self.In_Air = False
         self.arrow = [RangeAttack(self.x, self.y) for i in range(10)]
         self.arrow_num = 0
+        self.Move_Status = False
         self.MAttack_Status = False
         self.Invincible_Status = False
         self.MeleeTimer = 0
@@ -295,8 +338,12 @@ class Player:
         self.cur_state.draw(self)
 
     def clamp_and_timer(self):
+        if not game_state.background.block == 3:
+            clamp(self.ground_y, self.y, 900)
         if game_state.background.block == 1:
             self.x = clamp(25, self.x, 1290)
+        elif game_state.background.block == 3:
+            self.x = clamp(-10, self.x, 1230)
         if self.MAttack_Status:
             self.MeleeTimer += game_framework.frame_time
             if self.MeleeTimer >= 0.3:
@@ -326,8 +373,5 @@ class Player:
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
-
-
-
 
 
