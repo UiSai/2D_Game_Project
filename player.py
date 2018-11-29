@@ -159,13 +159,10 @@ class AirState:
             player.velocity = 0
         elif event == Left_UP and player.dir == Left:
             player.velocity = 0
-        elif event == Air_DOWN:
-            if not player.velocity == 0:
-                player.velocity = 0
         if event == Up_DOWN:
-            player.Rise_velocity += Rise_speed_PPS
+            player.Rise_velocity = Rise_speed_PPS
         elif event == Up_UP:
-            player.Rise_velocity -= Rise_speed_PPS
+            player.Rise_velocity = 0
     """
     @staticmethod
     def enter(player, event):
@@ -194,7 +191,6 @@ class AirState:
     def do(player):
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.x += player.velocity * game_framework.frame_time
-        # player.x = clamp(25, player.x, 1255)  # 넘어가면 강제로 조절함
         player.y += player.Rise_velocity * game_framework.frame_time
 
         player.clamp_and_timer()
@@ -225,13 +221,15 @@ class FallingState:
     @staticmethod
     def enter(player, event):
         if event == Right_DOWN:
-            player.velocity += Move_speed_PPS
+            player.dir = Right
+            player.velocity = Move_speed_PPS
         elif event == Left_DOWN:
-            player.velocity -= Move_speed_PPS
-        elif event == Right_UP:
-            player.velocity -= Move_speed_PPS
-        elif event == Left_UP:
-            player.velocity += Move_speed_PPS
+            player.dir = Left
+            player.velocity = -Move_speed_PPS
+        elif event == Right_UP and player.dir == Right:
+            player.velocity = 0
+        elif event == Left_UP and player.dir == Left:
+            player.velocity = 0
 
     @staticmethod
     def exit(player, event):
@@ -248,18 +246,11 @@ class FallingState:
             player.In_Air = False
             player.cur_state = GroundState
             #game_framework.change_state(GroundState)
-
-        """
-                    if player.dir == Right:
-                player.x += Move_speed_PPS * game_framework.frame_time
-            elif player.dir == Left:
-                player.x -= Move_speed_PPS * game_framework.frame_time
-        """
         player.clamp_and_timer()
 
     @staticmethod
     def draw(player):
-        if player.velocity > 0:
+        if player.dir == Right:
             player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)
         else:
             player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽 스프라이트
@@ -326,8 +317,8 @@ class Player:
             return self.x - 25, self.y - 50, self.x + 25, self.y + 50
 
     def update(self):
-        self.cur_state.do(self)
         print(self.dir)
+        self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
             self.cur_state.exit(self, event)
@@ -339,7 +330,7 @@ class Player:
 
     def clamp_and_timer(self):
         if not game_state.background.block == 3:
-            clamp(self.ground_y, self.y, 900)
+            self.y = clamp(self.ground_y, self.y, 900)
         if game_state.background.block == 1:
             self.x = clamp(25, self.x, 1290)
         elif game_state.background.block == 3:

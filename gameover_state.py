@@ -12,7 +12,7 @@ bgm = None
 def enter():
     global image, bgm
     image = load_image('resource\\GameOver.png')
-    bgm = load_music("resource\\Sound\\title.mp3")
+    bgm = load_music("resource\\Sound\\Forsaken.mp3")
     bgm.set_volume(64)
     bgm.repeat_play()
 

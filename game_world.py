@@ -1,13 +1,16 @@
+import pickle
 
 # layer 0: Background Objects
 # layer 1: Foreground Objects
-# layer 2: Player's range attack Objects
-# layer 3: enemy's range attack Objects
-objects = [[], []]
+objects = [[],[]]
 
 
 def add_object(o, layer):
     objects[layer].append(o)
+
+
+def add_objects(l, layer):
+    objects[layer] += l
 
 
 def remove_object(o):
@@ -19,15 +22,21 @@ def remove_object(o):
 
 
 def clear():
-    global objects
-    for o in all_objects():
-        del o
-    objects.clear()
+    for l in objects:
+        l.clear()
 
-    objects = [[], []]
 
 def all_objects():
     for i in range(len(objects)):
         for o in objects[i]:
             yield o
 
+
+def save():
+    with open('game.sav', 'wb') as f:
+        pickle.dump(objects, f)
+
+def load():
+    global objects
+    with open('game.sav', 'rb') as f:
+        objects = pickle.load(f)
