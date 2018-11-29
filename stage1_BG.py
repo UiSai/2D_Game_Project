@@ -34,6 +34,12 @@ class Block:
             background.grass.draw(700, background.first_floor_of_grass)
             background.grass.draw(950, background.first_floor_of_grass)
             background.grass.draw(1200, background.first_floor_of_grass)
+        elif background.block == 3:
+            background.grass.draw(150, background.first_floor_of_grass)
+            background.grass.draw(450, background.first_floor_of_grass)
+            background.grass.draw(700, background.first_floor_of_grass)
+            background.grass.draw(950, background.first_floor_of_grass)
+            background.grass.draw(1200, background.first_floor_of_grass)
 
 
 class Background:

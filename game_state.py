@@ -8,13 +8,13 @@ import game_world
 from player import Player
 from en_mouse import Enemy
 from stage1_BG import Background
-from item import *
+# from item import *
 
 name = 'GameState'
 
 player = None
 background = None
-item = None
+# item = None
 font = None
 move_direction = None
 move_state = False
@@ -39,12 +39,12 @@ def enter():
     player = Player()
     background = Background()
     mouse = Enemy()
-    item = Item_Health(200, 200)
+    # item = Item_Health(200, 200)
 
     game_world.add_object(background, 0)
     game_world.add_object(player, 1)
     game_world.add_object(mouse, 1)
-    game_world.add_object(item, 1)
+    # game_world.add_object(item, 1)
 
 
 def exit():
@@ -84,11 +84,11 @@ def update():
             else:
                 player.HP -= 1
                 player.Invincible_Status = True
-
+    """
     if item.exist:
         if collide(player, item):
             item.effect()
-
+    """
     for i in range(10):
         if player.arrow[i].exist and mouse.HP > 0:
             if collide(player.arrow[i], mouse):
