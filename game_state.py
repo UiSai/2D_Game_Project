@@ -6,7 +6,8 @@ import game_framework
 import game_world
 
 from player import Player
-from en_mouse import Enemy
+from en_mouse import Enemy_mouse
+from en_cat import Enemy_cat
 from stage1_BG import Background
 # from item import *
 
@@ -14,6 +15,8 @@ name = 'GameState'
 
 player = None
 background = None
+mouse = None
+cat = None
 # item = None
 font = None
 move_direction = None
@@ -34,11 +37,12 @@ def collide(a, b):
 
 
 def enter():
-    global player, background, mouse, item
+    global player, background, mouse, cat     # item
 
     player = Player()
     background = Background()
-    mouse = Enemy()
+    mouse = Enemy_mouse()
+    cat = Enemy_cat()
     # item = Item_Health(200, 200)
 
     game_world.add_object(background, 0)
@@ -79,10 +83,21 @@ def update():
     if not mouse.exist and background.block == 1:
         game_world.add_object(mouse, 1)
 
+    if not cat.exist and background.block == 2:
+        game_world.add_object(cat, 1)
+
     if mouse.exist and not player.Invincible_Status:
         if collide(player, mouse):
             if player.MAttack_Status:
                 mouse.HP -= player.MA_Damage
+            else:
+                player.HP -= 1
+                player.Invincible_Status = True
+
+    if cat.exist and not player.Invincible_Status:
+        if collide(player, cat):
+            if player.MAttack_Status:
+                cat.HP -= player.MA_Damage
             else:
                 player.HP -= 1
                 player.Invincible_Status = True

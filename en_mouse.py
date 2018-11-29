@@ -110,7 +110,7 @@ class AttackState:
 """
 
 
-class Enemy:
+class Enemy_mouse:
     def __init__(self):
         self.x, self.y = 800, first_floor_mouse_y  # 120은 지형의 높이.
         self.ground_y = self.y
@@ -138,7 +138,7 @@ class Enemy:
             self.cur_state.exit(self, event)
             self.cur_state = next_state_table[self.cur_state][event]
             self.cur_state.enter(self, event)
-        if self.exist == False and game_state.background.block == 1:
+        if not self.exist and game_state.background.block == 1:
             game_world.add_object(self, 1)
             self.exist = True
         if self.HP <= 0 or not game_state.background.block == 1:
