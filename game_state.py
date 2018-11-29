@@ -43,7 +43,6 @@ def enter():
 
     game_world.add_object(background, 0)
     game_world.add_object(player, 1)
-    game_world.add_object(mouse, 1)
     # game_world.add_object(item, 1)
 
 
@@ -76,6 +75,9 @@ def input_buttons():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
+
+    if not mouse.exist and background.block == 1:
+        game_world.add_object(mouse, 1)
 
     if mouse.exist and not player.Invincible_Status:
         if collide(player, mouse):
