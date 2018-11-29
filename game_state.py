@@ -104,12 +104,18 @@ def update():
     if player.HP <= 0:
         game_framework.change_state(gameover_state)
 
-    if player.x >= 1280:
+    if background.block == 3 and player.y >= 940:
         background.block += 1
-        player.x = 1
-    elif player.x <= 0:
+        player.y = 11
+    elif background.block == 4 and player.y < 10:
         background.block -= 1
-        player.x = 1279
+    else:
+        if player.x >= 1280:
+            background.block += 1
+            player.x = 1
+        elif player.x <= 0:
+            background.block -= 1
+            player.x = 1279
 
 
 

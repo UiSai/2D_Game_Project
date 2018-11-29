@@ -2,6 +2,7 @@ from pico2d import *
 
 import game_framework
 import game_world
+import game_state
 
 Left, Right, Neutral = 0, 1, 2
 first_floor_mouse_y = 85
@@ -122,7 +123,7 @@ class Enemy:
         self.cur_state = MoveState
         self.cur_state.enter(self, None)
         self.HP = 5
-        self.exist = True
+        self.exist = False
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -137,7 +138,10 @@ class Enemy:
             self.cur_state.exit(self, event)
             self.cur_state = next_state_table[self.cur_state][event]
             self.cur_state.enter(self, event)
-        if self.HP <= 0:
+        if self.exist == False and game_state.background.block == 1:
+            game_world.add_object(self, 1)
+            self.exist = True
+        if self.HP <= 0 or not game_state.background.block == 1:
             game_world.remove_object(self)
             self.exist = False
 

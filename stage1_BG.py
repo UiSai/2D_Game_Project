@@ -34,19 +34,38 @@ class Block:
             background.grass.draw(700, background.first_floor_of_grass)
             background.grass.draw(950, background.first_floor_of_grass)
             background.grass.draw(1200, background.first_floor_of_grass)
-        elif background.block == 3:
+        elif background.block == 3:  # 올라가는 길
             background.grass.draw(150, background.first_floor_of_grass)
             background.grass.draw(450, background.first_floor_of_grass)
             background.grass.draw(700, background.first_floor_of_grass)
             background.grass.draw(950, background.first_floor_of_grass)
             background.grass.draw(1200, background.first_floor_of_grass)
 
+            background.wall.draw(1100, 200)
+        elif background.block == 4:  # 올라온 길
+            background.grass.draw(700, background.first_floor_of_grass)
+            background.grass.draw(950, background.first_floor_of_grass)
+            background.grass.draw(1200, background.first_floor_of_grass)
+
+        elif background.block == 5:  # 보스 전
+            background.grass.draw(150, background.first_floor_of_grass)
+            background.grass.draw(450, background.first_floor_of_grass)
+            background.grass.draw(700, background.first_floor_of_grass)
+            background.grass.draw(950, background.first_floor_of_grass)
+            background.grass.draw(1200, background.first_floor_of_grass)
+        elif background.block == 6:
+            background.grass.draw(150, background.first_floor_of_grass)
+            background.grass.draw(450, background.first_floor_of_grass)
+            background.grass.draw(700, background.first_floor_of_grass)
+            background.grass.draw(950, background.first_floor_of_grass)
+            background.grass.draw(1200, background.first_floor_of_grass)
 
 class Background:
     def __init__(self):
         self.grass = load_image('resource\\Background\\grass_modify.png')
         self.tree_1 = load_image('resource\\Background\\tree.png')
         self.tree_2 = load_image('resource\\Background\\tree2.png')
+        self.wall = load_image('resource\\Background\\wall.png')
         self.first_floor_of_grass = 40
         self.first_floor_of_tree = 460
         self.block = 1

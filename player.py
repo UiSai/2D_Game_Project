@@ -1,5 +1,6 @@
 from pico2d import *
 from arrow import RangeAttack
+from stage1_BG import Background
 
 import game_world
 import game_framework
@@ -23,6 +24,7 @@ TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 
+#background = Background()
 
 Right_DOWN, Left_DOWN, Right_UP, Left_UP, Up_DOWN, Up_UP, Air_DOWN, MAttack, RAttack = range(9)
 
@@ -124,6 +126,8 @@ class GroundState:
     def do(player):
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.x += player.velocity * game_framework.frame_time
+        if game_state.background.block == 4 and player.x < 400:
+            player.cur_state = FallingStatez
 
         player.clamp_and_timer()
 
@@ -240,12 +244,15 @@ class FallingState:
     def do(player):
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.x += player.velocity * game_framework.frame_time
-        if player.y >= player.ground_y:
+        if game_state.background.block == 4 and player.x < 400:
             player.y -= Fall_speed_PPS * game_framework.frame_time
         else:
-            player.In_Air = False
-            player.cur_state = GroundState
-            #game_framework.change_state(GroundState)
+            if player.y >= player.ground_y:
+                player.y -= Fall_speed_PPS * game_framework.frame_time
+            else:
+                player.In_Air = False
+                player.cur_state = GroundState
+                #game_framework.change_state(GroundState)
         player.clamp_and_timer()
 
     @staticmethod
@@ -329,12 +336,27 @@ class Player:
         self.cur_state.draw(self)
 
     def clamp_and_timer(self):
+        if game_state.background.block == 3:
+            self.x = clamp(-10, self.x, 1230)
+            self.y = clamp(self.ground_y, self.y, 970)
+        elif game_state.background.block == 4:
+            self.y = clamp(-10, self.y, 900)
+            if self.x > 500:
+                self.y = clamp(self.ground_y, self.y, 970)
+        elif game_state.background.block == 1:
+            self.x = clamp(25, self.x, 1290)
+
+        # if game_state.background.block == 1:
+
+        """
         if not game_state.background.block == 3:
             self.y = clamp(self.ground_y, self.y, 900)
+        
         if game_state.background.block == 1:
             self.x = clamp(25, self.x, 1290)
         elif game_state.background.block == 3:
             self.x = clamp(-10, self.x, 1230)
+        """
         if self.MAttack_Status:
             self.MeleeTimer += game_framework.frame_time
             if self.MeleeTimer >= 0.3:
