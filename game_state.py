@@ -118,9 +118,16 @@ def update():
             player.arrow_num = i - 1
             player.arrow_num = clamp(0, i - 1, 9)
 
-    if cat.magic.x == cat.magic.target_x:
-        game_world.remove_object(cat.magic)
-        cat.magic.exist = False
+    if cat.magic.exist:
+        if collide(player, cat.magic):
+            player.HP -= 1
+            game_world.remove_object(cat.magic)
+        if cat.magic.shoot_dir == 0 and cat.magic.x <= cat.magic.target_x:
+            game_world.remove_object(cat.magic)
+            cat.magic.exist = False
+        elif cat.magic.shoot_dir == 1 and cat.magic.x >= cat.magic.target_x:
+            game_world.remove_object(cat.magic)
+            cat.magic.exist = False
 
     if player.HP <= 0:
         game_framework.change_state(gameover_state)
