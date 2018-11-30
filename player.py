@@ -324,7 +324,6 @@ class Player:
             return self.x - 25, self.y - 50, self.x + 25, self.y + 50
 
     def update(self):
-        print(self.dir)
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()

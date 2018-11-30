@@ -40,6 +40,7 @@ class IdleState:
             enemy.dir = Left
         if enemy.Attack_Timer >= 8:
             enemy.Attack()
+            print('attack')
             enemy.Attack_Timer = 0
 
     @staticmethod
@@ -132,12 +133,11 @@ class Enemy_cat:
         pass
 
     def Attack(self):
-        if not self.magic.exist:
-            self.magic.exist = True
-            self.magic.x, self.magic.y = self.x, self.y
-            self.magic.shoot_dir = self.dir
+        self.magic.exist = True
+        self.magic.x, self.magic.y = self.x, self.y
+        self.magic.shoot_dir = self.dir
 
-            game_world.add_object(self.magic, 1)
+        game_world.add_object(self.magic, 1)
 
     """
     def Attack(self):
@@ -160,7 +160,7 @@ class Magic:
         if Magic.image is None:
             Magic.image = load_image('resource\\RangeAttack.png')
         self.x, self.y, self.velocity = x, y, Magic_speed_MPS
-        self.target_x, self.target_y = game_state.player.x, game_state.player.y
+        self.target_x, self.target_y = 0, 0
         self.exist = False
         self.shoot_dir = None
 
@@ -173,6 +173,7 @@ class Magic:
         return self.x - 10, self.y - 10, self.x + 10, self.y + 10
 
     def update(self):
+        self.target_x, self.target_y = game_state.player.x, game_state.player.y
         if self.exist:
             if self.shoot_dir == Left and self.x > self.target_x:
                 self.x += -10
