@@ -12,7 +12,7 @@ Pixel_per_Meter = 1 / 1.23  # 1픽셀에 1.23미터
 Move_speed_MPS = 200
 Move_speed_PPS = (Move_speed_MPS * Pixel_per_Meter)
 Active_Range_x = 200
-Magic_speed_MPS = 1000
+Magic_speed_MPS = 100
 Magic_speed_PPS = (Magic_speed_MPS * Pixel_per_Meter)
 
 TIME_PER_ACTION = 0.5
@@ -163,6 +163,7 @@ class Magic:
         self.target_x, self.target_y = 0, 0
         self.exist = False
         self.shoot_dir = None
+        self.line_i = 0
 
     def draw(self):
         if self.exist:
@@ -176,16 +177,28 @@ class Magic:
         self.target_x, self.target_y = game_state.player.x, game_state.player.y
         if self.exist:
             if self.shoot_dir == Left and self.x > self.target_x:
-                self.x += -10
+                print(self.x, self.target_x, self.target_y, self.line_i)
+                self.line_i += 2
+                t = self.line_i / 100
+                self.x = (1 - t) * game_state.cat.x + t * self.target_x
+                self.y = (1 - t) * game_state.cat.y + t * self.target_y
                 self.y += random.randint(-10, 10)
+                # self.x += -10
+                # self.y += random.randint(-10, 10)
             elif self.shoot_dir == Right and self.x < self.target_x:
-                self.x += 10
+                self.line_i += 2
+                t = self.line_i / 100
+                self.x = (1 - t) * game_state.cat.x + t * self.target_x
+                self.y = (1 - t) * game_state.cat.y + t * self.target_y
                 self.y += random.randint(-10, 10)
+                # self.x += 10
+                # self.y += random.randint(-10, 10)
 
     def draw_line(self):
         for i in range(0, 100 + 1, 2):
             t = i / 100
-            self.x = (1 - t) * cat.x + t * self.target_x
-            self.y = (1 - t) * cat.y + t * self.target_y
+            self.x = (1 - t) * game_state.cat.x + t * self.target_x
+            self.y = (1 - t) * game_state.cat.y + t * self.target_y
+        pass
 
 
