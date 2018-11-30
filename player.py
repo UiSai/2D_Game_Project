@@ -362,6 +362,7 @@ class Player:
             if self.MeleeTimer >= 0.3:
                 self.MAttack_Status = False
                 self.MeleeTimer = 0
+
         if self.Invincible_Status:
             self.Invincible_Timer += game_framework.frame_time
             if self.Invincible_Timer >= 2:

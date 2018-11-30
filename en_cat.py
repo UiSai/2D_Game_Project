@@ -134,7 +134,7 @@ class Enemy_cat:
     def Attack(self):
         if not self.magic.exist:
             self.magic.exist = True
-            self.magic.x, self.magic .y = self.x, self.y
+            self.magic.x, self.magic.y = self.x, self.y
             self.magic.shoot_dir = self.dir
 
             game_world.add_object(self.magic, 1)
@@ -160,7 +160,7 @@ class Magic:
         if Magic.image is None:
             Magic.image = load_image('resource\\RangeAttack.png')
         self.x, self.y, self.velocity = x, y, Magic_speed_MPS
-        self.target_x, self.target_y = 0, 0
+        self.target_x, self.target_y = game_state.player.x, game_state.player.y
         self.exist = False
         self.shoot_dir = None
 
@@ -168,13 +168,11 @@ class Magic:
         if self.exist:
             self.image.draw(self.x, self.y)
             draw_rectangle(*self.get_bb())
-            # print(self.velocity)
 
     def get_bb(self):
         return self.x - 10, self.y - 10, self.x + 10, self.y + 10
 
     def update(self):
-        self.target_x, self.target_y = game_state.player.x, game_state.player.y
         if self.exist:
             if self.shoot_dir == Left and self.x > self.target_x:
                 self.x += -10
@@ -182,4 +180,11 @@ class Magic:
             elif self.shoot_dir == Right and self.x < self.target_x:
                 self.x += 10
                 self.y += random.randint(-10, 10)
+
+    def draw_line(self):
+        for i in range(0, 100 + 1, 2):
+            t = i / 100
+            self.x = (1 - t) * cat.x + t * self.target_x
+            self.y = (1 - t) * cat.y + t * self.target_y
+
 

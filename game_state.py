@@ -101,6 +101,20 @@ def update():
             else:
                 player.HP -= 1
                 player.Invincible_Status = True
+
+    if cat.magic.exist and not player.Invincible_Status:
+        if collide(player, cat.magic):
+            player.HP -= 1
+            game_world.remove_object(cat.magic)
+            player.Invincible_Status = True
+            cat.magic.exist = False
+        if cat.magic.shoot_dir == 0 and cat.magic.x <= cat.magic.target_x:
+            game_world.remove_object(cat.magic)
+            cat.magic.exist = False
+        elif cat.magic.shoot_dir == 1 and cat.magic.x >= cat.magic.target_x:
+            game_world.remove_object(cat.magic)
+            cat.magic.exist = False
+
     """
     if item.exist:
         if collide(player, item):
@@ -117,17 +131,6 @@ def update():
             player.arrow[i].exist = False
             player.arrow_num = i - 1
             player.arrow_num = clamp(0, i - 1, 9)
-
-    if cat.magic.exist:
-        if collide(player, cat.magic):
-            player.HP -= 1
-            game_world.remove_object(cat.magic)
-        if cat.magic.shoot_dir == 0 and cat.magic.x <= cat.magic.target_x:
-            game_world.remove_object(cat.magic)
-            cat.magic.exist = False
-        elif cat.magic.shoot_dir == 1 and cat.magic.x >= cat.magic.target_x:
-            game_world.remove_object(cat.magic)
-            cat.magic.exist = False
 
     if player.HP <= 0:
         game_framework.change_state(gameover_state)
