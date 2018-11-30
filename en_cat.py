@@ -3,6 +3,7 @@ from pico2d import *
 import game_framework
 import game_world
 import game_state
+import random
 
 Left, Right, Neutral = 0, 1, 2
 first_floor_cat_y = 180
@@ -32,6 +33,10 @@ class IdleState:
     @staticmethod
     def do(enemy):
         enemy.frame = (enemy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        enemy.Attack_Timer += game_framework.frame_time
+        if enemy.Attack_Timer >= 8:
+            enemy.Attack()
+            enemy.Attack_Timer = 0
 
     @staticmethod
     def draw(enemy):
@@ -81,19 +86,19 @@ class AttackState:
 
 class Enemy_cat:
     def __init__(self):
-        self.x, self.y = 800, first_floor_cat_y  # 120은 지형의 높이.
+        self.x, self.y = 800, first_floor_cat_y
         self.ground_y = self.y
         self.start_x = self.x
         self.image = load_image('resource\\High_cat.png')
-        self.dir = Neutral
-        self.Attack_Timer = 0
-        self.velocity = 0
+        self.dir = Left
+        self.Attack_Timer = 7
         self.frame = 0
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
         self.HP = 5
         self.exist = False
+        self.magic = Magic(self.x, self.y)
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -123,6 +128,29 @@ class Enemy_cat:
     def input_buttons(self, event):
         pass
 
+    def Attack(self):
+        for i in range(10):
+            if not self.magic.exist:
+                self.magic.exist = True
+                self.magic.x, self.magic .y = self.x, self.y
+                self.magic.dir = self.dir
+
+                game_world.add_object(self.magic, 1)
+                break
+
+    """
+    def Attack(self):
+        for i in range(10):
+            if not self.magic[i].exist:
+                self.magic[i].exist = True
+                self.magic[i].x, self.magic[i].y = self.x, self.y
+                self.magic[i].dir = self.dir
+
+                self.arrow_num = clamp(0, i, 9)
+                game_world.add_object(self.magic[i], 1)
+                break
+    """
+
 
 class Magic:
     image = None
@@ -131,6 +159,7 @@ class Magic:
         if Magic.image is None:
             Magic.image = load_image('resource\\RangeAttack.png')
         self.x, self.y, self.velocity = x, y, Magic_speed_MPS
+        self.target_x, self.target_y = game_state.player.x, game_state.player.y
         self.exist = False
         self.dir = None
 
@@ -141,12 +170,13 @@ class Magic:
             # print(self.velocity)
 
     def get_bb(self):
-        return self.x - 10, self.y - 100, self.x + 10, self.y + 100
+        return self.x - 10, self.y - 10, self.x + 10, self.y + 10
 
     def update(self):
         if self.exist:
             if self.dir == Right:
-                self.x += self.velocity * game_framework.frame_time
+                self.x += -10
+                self.y += random.randint(-10, 10)
             else:
                 self.x -= self.velocity * game_framework.frame_time
 
