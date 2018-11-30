@@ -34,6 +34,10 @@ class IdleState:
     def do(enemy):
         enemy.frame = (enemy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         enemy.Attack_Timer += game_framework.frame_time
+        if enemy.x < game_state.player.x:
+            enemy.dir = Right
+        elif enemy.x > game_state.player.x:
+            enemy.dir = Left
         if enemy.Attack_Timer >= 8:
             enemy.Attack()
             enemy.Attack_Timer = 0
@@ -88,7 +92,6 @@ class Enemy_cat:
     def __init__(self):
         self.x, self.y = 800, first_floor_cat_y
         self.ground_y = self.y
-        self.start_x = self.x
         self.image = load_image('resource\\High_cat.png')
         self.dir = Left
         self.Attack_Timer = 7
@@ -129,14 +132,12 @@ class Enemy_cat:
         pass
 
     def Attack(self):
-        for i in range(10):
-            if not self.magic.exist:
-                self.magic.exist = True
-                self.magic.x, self.magic .y = self.x, self.y
-                self.magic.dir = self.dir
+        if not self.magic.exist:
+            self.magic.exist = True
+            self.magic.x, self.magic .y = self.x, self.y
+            self.magic.shoot_dir = self.dir
 
-                game_world.add_object(self.magic, 1)
-                break
+            game_world.add_object(self.magic, 1)
 
     """
     def Attack(self):
@@ -159,9 +160,9 @@ class Magic:
         if Magic.image is None:
             Magic.image = load_image('resource\\RangeAttack.png')
         self.x, self.y, self.velocity = x, y, Magic_speed_MPS
-        self.target_x, self.target_y = game_state.player.x, game_state.player.y
+        self.target_x, self.target_y = 0, 0
         self.exist = False
-        self.dir = None
+        self.shoot_dir = None
 
     def draw(self):
         if self.exist:
@@ -173,10 +174,12 @@ class Magic:
         return self.x - 10, self.y - 10, self.x + 10, self.y + 10
 
     def update(self):
+        self.target_x, self.target_y = game_state.player.x, game_state.player.y
         if self.exist:
-            if self.dir == Right:
+            if self.shoot_dir == Left and self.x > self.target_x:
                 self.x += -10
                 self.y += random.randint(-10, 10)
-            else:
-                self.x -= self.velocity * game_framework.frame_time
+            elif self.shoot_dir == Right and self.x < self.target_x:
+                self.x += 10
+                self.y += random.randint(-10, 10)
 

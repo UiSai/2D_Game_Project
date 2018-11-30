@@ -118,7 +118,7 @@ def update():
             player.arrow_num = i - 1
             player.arrow_num = clamp(0, i - 1, 9)
 
-    if cat.magic.x < 25 or cat.magic.x > 1280 - 25:
+    if cat.magic.x == cat.magic.target_x:
         game_world.remove_object(cat.magic)
         cat.magic.exist = False
 
