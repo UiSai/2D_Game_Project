@@ -135,6 +135,8 @@ class Enemy_cat:
     def Attack(self):
         self.magic.exist = True
         self.magic.x, self.magic.y = self.x, self.y
+        self.magic.target_x, self.magic.target_y = game_state.player.x, game_state.player.y
+        self.magic.line_i = 0
         self.magic.shoot_dir = self.dir
 
         game_world.add_object(self.magic, 1)
@@ -174,7 +176,6 @@ class Magic:
         return self.x - 10, self.y - 10, self.x + 10, self.y + 10
 
     def update(self):
-        self.target_x, self.target_y = game_state.player.x, game_state.player.y
         if self.exist:
             if self.shoot_dir == Left and self.x > self.target_x:
                 print(self.x, self.target_x, self.target_y, self.line_i)

@@ -105,7 +105,6 @@ def update():
     if cat.magic.exist and not player.Invincible_Status:
         if collide(player, cat.magic):
             player.HP -= 1
-            cat.magic.line_i = 0
             game_world.remove_object(cat.magic)
             player.Invincible_Status = True
             cat.magic.exist = False
