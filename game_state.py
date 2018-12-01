@@ -144,6 +144,20 @@ def update():
 #            game_world.remove_object(boss.knife)
 #            boss.knife.exist = False
 
+    for i in range(10):
+        if boss.arrow[i].exist and player.HP > 0:
+            if collide(boss.arrow[i], player):
+                game_world.remove_object(boss.arrow[i])
+                player.HP -= boss.damage
+                boss.arrow[i].exist = False
+                #boss.arrow_num = clamp(0, i - 1, 9)
+        if boss.arrow[i].y < 0 or boss.arrow[i].y > 961:
+            game_world.remove_object(boss.arrow[i])
+            boss.arrow[i].exist = False
+            boss.arrow_num = i - 1
+            #boss.arrow_num = clamp(0, i - 1, 9)
+
+
     """
     if item.exist:
         if collide(player, item):
@@ -152,6 +166,7 @@ def update():
     for i in range(10):
         if player.arrow[i].exist and mouse.HP > 0:
             if collide(player.arrow[i], mouse):
+                game_world.remove_object(player.arrow[i])
                 mouse.HP -= player.RA_Damage
                 player.arrow[i].exist = False
                 player.arrow_num = clamp(0, i - 1, 9)

@@ -11,7 +11,7 @@ first_floor_boss_y = 180
 Pixel_per_Meter = 1 / 1.23  # 1픽셀에 1.23미터
 Move_speed_MPS = 200
 Move_speed_PPS = (Move_speed_MPS * Pixel_per_Meter)
-Knife_speed_MPS = 100
+Knife_speed_MPS = 200
 Knife_speed_PPS = (Knife_speed_MPS * Pixel_per_Meter)
 
 TIME_PER_ACTION = 0.5
@@ -66,15 +66,17 @@ class AttackState:
             Attack.draw()
             break
         """
-        for i in range(10):
-            # if not self.arrow[i].exist:
-            enemy.arrow[i].exist = True
-            # enemy.arrow[i].x, enemy.arrow[i].y = enemy.x, enemy.y
-            enemy.arrow[i].dir = enemy.dir
+        if enemy.Attack_Timer > 7:
+            enemy.Attack_Timer = 0
+            for i in range(10):
+                # if not self.arrow[i].exist:
+                enemy.arrow[i].exist = True
+                enemy.arrow[i].x, enemy.arrow[i].y = random.randint(0, 1280), 960
+                enemy.arrow[i].dir = enemy.dir
 
-            enemy.arrow_num = clamp(0, i, 9)
-            game_world.add_object(enemy.arrow[i], 1)
-            #break
+                enemy.arrow_num = clamp(0, i, 9)
+                game_world.add_object(enemy.arrow[i], 1)
+                #break
 
 
     @staticmethod
@@ -136,10 +138,11 @@ class Enemy_boss:
         self.HP = 5
         self.exist = False
         self.dead = False
-        # aself.knife = Knife()
+        # self.knife = Knife()
 
         self.arrow = [Knife() for i in range(10)]
         self.arrow_num = 0
+        self.damage = 1
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -171,7 +174,6 @@ class Enemy_boss:
 
     def Attack(self):
         self.knife.exist = True
-        print('debug')
         game_world.add_object(self.knife, 1)
 
     """
@@ -231,7 +233,7 @@ class Knife:
     def __init__(self):
         if Knife.image is None:
             Knife.image = load_image('resource\\RangeAttack.png')
-        self.x, self.y, self.velocity = random.randint(0, 1280), 960, Knife_speed_PPS
+        self.x, self.y, self.velocity = 0, 0, Knife_speed_PPS
         self.exist = False
         self.dir = None
 
