@@ -184,7 +184,7 @@ class Magic:
                 z = 100 / y
                 self.line_i += z
                 t = self.line_i
-                print(game_state.cat.x, self.target_x, x, z, self.line_i, t)
+                # print(game_state.cat.x, self.target_x, x, z, self.line_i, t)
                 self.x = (1 - t) * game_state.cat.x + t * self.target_x
                 self.y = (1 - t) * game_state.cat.y + t * self.target_y
                 self.y += random.randint(-10, 10)
@@ -204,7 +204,6 @@ class Magic:
                 z = 100 / y
                 self.line_i += z
                 t = self.line_i
-                print(game_state.cat.x, self.target_x, x, z, self.line_i, t)
                 self.x = (1 - t) * game_state.cat.x + t * self.target_x
                 self.y = (1 - t) * game_state.cat.y + t * self.target_y
                 self.y += random.randint(-10, 10)

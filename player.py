@@ -127,7 +127,7 @@ class GroundState:
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.x += player.velocity * game_framework.frame_time
         if game_state.background.block == 4 and player.x < 400:
-            player.cur_state = FallingStatez
+            player.cur_state = FallingState
 
         player.clamp_and_timer()
 

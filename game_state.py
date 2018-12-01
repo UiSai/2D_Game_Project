@@ -118,6 +118,9 @@ def update():
             game_world.remove_object(cat.magic)
             cat.magic.exist = False
 
+    if not boss.exist and not boss.dead and background.block == 6:
+        game_world.add_object(boss, 1)
+
     """
     if item.exist:
         if collide(player, item):
