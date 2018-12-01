@@ -26,7 +26,7 @@ FRAMES_PER_ACTION = 8
 
 #background = Background()
 
-Right_DOWN, Left_DOWN, Right_UP, Left_UP, Up_DOWN, Up_UP, Air_DOWN, MAttack, RAttack = range(9)
+Right_DOWN, Left_DOWN, Right_UP, Left_UP, Up_DOWN, Up_UP, Air_DOWN, MAttack, RAttack, Roll = range(10)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_RIGHT): Right_DOWN,
@@ -37,7 +37,8 @@ key_event_table = {
     (SDL_KEYUP, SDLK_LEFT): Left_UP,
     (SDL_KEYUP, SDLK_UP): Up_UP,
     (SDL_KEYDOWN, SDLK_z): MAttack,
-    (SDL_KEYDOWN, SDLK_x): RAttack
+    (SDL_KEYDOWN, SDLK_x): RAttack,
+    (SDL_KEYDOWN, SDLK_s): Roll
 }
 
 
@@ -96,6 +97,8 @@ class GroundState:
         elif event == MAttack:
             player.MeleeAttack()
             player.MAttack_Status = True
+        elif event == Roll:
+            player.Invincible_Status = True
 
     """
     @staticmethod
@@ -265,7 +268,8 @@ class FallingState:
 
 next_state_table = {
     GroundState: {Right_UP: GroundState, Left_UP: GroundState, Left_DOWN: GroundState, Right_DOWN: GroundState,
-                  Air_DOWN: AirState, RAttack: GroundState, Up_DOWN: GroundState, Up_UP: GroundState, MAttack:GroundState},
+                  Air_DOWN: AirState, RAttack: GroundState, Up_DOWN: GroundState, Up_UP: GroundState,
+                  MAttack: GroundState, Roll: GroundState},
     AirState: {Right_UP: AirState, Left_UP: AirState, Right_DOWN: AirState, Left_DOWN: AirState,
                Air_DOWN: FallingState, RAttack: AirState, Up_DOWN: AirState, Up_UP: AirState, MAttack:GroundState},
     FallingState: {Right_DOWN: FallingState, Left_DOWN: FallingState, Right_UP: FallingState, Left_UP: FallingState,
