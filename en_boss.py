@@ -12,8 +12,8 @@ Pixel_per_Meter = 1 / 1.23  # 1픽셀에 1.23미터
 Move_speed_MPS = 200
 Move_speed_PPS = (Move_speed_MPS * Pixel_per_Meter)
 Active_Range_x = 200
-Magic_speed_MPS = 100
-Magic_speed_PPS = (Magic_speed_MPS * Pixel_per_Meter)
+Knife_speed_MPS = 200
+Knife_speed_PPS = (Knife_speed_MPS * Pixel_per_Meter)
 
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
@@ -49,6 +49,39 @@ class IdleState:
             enemy.image.clip_draw(int(enemy.frame) * 120, 0, 120, 200, enemy.x, enemy.y)  # 오른쪽 이동
         else:
             enemy.image.clip_draw(int(enemy.frame) * 120, 0, 120, 200, enemy.x, enemy.y)
+
+
+class MoveState:
+
+    @staticmethod
+    def enter(enemy, event):
+        enemy.dir = Right
+        enemy.velocity += Move_speed_PPS
+
+    @staticmethod
+    def exit(enemy, event):
+        pass
+
+    @staticmethod
+    def do(enemy):
+        enemy.frame = (enemy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        if enemy.x < enemy.start_x + Active_Range_x and enemy.dir == Right:
+            enemy.x += enemy.velocity * game_framework.frame_time
+        elif enemy.x > enemy.start_x + Active_Range_x and enemy.dir == Right:
+            enemy.dir = Left
+        elif enemy.x > enemy.start_x - Active_Range_x and enemy.dir == Left:
+            enemy.x -= enemy.velocity * game_framework.frame_time
+        elif enemy.dir < enemy.start_x - Active_Range_x and enemy.dir == Left:
+            enemy.dir = Right
+            enemy.x -= enemy.velocity * game_framework.frame_time
+
+    @staticmethod
+    def draw(enemy):
+        if enemy.dir == Right:
+            enemy.image.clip_draw(int(enemy.frame) * 0, 0, 280, 50, enemy.x, enemy.y)
+        else:
+            enemy.image.clip_draw(int(enemy.frame) * 0, 0, 280, 50, enemy.x, enemy.y)  # 왼쪽 이동 스프라이트
+
 
 """
 class AttackState:
@@ -89,12 +122,13 @@ class AttackState:
 """
 
 
-class Enemy_cat:
+class Enemy_boss:
     def __init__(self):
         self.x, self.y = 800, first_floor_cat_y
         self.ground_y = self.y
         self.image = load_image('resource\\High_cat.png')
         self.dir = Left
+        self.Idle_Timer = 3
         self.Attack_Timer = 7
         self.frame = 0
         self.event_que = []
@@ -102,7 +136,7 @@ class Enemy_cat:
         self.cur_state.enter(self, None)
         self.HP = 5
         self.exist = False
-        self.magic = Magic(self.x, self.y)
+        self.knife = Knife(self.x, self.y)
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -133,36 +167,36 @@ class Enemy_cat:
         pass
 
     def Attack(self):
-        self.magic.exist = True
-        self.magic.x, self.magic.y = self.x, self.y
-        self.magic.target_x, self.magic.target_y = game_state.player.x, game_state.player.y
-        self.magic.line_i = 0
-        print(self.magic.line_i)
-        self.magic.shoot_dir = self.dir
+        self.knife.exist = True
+        self.knife.x, self.knife.y = self.x, self.y
+        self.knife.target_x, self.knife.target_y = game_state.player.x, game_state.player.y
+        self.knife.line_i = 0
+        print(self.knife.line_i)
+        self.knife.shoot_dir = self.dir
 
-        game_world.add_object(self.magic, 1)
+        game_world.add_object(self.knife, 1)
 
     """
     def Attack(self):
         for i in range(10):
-            if not self.magic[i].exist:
-                self.magic[i].exist = True
-                self.magic[i].x, self.magic[i].y = self.x, self.y
-                self.magic[i].dir = self.dir
+            if not self.knife[i].exist:
+                self.knife[i].exist = True
+                self.knife[i].x, self.knife[i].y = self.x, self.y
+                self.knife[i].dir = self.dir
 
                 self.arrow_num = clamp(0, i, 9)
-                game_world.add_object(self.magic[i], 1)
+                game_world.add_object(self.knife[i], 1)
                 break
     """
 
 
-class Magic:
+class Knife:
     image = None
 
     def __init__(self, x, y):
-        if Magic.image is None:
-            Magic.image = load_image('resource\\RangeAttack.png')
-        self.x, self.y, self.velocity = x, y, Magic_speed_MPS
+        if Knife.image is None:
+            Knife.image = load_image('resource\\RangeAttack.png')
+        self.x, self.y, self.velocity = x, y, Knife_speed_MPS
         self.target_x, self.target_y = 0, 0
         self.exist = False
         self.shoot_dir = None

@@ -8,6 +8,7 @@ import game_world
 from player import Player
 from en_mouse import Enemy_mouse
 from en_cat import Enemy_cat
+from en_boss import Enemy_boss
 from stage1_BG import Background
 # from item import *
 
@@ -17,6 +18,7 @@ player = None
 background = None
 mouse = None
 cat = None
+boss = None
 # item = None
 font = None
 move_direction = None
@@ -37,12 +39,13 @@ def collide(a, b):
 
 
 def enter():
-    global player, background, mouse, cat     # item
+    global player, background, mouse, cat, boss     # item
 
     player = Player()
     background = Background()
     mouse = Enemy_mouse()
     cat = Enemy_cat()
+    boss = Enemy_boss()
     # item = Item_Health(200, 200)
 
     game_world.add_object(background, 0)

@@ -344,6 +344,12 @@ class Player:
                 self.y = clamp(self.ground_y, self.y, 970)
         elif game_state.background.block == 1:
             self.x = clamp(25, self.x, 1290)
+        elif game_state.background.block == 6 and game_state.boss.exist:
+            self.x = clamp(25, self.x, 1270)
+            self.y = clamp(self.ground_y, self.y, 970)
+        elif game_state.background.block == 6 and not game_state.boss.exist:
+            self.x = clamp(25, self.x, 1290)
+            self.y = clamp(self.ground_y, self.y, 970)
 
         # if game_state.background.block == 1:
 

@@ -47,13 +47,13 @@ class Block:
             background.grass.draw(950, background.first_floor_of_grass)
             background.grass.draw(1200, background.first_floor_of_grass)
 
-        elif background.block == 5:  # 보스 전
+        elif background.block == 5:  # 우두머리 직전
             background.grass.draw(150, background.first_floor_of_grass)
             background.grass.draw(450, background.first_floor_of_grass)
             background.grass.draw(700, background.first_floor_of_grass)
             background.grass.draw(950, background.first_floor_of_grass)
             background.grass.draw(1200, background.first_floor_of_grass)
-        elif background.block == 6:
+        elif background.block == 6:  # 우두머리
             background.grass.draw(150, background.first_floor_of_grass)
             background.grass.draw(450, background.first_floor_of_grass)
             background.grass.draw(700, background.first_floor_of_grass)
