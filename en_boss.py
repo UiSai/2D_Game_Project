@@ -9,7 +9,7 @@ Left, Right, Neutral, Jump = 0, 1, 2, 3
 first_floor_boss_y = 130
 
 Pixel_per_Meter = 1 / 1.23  # 1픽셀에 1.23미터
-Move_speed_MPS = 200
+Move_speed_MPS = 300
 Move_speed_PPS = (Move_speed_MPS * Pixel_per_Meter)
 Knife_speed_MPS = 200
 Knife_speed_PPS = (Knife_speed_MPS * Pixel_per_Meter)
@@ -27,7 +27,7 @@ class IdleState:
 
     @staticmethod
     def exit(enemy, event):
-        pass
+        enemy.Idle_Timer = 0
 
     @staticmethod
     def do(enemy):
@@ -38,11 +38,8 @@ class IdleState:
             enemy.dir = Right
         elif enemy.x > game_state.player.x:
             enemy.dir = Left
-        if enemy.Idle_Timer >= 8:
-            enemy.Idle_Timer = 0
+        if enemy.Idle_Timer >= 3:
             enemy.add_event(2)
-            #enemy.Attack()
-            # print('attack')
 
     @staticmethod
     def draw(enemy):
@@ -66,8 +63,14 @@ class MoveState:
     @staticmethod
     def do(enemy):
         enemy.Move_Timer += game_framework.frame_time
-        print('Move')
         enemy.frame = (enemy.frame + 1) % 8
+        print('Move')
+        if enemy.x < game_state.player.x:
+            enemy.dir = Right
+            enemy.x += enemy.velocity * game_framework.frame_time
+        else:
+            enemy.dir = Left
+            enemy.x -= enemy.velocity * game_framework.frame_time
         if enemy.Move_Timer >= 5:
             enemy.Move_Timer = 0
             enemy.add_event(0)
@@ -105,8 +108,14 @@ class AttackState:
     @staticmethod
     def do(enemy):
         enemy.Attack_Timer += game_framework.frame_time
-        print('attack')
         enemy.frame = (enemy.frame + 1) % 8
+        print('attack')
+        if enemy.x < game_state.player.x:
+            enemy.dir = Right
+            enemy.x += enemy.velocity * game_framework.frame_time
+        else:
+            enemy.dir = Left
+            enemy.x -= enemy.velocity * game_framework.frame_time
         if enemy.Attack_Timer >= 5:
             enemy.Attack_Timer = 0
             enemy.add_event(1)
@@ -114,7 +123,7 @@ class AttackState:
 
     @staticmethod
     def draw(enemy):
-        if enemy.velocity == 2:
+        if enemy.dir == Right:
             enemy.image.clip_draw(enemy.frame * 61, 0, 61, 130, enemy.x, enemy.y)
         else:
             enemy.image.clip_draw(enemy.frame * 61, 0, 61, 130, enemy.x, enemy.y)  # 왼쪽 스프라이트

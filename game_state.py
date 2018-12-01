@@ -120,6 +120,28 @@ def update():
 
     if not boss.exist and not boss.dead and background.block == 6:
         game_world.add_object(boss, 1)
+        boss.exist = True
+
+    if boss.exist and not player.Invincible_Status:
+        if collide(player, boss):
+            if player.MAttack_Status:
+                cat.HP -= player.MA_Damage
+            else:
+                player.HP -= 1
+                player.Invincible_Status = True
+
+    if boss.knife.exist and not player.Invincible_Status:
+        if collide(player, boss.knife):
+            player.HP -= 1
+            game_world.remove_object(boss.knife)
+            player.Invincible_Status = True
+            boss.knife.exist = False
+        if boss.knife.shoot_dir == 0 and boss.knife.x <= boss.knife.target_x:
+            game_world.remove_object(boss.knife)
+            boss.knife.exist = False
+        elif boss.knife.shoot_dir == 1 and boss.knife.x >= boss.knife.target_x:
+            game_world.remove_object(boss.knife)
+            boss.knife.exist = False
 
     """
     if item.exist:
@@ -147,12 +169,12 @@ def update():
     elif background.block == 4 and player.y < 10:
         background.block -= 1
     else:
-        if player.x >= 1280:
+        if player.x >= 1281:
             background.block += 1
-            player.x = 1
-        elif player.x <= 0:
+            player.x = 2
+        elif player.x <= -1:
             background.block -= 1
-            player.x = 1279
+            player.x = 1278
 
 
 
