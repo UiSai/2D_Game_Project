@@ -130,18 +130,19 @@ def update():
                 player.HP -= 1
                 player.Invincible_Status = True
 
-    if boss.knife.exist and not player.Invincible_Status:
-        if collide(player, boss.knife):
-            player.HP -= 1
-            game_world.remove_object(boss.knife)
-            player.Invincible_Status = True
-            boss.knife.exist = False
-        if boss.knife.shoot_dir == 0 and boss.knife.x <= boss.knife.target_x:
-            game_world.remove_object(boss.knife)
-            boss.knife.exist = False
-        elif boss.knife.shoot_dir == 1 and boss.knife.x >= boss.knife.target_y:
-            game_world.remove_object(boss.knife)
-            boss.knife.exist = False
+    # if boss.knife.exist and not player.Invincible_Status:
+#    if not player.Invincible_Status:
+#        if collide(player, boss.knife):
+#            player.HP -= 1
+#            game_world.remove_object(boss.knife)
+#            player.Invincible_Status = True
+#            boss.knife.exist = False
+#        if boss.knife.shoot_dir == 0 and boss.knife.x <= boss.knife.target_x:
+#            game_world.remove_object(boss.knife)
+#            boss.knife.exist = False
+#        elif boss.knife.shoot_dir == 1 and boss.knife.x >= boss.knife.target_y:
+#            game_world.remove_object(boss.knife)
+#            boss.knife.exist = False
 
     """
     if item.exist:

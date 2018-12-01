@@ -48,6 +48,7 @@ class AttackState:
     @staticmethod
     def enter(enemy, event):
         enemy.frame = 0
+        # Attack = Knife()
 
     @staticmethod
     def exit(enemy, event):
@@ -57,14 +58,24 @@ class AttackState:
     def do(enemy):
         enemy.frame = (enemy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         enemy.Attack_Timer += game_framework.frame_time
-        if enemy.x < game_state.player.x:
-            enemy.dir = Right
-        elif enemy.x > game_state.player.x:
-            enemy.dir = Left
-        if enemy.Attack_Timer >= 8:
-            enemy.Attack()
-            print('attack')
-            enemy.Attack_Timer = 0
+        """
+        Attacks = [Knife() for i in range(10)]
+        for Attack in Attacks:
+            game_world.add_object(Attack, 1)
+            Attack.update()
+            Attack.draw()
+            break
+        """
+        for i in range(10):
+            # if not self.arrow[i].exist:
+            enemy.arrow[i].exist = True
+            # enemy.arrow[i].x, enemy.arrow[i].y = enemy.x, enemy.y
+            enemy.arrow[i].dir = enemy.dir
+
+            enemy.arrow_num = clamp(0, i, 9)
+            game_world.add_object(enemy.arrow[i], 1)
+            #break
+
 
     @staticmethod
     def draw(enemy):
@@ -125,7 +136,10 @@ class Enemy_boss:
         self.HP = 5
         self.exist = False
         self.dead = False
-        self.knife = Knife()
+        # aself.knife = Knife()
+
+        self.arrow = [Knife() for i in range(10)]
+        self.arrow_num = 0
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -157,11 +171,7 @@ class Enemy_boss:
 
     def Attack(self):
         self.knife.exist = True
-        self.knife.x, self.knife.y = self.x, self.y
-        self.knife.target_x, self.knife.target_y = game_state.player.x, game_state.player.y
-        self.knife.line_i = 0
-        self.knife.shoot_dir = self.dir
-
+        print('debug')
         game_world.add_object(self.knife, 1)
 
     """
@@ -177,7 +187,7 @@ class Enemy_boss:
                 break
     """
 
-
+"""
 class Knife:
     image = None
 
@@ -185,29 +195,58 @@ class Knife:
         if Knife.image is None:
             Knife.image = load_image('resource\\RangeAttack.png')
         self.x = random.randint(0, 1280)
-        self.y = 960
+        self.y = 950
         self.vertical_y = 960
         self.horizon_x1 = 0
         self.horizon_x2 = 1280
         self.velocity = Knife_speed_MPS
         self.target_x, self.target_y = 0, 0
-        self.exist = False
+        # self.exist = False
         self.shoot_dir = None
-        self.Shoot_Timer = 2
+        self.Shoot_Timer = 0
         self.line_i = 0
 
     def draw(self):
-        if self.exist:
-            self.image.draw(self.x, self.y)
-            draw_rectangle(*self.get_bb())
+        #if self.exist:
+        self.image.draw(self.x, self.y)
+        draw_rectangle(*self.get_bb())
 
     def get_bb(self):
         return self.x - 10, self.y - 10, self.x + 10, self.y + 10
 
     def update(self):
-        if self.exist:
-            self.Shoot_Timer += game_framework.frame_time
-            if self.Shoot_Timer >= 2:
-                self.y -= Knife_speed_PPS
-                self.Shoot_Timer = 0
+        #if self.exist:
+        print(self.x, self.y)
+        self.Shoot_Timer += game_framework.frame_time
+        print('시간', self.Shoot_Timer)
+        if self.Shoot_Timer >= 5:
+            self.y -= Knife_speed_PPS * game_framework.frame_time
+            if self.y < -5:
+                game_world.remove_object(self)
+"""
 
+class Knife:
+    image = None
+
+    def __init__(self):
+        if Knife.image is None:
+            Knife.image = load_image('resource\\RangeAttack.png')
+        self.x, self.y, self.velocity = random.randint(0, 1280), 960, Knife_speed_PPS
+        self.exist = False
+        self.dir = None
+
+    def draw(self):
+        if self.exist:
+            self.image.draw(self.x, self.y)
+            draw_rectangle(*self.get_bb())
+            # print(self.velocity)
+
+    def get_bb(self):
+        return self.x - 10, self.y - 100, self.x + 10, self.y + 100
+
+    def update(self):
+        if self.exist:
+            if self.dir == Right:
+                self.y += self.velocity * game_framework.frame_time
+            else:
+                self.y -= self.velocity * game_framework.frame_time
