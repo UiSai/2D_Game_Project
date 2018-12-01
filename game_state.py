@@ -2,6 +2,7 @@ from pico2d import *
 
 import pause_state
 import gameover_state
+import clear_state
 import game_framework
 import game_world
 
@@ -125,7 +126,7 @@ def update():
     if boss.exist and not player.Invincible_Status:
         if collide(player, boss):
             if player.MAttack_Status:
-                cat.HP -= player.MA_Damage
+                boss.HP -= player.MA_Damage
             else:
                 player.HP -= 1
                 player.Invincible_Status = True
@@ -168,6 +169,8 @@ def update():
         player.y = 11
     elif background.block == 4 and player.y < 10:
         background.block -= 1
+    elif background.block == 7:
+        game_framework.change_state(clear_state)
     else:
         if player.x >= 1281:
             background.block += 1
@@ -175,6 +178,7 @@ def update():
         elif player.x <= -1:
             background.block -= 1
             player.x = 1278
+
 
 
 
