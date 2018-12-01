@@ -5,13 +5,13 @@ import game_world
 import game_state
 import random
 
-Left, Right, Neutral, Jump = 0, 1, 2, 3
-first_floor_boss_y = 130
+Left, Right, Neutral = 0, 1, 2
+first_floor_boss_y = 180
 
 Pixel_per_Meter = 1 / 1.23  # 1픽셀에 1.23미터
-Move_speed_MPS = 300
+Move_speed_MPS = 200
 Move_speed_PPS = (Move_speed_MPS * Pixel_per_Meter)
-Knife_speed_MPS = 200
+Knife_speed_MPS = 100
 Knife_speed_PPS = (Knife_speed_MPS * Pixel_per_Meter)
 
 TIME_PER_ACTION = 0.5
@@ -27,19 +27,42 @@ class IdleState:
 
     @staticmethod
     def exit(enemy, event):
-        enemy.Idle_Timer = 0
+        pass
 
     @staticmethod
     def do(enemy):
-        print('Idle')
+        pass
+
+    @staticmethod
+    def draw(enemy):
+        if enemy.dir == Right:
+            enemy.image.clip_draw(int(enemy.frame) * 120, 0, 120, 200, enemy.x, enemy.y)  # 오른쪽 이동
+        else:
+            enemy.image.clip_draw(int(enemy.frame) * 120, 0, 120, 200, enemy.x, enemy.y)
+
+
+class AttackState:
+
+    @staticmethod
+    def enter(enemy, event):
+        enemy.frame = 0
+
+    @staticmethod
+    def exit(enemy, event):
+        pass
+
+    @staticmethod
+    def do(enemy):
         enemy.frame = (enemy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
-        enemy.Idle_Timer += game_framework.frame_time
+        enemy.Attack_Timer += game_framework.frame_time
         if enemy.x < game_state.player.x:
             enemy.dir = Right
         elif enemy.x > game_state.player.x:
             enemy.dir = Left
-        if enemy.Idle_Timer >= 3:
-            enemy.add_event(2)
+        if enemy.Attack_Timer >= 8:
+            enemy.Attack()
+            print('attack')
+            enemy.Attack_Timer = 0
 
     @staticmethod
     def draw(enemy):
@@ -62,30 +85,16 @@ class MoveState:
 
     @staticmethod
     def do(enemy):
-        enemy.Move_Timer += game_framework.frame_time
-        enemy.frame = (enemy.frame + 1) % 8
-        print('Move')
-        if enemy.x < game_state.player.x:
-            enemy.dir = Right
-            enemy.x += enemy.velocity * game_framework.frame_time
-        else:
-            enemy.dir = Left
-            enemy.x -= enemy.velocity * game_framework.frame_time
-        if enemy.Move_Timer >= 5:
-            enemy.Move_Timer = 0
-            enemy.add_event(0)
-        """
         enemy.frame = (enemy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
-        if enemy.x < game_state.player.x and enemy.dir == Right:
+        if enemy.x < enemy.start_x + Active_Range_x and enemy.dir == Right:
             enemy.x += enemy.velocity * game_framework.frame_time
-        elif enemy.x > game_state.player.x and enemy.dir == Right:
+        elif enemy.x > enemy.start_x + Active_Range_x and enemy.dir == Right:
             enemy.dir = Left
-        elif enemy.x > game_state.player.x and enemy.dir == Left:
+        elif enemy.x > enemy.start_x - Active_Range_x and enemy.dir == Left:
             enemy.x -= enemy.velocity * game_framework.frame_time
-        elif enemy.x < game_state.player.x and enemy.dir == Left:
+        elif enemy.dir < enemy.start_x - Active_Range_x and enemy.dir == Left:
             enemy.dir = Right
             enemy.x -= enemy.velocity * game_framework.frame_time
-        """
 
     @staticmethod
     def draw(enemy):
@@ -95,59 +104,25 @@ class MoveState:
             enemy.image.clip_draw(int(enemy.frame) * 0, 0, 280, 50, enemy.x, enemy.y)  # 왼쪽 이동 스프라이트
 
 
-class AttackState:
-
-    @staticmethod
-    def enter(enemy, event):
-        enemy.frame = 0
-
-    @staticmethod
-    def exit(enemy, event):
-        pass
-
-    @staticmethod
-    def do(enemy):
-        enemy.Attack_Timer += game_framework.frame_time
-        enemy.frame = (enemy.frame + 1) % 8
-        print('attack')
-        if enemy.x < game_state.player.x:
-            enemy.dir = Right
-            enemy.x += enemy.velocity * game_framework.frame_time
-        else:
-            enemy.dir = Left
-            enemy.x -= enemy.velocity * game_framework.frame_time
-        if enemy.Attack_Timer >= 5:
-            enemy.Attack_Timer = 0
-            enemy.add_event(1)
-            # enemy.add_event(random.randint(0, 2))
-
-    @staticmethod
-    def draw(enemy):
-        if enemy.dir == Right:
-            enemy.image.clip_draw(enemy.frame * 61, 0, 61, 130, enemy.x, enemy.y)
-        else:
-            enemy.image.clip_draw(enemy.frame * 61, 0, 61, 130, enemy.x, enemy.y)  # 왼쪽 스프라이트
-
-
-state_table = [IdleState, MoveState, AttackState]
+state_table = {IdleState, AttackState, MoveState}
 
 
 class Enemy_boss:
     def __init__(self):
-        self.x, self.y = 1000, first_floor_boss_y
+        self.x, self.y = 800, first_floor_boss_y
         self.ground_y = self.y
         self.image = load_image('resource\\High_boss.png')
         self.dir = Left
         self.Idle_Timer = 0
+        self.Attack_Timer = 7
+        self.Attack_Delay = 0
         self.Move_Timer = 0
-        self.Attack_Timer = 0
         self.frame = 0
         self.event_que = []
-        self.cur_state = IdleState
+        self.cur_state = AttackState
         self.cur_state.enter(self, None)
         self.HP = 5
-        self.velocity = 0
-        self.exist = False
+        self.exist = True
         self.dead = False
         self.knife = Knife(self.x, self.y)
 
@@ -162,17 +137,14 @@ class Enemy_boss:
         if len(self.event_que) > 0:
             event = self.event_que.pop()
             self.cur_state.exit(self, event)
-            self.cur_state = state_table[event]
+            self.cur_state = next_state_table[self.cur_state][event]
             self.cur_state.enter(self, event)
-        """
-        if self.exist and game_state.background.block == 6:
+        if not self.exist and game_state.background.block == 6:
             game_world.add_object(self, 1)
             self.exist = True
-        """
         if self.HP <= 0 or not game_state.background.block == 6:
             game_world.remove_object(self)
             self.exist = False
-            self.dead = True
 
     def draw(self):
         if self.HP > 0:
@@ -187,7 +159,7 @@ class Enemy_boss:
         self.knife.x, self.knife.y = self.x, self.y
         self.knife.target_x, self.knife.target_y = game_state.player.x, game_state.player.y
         self.knife.line_i = 0
-        # print(self.knife.line_i)
+        print(self.knife.line_i)
         self.knife.shoot_dir = self.dir
 
         game_world.add_object(self.knife, 1)
@@ -234,7 +206,7 @@ class Knife:
                 z = 100 / y
                 self.line_i += z
                 t = self.line_i
-                # print(game_state.cat.x, self.target_x, x, z, self.line_i, t)
+                # print(game_state.boss.x, self.target_x, x, z, self.line_i, t)
                 self.x = (1 - t) * game_state.boss.x + t * self.target_x
                 self.y = (1 - t) * game_state.boss.y + t * self.target_y
                 self.y += random.randint(-10, 10)
@@ -242,8 +214,8 @@ class Knife:
                 print(self.x, self.target_x, self.target_y, self.line_i)
                 self.line_i += 2
                 t = self.line_i / 100
-                self.x = (1 - t) * game_state.cat.x + t * self.target_x
-                self.y = (1 - t) * game_state.cat.y + t * self.target_y
+                self.x = (1 - t) * game_state.boss.x + t * self.target_x
+                self.y = (1 - t) * game_state.boss.y + t * self.target_y
                 self.y += random.randint(-10, 10)
                 """
                 # self.x += -10
@@ -254,15 +226,14 @@ class Knife:
                 z = 100 / y
                 self.line_i += z
                 t = self.line_i
-                # print(game_state.cat.x, self.target_x, x, z, self.line_i, t)
                 self.x = (1 - t) * game_state.boss.x + t * self.target_x
                 self.y = (1 - t) * game_state.boss.y + t * self.target_y
                 self.y += random.randint(-10, 10)
                 """
                 self.line_i += 2
                 t = self.line_i / 100
-                self.x = (1 - t) * game_state.cat.x + t * self.target_x
-                self.y = (1 - t) * game_state.cat.y + t * self.target_y
+                self.x = (1 - t) * game_state.boss.x + t * self.target_x
+                self.y = (1 - t) * game_state.boss.y + t * self.target_y
                 self.y += random.randint(-10, 10)
                 """
                 # self.x += 10

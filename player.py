@@ -14,8 +14,8 @@ Move_speed_MPS = 500
 Move_speed_PPS = (Move_speed_MPS * Pixel_per_Meter)
 Air_speed_MPS = 1000
 Air_speed_PPS = (Air_speed_MPS * Pixel_per_Meter)
-Rise_speed_PPS = (200 * Pixel_per_Meter)
-Fall_speed_PPS = (500 * Pixel_per_Meter)
+Rise_speed_PPS = (300 * Pixel_per_Meter)
+Fall_speed_PPS = (1000 * Pixel_per_Meter)
 
 Arrow_speed_MPS = 100
 Arrow_speed_PPS = (Arrow_speed_MPS * Pixel_per_Meter)
@@ -255,7 +255,7 @@ class FallingState:
             else:
                 player.In_Air = False
                 player.cur_state = GroundState
-                #game_framework.change_state(GroundState)
+                # game_framework.change_state(GroundState)
         player.clamp_and_timer()
 
     @staticmethod
@@ -271,9 +271,9 @@ next_state_table = {
                   Air_DOWN: AirState, RAttack: GroundState, Up_DOWN: GroundState, Up_UP: GroundState,
                   MAttack: GroundState, Roll: GroundState},
     AirState: {Right_UP: AirState, Left_UP: AirState, Right_DOWN: AirState, Left_DOWN: AirState,
-               Air_DOWN: FallingState, RAttack: AirState, Up_DOWN: AirState, Up_UP: AirState, MAttack:GroundState},
+               Air_DOWN: FallingState, RAttack: AirState, Up_DOWN: AirState, Up_UP: AirState, MAttack: GroundState},
     FallingState: {Right_DOWN: FallingState, Left_DOWN: FallingState, Right_UP: FallingState, Left_UP: FallingState,
-                   Air_DOWN: AirState, RAttack: FallingState, Up_DOWN: FallingState, Up_UP: FallingState, MAttack:GroundState}
+                   Air_DOWN: AirState, RAttack: FallingState, Up_DOWN: FallingState, Up_UP: FallingState, MAttack: GroundState}
 }
 
 

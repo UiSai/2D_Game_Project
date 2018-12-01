@@ -119,9 +119,8 @@ def update():
             game_world.remove_object(cat.magic)
             cat.magic.exist = False
 
-    if not boss.exist and not boss.dead and background.block == 6:
+    if boss.exist and not boss.dead and background.block == 6:
         game_world.add_object(boss, 1)
-        boss.exist = True
 
     if boss.exist and not player.Invincible_Status:
         if collide(player, boss):
@@ -140,7 +139,7 @@ def update():
         if boss.knife.shoot_dir == 0 and boss.knife.x <= boss.knife.target_x:
             game_world.remove_object(boss.knife)
             boss.knife.exist = False
-        elif boss.knife.shoot_dir == 1 and boss.knife.x >= boss.knife.target_x:
+        elif boss.knife.shoot_dir == 1 and boss.knife.x >= boss.knife.target_y:
             game_world.remove_object(boss.knife)
             boss.knife.exist = False
 

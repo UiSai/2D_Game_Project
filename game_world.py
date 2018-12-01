@@ -2,7 +2,7 @@ import pickle
 
 # layer 0: Background Objects
 # layer 1: Foreground Objects
-objects = [[],[]]
+objects = [[], []]
 
 
 def add_object(o, layer):
@@ -35,6 +35,7 @@ def all_objects():
 def save():
     with open('game.sav', 'wb') as f:
         pickle.dump(objects, f)
+
 
 def load():
     global objects
