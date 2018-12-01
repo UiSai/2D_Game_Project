@@ -137,6 +137,7 @@ class Enemy_cat:
         self.magic.x, self.magic.y = self.x, self.y
         self.magic.target_x, self.magic.target_y = game_state.player.x, game_state.player.y
         self.magic.line_i = 0
+        print(self.magic.line_i)
         self.magic.shoot_dir = self.dir
 
         game_world.add_object(self.magic, 1)
@@ -178,20 +179,42 @@ class Magic:
     def update(self):
         if self.exist:
             if self.shoot_dir == Left and self.x > self.target_x:
+                x = abs(game_state.cat.x - self.target_x) + abs(game_state.cat.y - self.target_y)
+                y = x / 0.1
+                z = 100 / y
+                self.line_i += z
+                t = self.line_i
+                print(game_state.cat.x, self.target_x, x, z, self.line_i, t)
+                self.x = (1 - t) * game_state.cat.x + t * self.target_x
+                self.y = (1 - t) * game_state.cat.y + t * self.target_y
+                self.y += random.randint(-10, 10)
+                """
                 print(self.x, self.target_x, self.target_y, self.line_i)
                 self.line_i += 2
                 t = self.line_i / 100
                 self.x = (1 - t) * game_state.cat.x + t * self.target_x
                 self.y = (1 - t) * game_state.cat.y + t * self.target_y
                 self.y += random.randint(-10, 10)
+                """
                 # self.x += -10
                 # self.y += random.randint(-10, 10)
             elif self.shoot_dir == Right and self.x < self.target_x:
+                x = abs(game_state.cat.x - self.target_x) + abs(game_state.cat.y - self.target_y)
+                y = x / 0.1
+                z = 100 / y
+                self.line_i += z
+                t = self.line_i
+                print(game_state.cat.x, self.target_x, x, z, self.line_i, t)
+                self.x = (1 - t) * game_state.cat.x + t * self.target_x
+                self.y = (1 - t) * game_state.cat.y + t * self.target_y
+                self.y += random.randint(-10, 10)
+                """
                 self.line_i += 2
                 t = self.line_i / 100
                 self.x = (1 - t) * game_state.cat.x + t * self.target_x
                 self.y = (1 - t) * game_state.cat.y + t * self.target_y
                 self.y += random.randint(-10, 10)
+                """
                 # self.x += 10
                 # self.y += random.randint(-10, 10)
 
