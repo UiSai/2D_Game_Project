@@ -195,18 +195,22 @@ def update():
     if background.block == 3 and player.y >= 940:
         background.block += 1
         player.y = 11
+        game_world.remove_object_in_layer(2)
     elif background.block == 4 and player.y < 10:
         background.block -= 1
         player.y = 950
+        game_world.remove_object_in_layer(2)
     elif background.block == 7:
         game_framework.change_state(clear_state)
     else:
         if player.x >= 1281:
             background.block += 1
             player.x = 2
+            game_world.remove_object_in_layer(2)
         elif player.x <= -1:
             background.block -= 1
             player.x = 1278
+            game_world.remove_object_in_layer(2)
 
 
 def draw():

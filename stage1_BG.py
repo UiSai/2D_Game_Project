@@ -69,6 +69,7 @@ class Background:
         self.first_floor_of_grass = 40
         self.first_floor_of_tree = 460
         self.block = 1
+        self.prev_block = 1
 
         if not title_state.easter:
             self.bgm = load_music('resource\\Sound\\bgm.mp3')
