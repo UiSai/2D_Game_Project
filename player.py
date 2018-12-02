@@ -6,7 +6,7 @@ import game_world
 import game_framework
 import game_state
 
-first_floor_player_y = 130
+first_floor_player_y = 200
 Left, Right, Up, Fall, Neutral = 0, 1, 2, 3, 4
 
 Pixel_per_Meter = 1 / 1.23  # 1픽셀에 1.23미터
@@ -142,7 +142,7 @@ class GroundState:
                 player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 걷기 왼쪽 이동
             else:
                 if player.dir == Right:
-                    player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 오른쪽을 보고 서있다
+                    player.image.clip_draw(int(player.frame) * 250, 0, 250, 250, player.x, player.y)  # 오른쪽을 보고 서있다
                 elif player.dir == Left:
                     player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽을 보고 서있다
         else:
@@ -298,7 +298,7 @@ class Player:
     def __init__(self):
         self.x, self.y = 100, first_floor_player_y  # 130은 지형의 높이
         self.ground_y = self.y
-        self.image = load_image('resource\\Character_sprite\\Player_animation.png')
+        self.image = load_image('resource\\Character_sprite\\리뉴얼C.png')
         self.hhealth_image = load_image('resource\\Half_HP.png')
         self.health_image = load_image('resource\\HP.png')
         self.dir = Right
