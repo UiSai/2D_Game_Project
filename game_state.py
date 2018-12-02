@@ -47,7 +47,7 @@ def enter():
     mouse = Enemy_mouse()
     cat = Enemy_cat()
     boss = Enemy_boss()
-    item = Item_Health(200, 200)
+    item = Item_Health(640, 150)
 
     game_world.add_object(background, 0)
     game_world.add_object(player, 1)
