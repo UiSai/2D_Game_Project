@@ -340,9 +340,12 @@ class Player:
 
     def get_bb(self):
         if self.MAttack_Status:
-            return self.x - 50, self.y - 50, self.x + 75, self.y + 50
+            if self.dir == Right:
+                return self.x - 37, self.y - 125, self.x + 64, self.y + 125
+            else:
+                return self.x - 64, self.y - 125, self.x + 37, self.y + 125
         else:
-            return self.x - 25, self.y - 50, self.x + 25, self.y + 50
+            return self.x - 37, self.y - 125, self.x + 37, self.y + 125
 
     def update(self):
         self.cur_state.do(self)
@@ -391,7 +394,7 @@ class Player:
         """
         if self.MAttack_Status:
             self.MeleeTimer += game_framework.frame_time
-            if self.MeleeTimer >= 0.3:
+            if self.MeleeTimer >= 0.5:
                 self.MAttack_Status = False
                 self.MeleeTimer = 0
 
