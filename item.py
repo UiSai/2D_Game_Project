@@ -2,6 +2,7 @@ from pico2d import *
 import game_world
 import game_framework
 import player
+import game_state
 
 
 class Item_Health:
@@ -12,7 +13,8 @@ class Item_Health:
             Item_Health.image = load_image("resource\\HP.png")
         self.x = x
         self.y = y
-        self.exist = True
+        self.exist = False
+        self.HP = 1
 
     def draw(self):
         if self.exist:
@@ -23,12 +25,17 @@ class Item_Health:
         return self.x - 20, self.y - 20, self.x + 20, self.y + 20
 
     def update(self):
-        pass
+        if not self.exist and game_state.background.block == 5:
+            game_world.add_object(self, 1)
+            self.exist = True
+        if self.HP <= 0 or not game_state.background.block == 5:
+            game_world.remove_object(self)
+            self.exist = False
 
-    def effect(self):
-        if player.Player().HP <= 4:
-            player.Player().HP += 2
-        elif player.Player().HP == 5:
-            player.Player().HP += 1
+    #def effect(self):
+    #    if player.Player().HP <= 4:
+    #        player.Player().HP += 2
+    #    elif player.Player().HP == 5:
+    #        player.Player().HP += 1
 
 

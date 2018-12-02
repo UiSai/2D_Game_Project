@@ -11,7 +11,7 @@ from en_mouse import Enemy_mouse
 from en_cat import Enemy_cat
 from en_boss import Enemy_boss
 from stage1_BG import Background
-# from item import *
+from item import Item_Health
 
 name = 'GameState'
 
@@ -20,7 +20,7 @@ background = None
 mouse = None
 cat = None
 boss = None
-# item = None
+item = None
 font = None
 move_direction = None
 move_state = False
@@ -40,14 +40,14 @@ def collide(a, b):
 
 
 def enter():
-    global player, background, mouse, cat, boss     # item
+    global player, background, mouse, cat, boss, item
 
     player = Player()
     background = Background()
     mouse = Enemy_mouse()
     cat = Enemy_cat()
     boss = Enemy_boss()
-    # item = Item_Health(200, 200)
+    item = Item_Health(200, 200)
 
     game_world.add_object(background, 0)
     game_world.add_object(player, 1)
@@ -89,6 +89,9 @@ def update():
 
     if not cat.exist and background.block == 2:
         game_world.add_object(cat, 1)
+
+    if not item.exist and background.block == 5:
+        game_world.add_object(item, 1)
 
     if mouse.exist and not player.Invincible_Status:
         if collide(player, mouse):
@@ -143,6 +146,14 @@ def update():
 #        elif boss.knife.shoot_dir == 1 and boss.knife.x >= boss.knife.target_y:
 #            game_world.remove_object(boss.knife)
 #            boss.knife.exist = False
+
+    if item.exist and background.block == 5:
+        if collide(player, item):
+            if player.HP < 6:
+                player.HP = 6
+                item.HP -= 1
+
+
 
     for i in range(10):
         if boss.knife[i].exist and player.HP > 0 and not player.Invincible_Status:

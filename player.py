@@ -128,7 +128,7 @@ class GroundState:
     def do(player):
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.x += player.velocity * game_framework.frame_time
-        if game_state.background.block == 4 and player.x < 400:
+        if game_state.background.block == 4 and player.x < 600:
             player.cur_state = FallingState
 
         player.clamp_and_timer()
@@ -258,7 +258,7 @@ class FallingState:
     def do(player):
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.x += player.velocity * game_framework.frame_time
-        if game_state.background.block == 4 and player.x < 400:
+        if game_state.background.block == 4 and player.x < 600:
             player.y -= Fall_speed_PPS * game_framework.frame_time
         else:
             if player.y >= player.ground_y:
@@ -357,20 +357,23 @@ class Player:
 
     def clamp_and_timer(self):
         if game_state.background.block == 3:
-            self.x = clamp(-10, self.x, 1230)
+            self.x = clamp(-10, self.x, 1000)
             self.y = clamp(self.ground_y, self.y, 970)
         elif game_state.background.block == 4:
-            self.y = clamp(-10, self.y, 900)
-            if self.x > 500:
-                self.y = clamp(self.ground_y, self.y, 970)
-        elif game_state.background.block == 1:
-            self.x = clamp(25, self.x, 1290)
+            self.y = clamp(-10, self.y, 880)
+            self.x = clamp(50, self.x, 1290)
+            if self.x > 600 and self.y < self.ground_y:
+                self.x = clamp(50, self.x, 600)
+                # self.y = clamp(self.ground_y, self.y, 880)
         elif game_state.background.block == 6 and game_state.boss.exist:
-            self.x = clamp(25, self.x, 1250)
-            self.y = clamp(self.ground_y, self.y, 970)
+            self.x = clamp(50, self.x, 1250)
+            self.y = clamp(self.ground_y, self.y, 880)
         elif game_state.background.block == 6 and not game_state.boss.exist:
-            self.x = clamp(25, self.x, 1290)
-            self.y = clamp(self.ground_y, self.y, 970)
+            self.x = clamp(50, self.x, 1290)
+            self.y = clamp(self.ground_y, self.y, 880)
+        else:
+            self.x = clamp(50, self.x, 1290)
+            self.y = clamp(self.ground_y, self.y, 880)
 
         # if game_state.background.block == 1:
 

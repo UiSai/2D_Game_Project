@@ -1,6 +1,5 @@
 from pico2d import *
 import title_state
-import item
 
 class Block:
     @staticmethod
@@ -68,7 +67,7 @@ class Background:
         self.wall = load_image('resource\\Background\\wall.png')
         self.first_floor_of_grass = 40
         self.first_floor_of_tree = 460
-        self.block = 1
+        self.block = 6
         self.prev_block = 1
 
         if not title_state.easter:

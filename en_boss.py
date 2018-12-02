@@ -11,7 +11,7 @@ first_floor_boss_y = 180
 Pixel_per_Meter = 1 / 1.23  # 1픽셀에 1.23미터
 Move_speed_MPS = 200
 Move_speed_PPS = (Move_speed_MPS * Pixel_per_Meter)
-Knife_speed_MPS = 200
+Knife_speed_MPS = 300
 Knife_speed_PPS = (Knife_speed_MPS * Pixel_per_Meter)
 
 TIME_PER_ACTION = 0.5
@@ -74,7 +74,7 @@ class AttackState:
             Attack.draw()
             break
         """
-        if enemy.Attack_Timer > 7:
+        if enemy.Attack_Timer > 12:
             enemy.Attack_Timer = 0
             throw_dir = random.randint(0, 2)
             print(throw_dir)
@@ -155,7 +155,7 @@ class Enemy_boss:
         self.event_que = []
         self.cur_state = AttackState
         self.cur_state.enter(self, None)
-        self.HP = 5
+        self.HP = 50
         self.exist = False
         self.dead = False
         # self.knife = Knife()

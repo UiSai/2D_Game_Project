@@ -122,7 +122,7 @@ class Enemy_mouse:
         self.event_que = []
         self.cur_state = MoveState
         self.cur_state.enter(self, None)
-        self.HP = 10
+        self.HP = 7
         self.exist = False
 
     def add_event(self, event):
