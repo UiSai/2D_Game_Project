@@ -341,11 +341,11 @@ class Player:
     def get_bb(self):
         if self.MAttack_Status:
             if self.dir == Right:
-                return self.x - 37, self.y - 125, self.x + 64, self.y + 125
+                return self.x - 37, self.y - 125, self.x + 64, self.y + 100
             else:
-                return self.x - 64, self.y - 125, self.x + 37, self.y + 125
+                return self.x - 64, self.y - 125, self.x + 37, self.y + 100
         else:
-            return self.x - 37, self.y - 125, self.x + 37, self.y + 125
+            return self.x - 37, self.y - 125, self.x + 37, self.y + 100
 
     def update(self):
         self.cur_state.do(self)
@@ -357,6 +357,7 @@ class Player:
 
     def draw(self):
         self.cur_state.draw(self)
+        draw_rectangle(*self.get_bb())
 
     def clamp_and_timer(self):
         if game_state.background.block == 3:

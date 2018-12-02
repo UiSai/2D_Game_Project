@@ -93,19 +93,19 @@ def update():
     if not item.exist and background.block == 5:
         game_world.add_object(item, 1)
 
-    if mouse.exist and not player.Invincible_Status:
+    if mouse.exist:
         if collide(player, mouse):
             if player.MAttack_Status:
                 mouse.HP -= player.MA_Damage
-            else:
+            elif not player.Invincible_Status:
                 player.HP -= 1
                 player.Invincible_Status = True
 
-    if cat.exist and not player.Invincible_Status:
+    if cat.exist:
         if collide(player, cat):
             if player.MAttack_Status:
                 cat.HP -= player.MA_Damage
-            else:
+            elif not player.Invincible_Status:
                 player.HP -= 1
                 player.Invincible_Status = True
 
@@ -125,11 +125,11 @@ def update():
     if not boss.exist and not boss.dead and background.block == 6:
         game_world.add_object(boss, 1)
 
-    if boss.exist and not player.Invincible_Status:
+    if boss.exist:
         if collide(player, boss):
             if player.MAttack_Status:
                 boss.HP -= player.MA_Damage
-            else:
+            elif not player.Invincible_Status:
                 player.HP -= 1
                 player.Invincible_Status = True
 
