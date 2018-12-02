@@ -90,7 +90,7 @@ class AttackState:
                     enemy.knife[i].x, enemy.knife[i].y = 0, random.randint(0, 960)
 
                 enemy.knife_num = clamp(0, i, 9)
-                game_world.add_object(enemy.knife[i], 1)
+                game_world.add_object(enemy.knife[i], 2)
                 count += 1
                 if count > 30:
                     count = 0
@@ -194,7 +194,7 @@ class Enemy_boss:
 
     def Attack(self):
         self.knife.exist = True
-        game_world.add_object(self.knife, 1)
+        game_world.add_object(self.knife, 2)
 
     """
     def Attack(self):

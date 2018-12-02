@@ -318,7 +318,7 @@ class Player:
                 self.arrow[i].dir = self.dir
 
                 self.arrow_num = clamp(0, i, 9)
-                game_world.add_object(self.arrow[i], 1)
+                game_world.add_object(self.arrow[i], 2)
                 break
 
     def get_bb(self):

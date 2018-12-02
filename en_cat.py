@@ -144,7 +144,7 @@ class Enemy_cat:
         print(self.magic.line_i)
         self.magic.shoot_dir = self.dir
 
-        game_world.add_object(self.magic, 1)
+        game_world.add_object(self.magic, 2)
 
     """
     def Attack(self):
