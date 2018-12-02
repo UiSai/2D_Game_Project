@@ -63,6 +63,8 @@ class MoveState:
             enemy.dir = Right
             enemy.x -= enemy.velocity * game_framework.frame_time
 
+        enemy.Invincible()
+
     @staticmethod
     def draw(enemy):
         if enemy.dir == Right:
@@ -124,6 +126,8 @@ class Enemy_mouse:
         self.cur_state.enter(self, None)
         self.HP = 7
         self.exist = False
+        self.Invincible_Status = False
+        self.Invincible_Timer = 0
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -144,6 +148,13 @@ class Enemy_mouse:
         if self.HP <= 0 or not game_state.background.block == 1:
             game_world.remove_object(self)
             self.exist = False
+
+    def Invincible(self):
+        if self.Invincible_Status:
+            self.Invincible_Timer += game_framework.frame_time
+            if self.Invincible_Timer >= 0.8:
+                self.Invincible_Status = False
+                self.Invincible_Timer = 0
 
     def draw(self):
         if self.HP > 0:

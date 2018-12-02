@@ -95,15 +95,16 @@ def update():
 
     if mouse.exist:
         if collide(player, mouse):
-            if player.MAttack_Status:
+            if player.MAttack_Status and not mouse.Invincible_Status:
                 mouse.HP -= player.MA_Damage
+                mouse.Invincible_Status = True
             elif not player.Invincible_Status:
                 player.HP -= 1
                 player.Invincible_Status = True
 
     if cat.exist:
         if collide(player, cat):
-            if player.MAttack_Status:
+            if player.MAttack_Status and not cat.Invincible_Status:
                 cat.HP -= player.MA_Damage
             elif not player.Invincible_Status:
                 player.HP -= 1
@@ -127,7 +128,7 @@ def update():
 
     if boss.exist:
         if collide(player, boss):
-            if player.MAttack_Status:
+            if player.MAttack_Status and not boss.Invincible_Status:
                 boss.HP -= player.MA_Damage
             elif not player.Invincible_Status:
                 player.HP -= 1

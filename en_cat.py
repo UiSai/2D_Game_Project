@@ -107,6 +107,8 @@ class Enemy_cat:
         self.HP = 5
         self.exist = False
         self.magic = Magic(self.x, self.y)
+        self.Invincible_Status = False
+        self.Invincible_Timer = 0
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -145,6 +147,13 @@ class Enemy_cat:
         self.magic.shoot_dir = self.dir
 
         game_world.add_object(self.magic, 2)
+
+    def Invincible(self):
+        if self.Invincible_Status:
+            self.Invincible_Timer += game_framework.frame_time
+            if self.Invincible_Timer >= 0.8:
+                self.Invincible_Status = False
+                self.Invincible_Timer = 0
 
     """
     def Attack(self):

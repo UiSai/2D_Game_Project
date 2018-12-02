@@ -395,7 +395,7 @@ class Player:
         """
         if self.MAttack_Status:
             self.MeleeTimer += game_framework.frame_time
-            if self.MeleeTimer >= 0.5:
+            if self.MeleeTimer >= 0.4:
                 self.MAttack_Status = False
                 self.MeleeTimer = 0
 

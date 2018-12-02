@@ -158,6 +158,8 @@ class Enemy_boss:
         self.HP = 50
         self.exist = False
         self.dead = False
+        self.Invincible_Status = False
+        self.Invincible_Timer = 0
         # self.knife = Knife()
 
         self.knife = [Knife() for i in range(10)]
@@ -195,6 +197,13 @@ class Enemy_boss:
     def Attack(self):
         self.knife.exist = True
         game_world.add_object(self.knife, 2)
+
+    def Invincible(self):
+        if self.Invincible_Status:
+            self.Invincible_Timer += game_framework.frame_time
+            if self.Invincible_Timer >= 0.8:
+                self.Invincible_Status = False
+                self.Invincible_Timer = 0
 
     """
     def Attack(self):
