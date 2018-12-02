@@ -7,9 +7,7 @@
     <bookmark url="file://$PROJECT_DIR$/game_state.py" description="적 생성" line="85" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f71c0a7-b36e-47a7-bcbe-04c1d5e43618" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/stage1_BG.py" beforeDir="false" afterPath="$PROJECT_DIR$/stage1_BG.py" afterDir="false" />
-    </list>
+    <list default="true" id="9f71c0a7-b36e-47a7-bcbe-04c1d5e43618" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
