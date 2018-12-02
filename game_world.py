@@ -25,6 +25,7 @@ def remove_object_in_layer(layer):
     while len(objects[layer]) > 0:
         data_deleted = objects[layer].pop()
         del data_deleted
+        #global objects=[[], [], []]
 
 
 def clear():

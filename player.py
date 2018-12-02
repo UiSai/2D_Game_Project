@@ -94,9 +94,6 @@ class GroundState:
             player.velocity = 0
         if event == Air_DOWN:
             player.y += 10
-        elif event == MAttack:
-            player.MeleeAttack()
-            player.MAttack_Status = True
         elif event == Roll:
             player.Invincible_Status = True
 
@@ -124,6 +121,8 @@ class GroundState:
     def exit(player, event):
         if event == RAttack:
             player.RangeAttack()
+        elif event == MAttack:
+            player.MeleeAttack()
 
     @staticmethod
     def do(player):
@@ -193,6 +192,8 @@ class AirState:
     def exit(player, event):
         if event == RAttack:
             player.RangeAttack()
+        elif event == MAttack:
+            player.MeleeAttack()
 
     @staticmethod
     def do(player):
@@ -204,23 +205,29 @@ class AirState:
 
     @staticmethod
     def draw(player):
-        if player.velocity < 0:
-            player.dir = Left
-            player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 공중 왼쪽 이동
-        elif player.velocity > 0:
-            player.dir = Right
-            player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 공중 오른쪽 이동
-        else:
-            if player.Rise_velocity > 0:
-                if player.dir == Left:
-                    player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽을 보는 상승
-                elif player.dir == Right:
-                    player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 오른쪽을 보는 상승
+        if not player.MAttack_Status:
+            if player.velocity < 0:
+                player.dir = Left
+                player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 공중 왼쪽 이동
+            elif player.velocity > 0:
+                player.dir = Right
+                player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 공중 오른쪽 이동
             else:
-                if player.dir == Left:
-                    player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽을 보고 서있다
-                elif player.dir == Right:
-                    player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 오른쪽을 보고 서있다
+                if player.Rise_velocity > 0:
+                    if player.dir == Left:
+                        player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽을 보는 상승
+                    elif player.dir == Right:
+                        player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 오른쪽을 보는 상승
+                else:
+                    if player.dir == Left:
+                        player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽을 보고 서있다
+                    elif player.dir == Right:
+                        player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 오른쪽을 보고 서있다
+        else:
+            if player.dir == Left:
+                    player.image.clip_draw(int(player.frame) * 61, 0, 30, 130, player.x + 100, player.y + 100)
+            else:
+                    player.image.clip_draw(int(player.frame) * 61, 0, 30, 130, player.x - 100, player.y - 100)
 
 
 class FallingState:
@@ -234,14 +241,18 @@ class FallingState:
             player.dir = Left
             player.velocity = -Move_speed_PPS
         elif event == Right_UP and player.dir == Right:
-            player.velocity = 0
+            if not player.velocity == 0:
+                player.velocity = 0
         elif event == Left_UP and player.dir == Left:
-            player.velocity = 0
+            if not player.velocity == 0:
+                player.velocity = 0
 
     @staticmethod
     def exit(player, event):
         if event == RAttack:
             player.RangeAttack()
+        elif event == MAttack:
+            player.MeleeAttack()
 
     @staticmethod
     def do(player):
@@ -260,20 +271,26 @@ class FallingState:
 
     @staticmethod
     def draw(player):
-        if player.dir == Right:
-            player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)
+        if not player.MAttack_Status:
+            if player.dir == Right:
+                player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)
+            else:
+                player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽 스프라이트
         else:
-            player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽 스프라이트
+            if player.dir == Left:
+                    player.image.clip_draw(int(player.frame) * 61, 0, 30, 130, player.x + 100, player.y + 100)
+            else:
+                    player.image.clip_draw(int(player.frame) * 61, 0, 30, 130, player.x - 100, player.y - 100)
 
 
 next_state_table = {
     GroundState: {Right_UP: GroundState, Left_UP: GroundState, Left_DOWN: GroundState, Right_DOWN: GroundState,
-                  Air_DOWN: AirState, RAttack: GroundState, Up_DOWN: GroundState, Up_UP: GroundState,
-                  MAttack: GroundState, Roll: GroundState},
+                  Air_DOWN: AirState, MAttack: GroundState, RAttack: GroundState, Up_DOWN: GroundState,
+                  Up_UP: GroundState, Roll: GroundState},
     AirState: {Right_UP: AirState, Left_UP: AirState, Right_DOWN: AirState, Left_DOWN: AirState,
-               Air_DOWN: FallingState, RAttack: AirState, Up_DOWN: AirState, Up_UP: AirState, MAttack: GroundState},
+               Air_DOWN: FallingState, RAttack: AirState, Up_DOWN: AirState, Up_UP: AirState, MAttack: AirState},
     FallingState: {Right_DOWN: FallingState, Left_DOWN: FallingState, Right_UP: FallingState, Left_UP: FallingState,
-                   Air_DOWN: AirState, RAttack: FallingState, Up_DOWN: FallingState, Up_UP: FallingState, MAttack: GroundState}
+                   Air_DOWN: AirState, RAttack: FallingState, Up_DOWN: FallingState, Up_UP: FallingState, MAttack: FallingState}
 }
 
 
@@ -308,7 +325,7 @@ class Player:
         self.event_que.insert(0, event)
 
     def MeleeAttack(self):
-        pass
+        self.MAttack_Status = True
 
     def RangeAttack(self):
         for i in range(10):

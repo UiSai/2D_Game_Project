@@ -195,21 +195,31 @@ def update():
     if background.block == 3 and player.y >= 940:
         background.block += 1
         player.y = 11
+        for i in range(10):
+            player.arrow[i].exist = False
         game_world.remove_object_in_layer(2)
     elif background.block == 4 and player.y < 10:
         background.block -= 1
         player.y = 950
+        for i in range(10):
+            player.arrow[i].exist = False
         game_world.remove_object_in_layer(2)
     elif background.block == 7:
         game_framework.change_state(clear_state)
     else:
         if player.x >= 1281:
+            print(game_world.objects[2])
             background.block += 1
             player.x = 2
+            for i in range(10):
+                player.arrow[i].exist = False
             game_world.remove_object_in_layer(2)
+            print(game_world.objects[2])
         elif player.x <= -1:
             background.block -= 1
             player.x = 1278
+            for i in range(10):
+                player.arrow[i].exist = False
             game_world.remove_object_in_layer(2)
 
 

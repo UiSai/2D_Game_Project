@@ -3,7 +3,7 @@ import game_world
 import game_framework
 
 Pixel_per_Meter = 1 / 5  # 1픽셀에 1.23미터
-Arrow_speed_MPS = 1500
+Arrow_speed_MPS = 3000
 Arrow_speed_PPS = (Arrow_speed_MPS * Pixel_per_Meter)
 Left, Right = 0, 1
 
