@@ -137,7 +137,7 @@ class GroundState:
     def draw(player):
         if not player.MAttack_Status:
             if player.velocity > 0:
-                player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 걷기 오른쪽 이동
+                player.image.clip_draw(int(player.frame) * 250, 0, 250, 250, player.x, player.y)  # 걷기 오른쪽 이동
             elif player.velocity < 0:
                 player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 걷기 왼쪽 이동
             else:
@@ -147,9 +147,9 @@ class GroundState:
                     player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽을 보고 서있다
         else:
             if player.dir == Left:
-                    player.image.clip_draw(int(player.frame) * 61, 0, 30, 130, player.x + 100, player.y + 100)
+                    player.image.clip_draw(int(player.frame) * 250, 250, 250, 250, player.x, player.y)
             else:
-                    player.image.clip_draw(int(player.frame) * 61, 0, 30, 130, player.x - 100, player.y - 100)
+                    player.image.clip_draw(int(player.frame) * 250, 250, 250, 250, player.x, player.y)
 
 
 class AirState:
@@ -298,7 +298,7 @@ class Player:
     def __init__(self):
         self.x, self.y = 100, first_floor_player_y  # 130은 지형의 높이
         self.ground_y = self.y
-        self.image = load_image('resource\\Character_sprite\\리뉴얼C.png')
+        self.image = load_image('resource\\Character_sprite\\TestSprite.png')
         self.hhealth_image = load_image('resource\\Half_HP.png')
         self.health_image = load_image('resource\\HP.png')
         self.dir = Right
