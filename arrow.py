@@ -31,8 +31,6 @@ class RangeAttack:
         if self.exist:
             if self.dir == Right:
                 self.x += self.velocity * game_framework.frame_time
-                print(self.velocity)
-                print(self.velocity * game_framework.frame_time)
             else:
                 self.x -= self.velocity * game_framework.frame_time
 

@@ -5,7 +5,7 @@ import game_world
 import game_state
 import random
 
-Left, Right, Neutral = 0, 1, 2
+Left, Right, Up = 0, 1, 2
 first_floor_boss_y = 180
 
 Pixel_per_Meter = 1 / 1.23  # 1픽셀에 1.23미터
@@ -24,6 +24,7 @@ class IdleState:
     @staticmethod
     def enter(enemy, event):
         enemy.frame = 0
+        print('hello')
 
     @staticmethod
     def exit(enemy, event):
@@ -32,7 +33,7 @@ class IdleState:
     @staticmethod
     def do(enemy):
         enemy.Idle_Timer += game_framework.frame_time
-        if enemy.Idle_Timer >= 5:
+        if enemy.Idle_Timer >= 20:
             enemy.add_event(1)
 
     @staticmethod
@@ -43,11 +44,14 @@ class IdleState:
             enemy.image.clip_draw(int(enemy.frame) * 120, 0, 120, 200, enemy.x, enemy.y)
 
 
+count = 0
+
 class AttackState:
 
     @staticmethod
     def enter(enemy, event):
         enemy.frame = 0
+        print('enter')
         # Attack = Knife()
 
     @staticmethod
@@ -56,8 +60,12 @@ class AttackState:
 
     @staticmethod
     def do(enemy):
+        global count
         enemy.frame = (enemy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
-        enemy.Attack_Timer += game_framework.frame_time
+        if enemy.exist:
+            enemy.Attack_Timer += game_framework.frame_time
+        else:
+            enemy.Attack_Timer = 0
         """
         Attacks = [Knife() for i in range(10)]
         for Attack in Attacks:
@@ -68,15 +76,27 @@ class AttackState:
         """
         if enemy.Attack_Timer > 7:
             enemy.Attack_Timer = 0
+            throw_dir = random.randint(0, 2)
+            print(throw_dir)
             for i in range(10):
-                # if not self.arrow[i].exist:
-                enemy.arrow[i].exist = True
-                enemy.arrow[i].x, enemy.arrow[i].y = random.randint(0, 1280), 960
-                enemy.arrow[i].dir = enemy.dir
+                # if not self.knife[i].exist:
+                enemy.knife[i].exist = True
+                enemy.knife[i].dir = throw_dir
+                if enemy.knife[i].dir == Up:
+                    enemy.knife[i].x, enemy.knife[i].y = random.randint(0, 1280), 960
+                elif enemy.knife[i].dir == Right:
+                    enemy.knife[i].x, enemy.knife[i].y = 1280, random.randint(0, 960)
+                elif enemy.knife[i].dir == Left:
+                    enemy.knife[i].x, enemy.knife[i].y = 0, random.randint(0, 960)
 
-                enemy.arrow_num = clamp(0, i, 9)
-                game_world.add_object(enemy.arrow[i], 1)
+                enemy.knife_num = clamp(0, i, 9)
+                game_world.add_object(enemy.knife[i], 1)
+                count += 1
+                if count > 30:
+                    count = 0
+                    enemy.add_event(0)
                 #break
+
 
 
     @staticmethod
@@ -140,8 +160,8 @@ class Enemy_boss:
         self.dead = False
         # self.knife = Knife()
 
-        self.arrow = [Knife() for i in range(10)]
-        self.arrow_num = 0
+        self.knife = [Knife() for i in range(10)]
+        self.knife_num = 0
         self.damage = 1
 
     def add_event(self, event):
@@ -160,7 +180,7 @@ class Enemy_boss:
         if not self.exist and game_state.background.block == 6:
             game_world.add_object(self, 1)
             self.exist = True
-        if self.HP <= 0 or not game_state.background.block == 6:
+        if self.HP <= 0:
             game_world.remove_object(self)
             self.exist = False
 
@@ -184,7 +204,7 @@ class Enemy_boss:
                 self.knife[i].x, self.knife[i].y = self.x, self.y
                 self.knife[i].dir = self.dir
 
-                self.arrow_num = clamp(0, i, 9)
+                self.knife_num = clamp(0, i, 9)
                 game_world.add_object(self.knife[i], 1)
                 break
     """
@@ -244,11 +264,13 @@ class Knife:
             # print(self.velocity)
 
     def get_bb(self):
-        return self.x - 10, self.y - 100, self.x + 10, self.y + 100
+        return self.x - 10, self.y - 10, self.x + 10, self.y + 10
 
     def update(self):
         if self.exist:
             if self.dir == Right:
-                self.y += self.velocity * game_framework.frame_time
-            else:
+                self.x -= self.velocity * game_framework.frame_time
+            if self.dir == Left:
+                self.x += self.velocity * game_framework.frame_time
+            elif self.dir == Up:
                 self.y -= self.velocity * game_framework.frame_time

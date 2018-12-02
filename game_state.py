@@ -145,17 +145,18 @@ def update():
 #            boss.knife.exist = False
 
     for i in range(10):
-        if boss.arrow[i].exist and player.HP > 0:
-            if collide(boss.arrow[i], player):
-                game_world.remove_object(boss.arrow[i])
+        if boss.knife[i].exist and player.HP > 0 and not player.Invincible_Status:
+            if collide(boss.knife[i], player):
+                game_world.remove_object(boss.knife[i])
                 player.HP -= boss.damage
-                boss.arrow[i].exist = False
-                #boss.arrow_num = clamp(0, i - 1, 9)
-        if boss.arrow[i].y < 0 or boss.arrow[i].y > 961:
-            game_world.remove_object(boss.arrow[i])
-            boss.arrow[i].exist = False
-            boss.arrow_num = i - 1
-            #boss.arrow_num = clamp(0, i - 1, 9)
+                boss.knife[i].exist = False
+                boss.arrow_num = clamp(0, i - 1, 9)
+        if boss.knife[i].y < 0 or boss.knife[i].y > 961 or boss.knife[i].x < 0 or boss.knife[i].x > 1280:
+            game_world.remove_object(boss.knife[i])
+            boss.knife[i].exist = False
+            boss.knife_num = i - 1
+            boss.arrow_num = clamp(0, i - 1, 9)
+            #boss.add_event(0)
 
 
     """
@@ -164,10 +165,22 @@ def update():
             item.effect()
     """
     for i in range(10):
-        if player.arrow[i].exist and mouse.HP > 0:
+        if player.arrow[i].exist and mouse.HP > 0 and background.block == 1:
             if collide(player.arrow[i], mouse):
                 game_world.remove_object(player.arrow[i])
                 mouse.HP -= player.RA_Damage
+                player.arrow[i].exist = False
+                player.arrow_num = clamp(0, i - 1, 9)
+        elif player.arrow[i].exist and cat.HP > 0 and background.block == 2:
+            if collide(player.arrow[i], cat):
+                game_world.remove_object(player.arrow[i])
+                cat.HP -= player.RA_Damage
+                player.arrow[i].exist = False
+                player.arrow_num = clamp(0, i - 1, 9)
+        if player.arrow[i].exist and boss.HP > 0 and background.block == 6:
+            if collide(player.arrow[i], boss):
+                game_world.remove_object(player.arrow[i])
+                boss.HP -= player.RA_Damage
                 player.arrow[i].exist = False
                 player.arrow_num = clamp(0, i - 1, 9)
         if player.arrow[i].x < 25 or player.arrow[i].x > 1280 - 25:
@@ -184,6 +197,7 @@ def update():
         player.y = 11
     elif background.block == 4 and player.y < 10:
         background.block -= 1
+        player.y = 950
     elif background.block == 7:
         game_framework.change_state(clear_state)
     else:
@@ -193,8 +207,6 @@ def update():
         elif player.x <= -1:
             background.block -= 1
             player.x = 1278
-
-
 
 
 def draw():

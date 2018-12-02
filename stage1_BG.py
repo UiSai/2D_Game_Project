@@ -68,7 +68,7 @@ class Background:
         self.wall = load_image('resource\\Background\\wall.png')
         self.first_floor_of_grass = 40
         self.first_floor_of_tree = 460
-        self.block = 6
+        self.block = 1
 
         if not title_state.easter:
             self.bgm = load_music('resource\\Sound\\bgm.mp3')

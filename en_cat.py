@@ -33,14 +33,18 @@ class IdleState:
     @staticmethod
     def do(enemy):
         enemy.frame = (enemy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
-        enemy.Attack_Timer += game_framework.frame_time
+        if enemy.exist:
+            enemy.Attack_Timer += game_framework.frame_time
+        else:
+            enemy.Attack_Timer = 0
         if enemy.x < game_state.player.x:
             enemy.dir = Right
         elif enemy.x > game_state.player.x:
             enemy.dir = Left
         if enemy.Attack_Timer >= 8:
+            print(enemy.Attack_Timer)
+            print('time')
             enemy.Attack()
-            print('attack')
             enemy.Attack_Timer = 0
 
     @staticmethod
