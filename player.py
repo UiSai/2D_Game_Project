@@ -137,19 +137,19 @@ class GroundState:
     def draw(player):
         if not player.MAttack_Status:
             if player.velocity > 0:
-                player.image.clip_draw(int(player.frame) * 250, 0, 250, 250, player.x, player.y)  # 걷기 오른쪽 이동
+                player.image.clip_draw(int(player.frame) * 250, 500, 250, 250, player.x, player.y)  # 걷기 오른쪽 이동
             elif player.velocity < 0:
-                player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 걷기 왼쪽 이동
+                player.image.clip_draw(int(player.frame) * 250, 750, 250, 250, player.x, player.y)  # 걷기 왼쪽 이동
             else:
                 if player.dir == Right:
                     player.image.clip_draw(int(player.frame) * 250, 0, 250, 250, player.x, player.y)  # 오른쪽을 보고 서있다
                 elif player.dir == Left:
-                    player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽을 보고 서있다
+                    player.image.clip_draw(int(player.frame) * 250, 250, 250, 250, player.x, player.y)  # 왼쪽을 보고 서있다
         else:
             if player.dir == Left:
-                    player.image.clip_draw(int(player.frame) * 250, 250, 250, 250, player.x, player.y)
+                    player.image.clip_draw(int(player.frame) * 250, 1250, 250, 250, player.x, player.y)  # 왼쪽 공격
             else:
-                    player.image.clip_draw(int(player.frame) * 250, 250, 250, 250, player.x, player.y)
+                    player.image.clip_draw(int(player.frame) * 250, 1000, 250, 250, player.x, player.y)  # 오른쪽 공격
 
 
 class AirState:
@@ -208,21 +208,21 @@ class AirState:
         if not player.MAttack_Status:
             if player.velocity < 0:
                 player.dir = Left
-                player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 공중 왼쪽 이동
+                player.image.clip_draw(int(player.frame) * 250, 2750, 250, 250, player.x, player.y)  # 공중 왼쪽 이동
             elif player.velocity > 0:
                 player.dir = Right
-                player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 공중 오른쪽 이동
+                player.image.clip_draw(int(player.frame) * 250, 2500, 250, 250, player.x, player.y)  # 공중 오른쪽 이동
             else:
                 if player.Rise_velocity > 0:
                     if player.dir == Left:
-                        player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽을 보는 상승
+                        player.image.clip_draw(int(player.frame) * 250, 2250, 250, 250, player.x, player.y)  # 왼쪽을 보는 상승
                     elif player.dir == Right:
-                        player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)  # 오른쪽을 보는 상승
+                        player.image.clip_draw(int(player.frame) * 250, 2000, 250, 250, player.x, player.y)  # 오른쪽을 보는 상승
                 else:
                     if player.dir == Left:
-                        player.image.clip_draw(int(player.frame) * 250, 500, 250, 250, player.x, player.y)  # 왼쪽을 보고 서있다
+                        player.image.clip_draw(int(player.frame) * 250, 1750, 250, 250, player.x, player.y)  # 왼쪽을 보고 서있다
                     elif player.dir == Right:
-                        player.image.clip_draw(int(player.frame) * 250, 500, 250, 250, player.x, player.y)  # 오른쪽을 보고 서있다
+                        player.image.clip_draw(int(player.frame) * 250, 1500, 250, 250, player.x, player.y)  # 오른쪽을 보고 서있다
         else:
             if player.dir == Left:
                     player.image.clip_draw(int(player.frame) * 61, 0, 30, 130, player.x + 100, player.y + 100)  # 왼쪽 공격
@@ -263,24 +263,25 @@ class FallingState:
         else:
             if player.y >= player.ground_y:
                 player.y -= Fall_speed_PPS * game_framework.frame_time
+                print('falling')
             else:
                 player.In_Air = False
-                player.cur_state = GroundState
-                # game_framework.change_state(GroundState)
+                print(player.In_Air)
+                player.add_event(GroundState)
         player.clamp_and_timer()
 
     @staticmethod
     def draw(player):
         if not player.MAttack_Status:
             if player.dir == Right:
-                player.image.clip_draw(int(player.frame) * 61, 0, 61, 130, player.x, player.y)
+                player.image.clip_draw(int(player.frame) * 250, 0, 250, 250, player.x, player.y)  # 오른쪽 낙하
             else:
-                player.image.clip_draw(int(player.frame) * 61, 130, 61, 130, player.x, player.y)  # 왼쪽 스프라이트
+                player.image.clip_draw(int(player.frame) * 250, 250, 250, 250, player.x, player.y)  # 왼쪽 낙하
         else:
             if player.dir == Left:
-                    player.image.clip_draw(int(player.frame) * 61, 0, 30, 130, player.x + 100, player.y + 100)
+                    player.image.clip_draw(int(player.frame) * 250, 1250, 250, 250, player.x, player.y)  # 왼쪽 공격
             else:
-                    player.image.clip_draw(int(player.frame) * 61, 0, 30, 130, player.x - 100, player.y - 100)
+                    player.image.clip_draw(int(player.frame) * 250, 1000, 250, 250, player.x, player.y)  # 오른쪽 공격
 
 
 next_state_table = {
@@ -349,6 +350,7 @@ class Player:
 
     def update(self):
         self.cur_state.do(self)
+        print(self.cur_state)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
             self.cur_state.exit(self, event)
@@ -377,7 +379,7 @@ class Player:
             self.y = clamp(self.ground_y, self.y, 880)
         elif game_state.background.block == 1:
             self.x = clamp(50, self.x, 1290)
-            self.y = clamp(self.ground_y, self.y, 880)
+            self.y = clamp(self.ground_y + 1, self.y, 880)
         else:
             self.x = clamp(-10, self.x, 1290)
             self.y = clamp(self.ground_y, self.y, 880)

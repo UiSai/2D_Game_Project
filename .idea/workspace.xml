@@ -3,7 +3,7 @@
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/game_state.py" description="화면 이동" line="206" />
     <bookmark url="file://$PROJECT_DIR$/player.py" description="바닥이 없는 구간 설정" line="260" />
-    <bookmark url="file://$PROJECT_DIR$/player.py" description="플레이어 이동 제한" line="361" />
+    <bookmark url="file://$PROJECT_DIR$/player.py" description="플레이어 이동 제한" line="363" />
     <bookmark url="file://$PROJECT_DIR$/game_state.py" description="적 생성" line="85" />
   </component>
   <component name="ChangeListManager">
@@ -24,7 +24,7 @@
         <entry file="file://$PROJECT_DIR$/game_state.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="536">
-              <caret line="136" column="41" lean-forward="true" selection-start-line="136" selection-start-column="41" selection-end-line="136" selection-end-column="41" />
+              <caret line="136" column="41" selection-start-line="136" selection-start-column="41" selection-end-line="136" selection-end-column="41" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -101,8 +101,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/player.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="387">
-              <caret line="224" column="80" selection-start-line="224" selection-start-column="80" selection-end-line="224" selection-end-column="80" />
+            <state relative-caret-position="392">
+              <caret line="381" column="44" selection-start-line="381" selection-start-column="44" selection-end-line="381" selection-end-column="44" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -930,7 +930,7 @@
     <entry file="file://$PROJECT_DIR$/game_state.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="536">
-          <caret line="136" column="41" lean-forward="true" selection-start-line="136" selection-start-column="41" selection-end-line="136" selection-end-column="41" />
+          <caret line="136" column="41" selection-start-line="136" selection-start-column="41" selection-end-line="136" selection-end-column="41" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
@@ -939,8 +939,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/player.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="387">
-          <caret line="224" column="80" selection-start-line="224" selection-start-column="80" selection-end-line="224" selection-end-column="80" />
+        <state relative-caret-position="392">
+          <caret line="381" column="44" selection-start-line="381" selection-start-column="44" selection-end-line="381" selection-end-column="44" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
