@@ -78,7 +78,6 @@ class AttackState:
         if enemy.Attack_Timer > 12:
             enemy.Attack_Timer = 0
             throw_dir = random.randint(0, 2)
-            print(throw_dir)
             for i in range(7):
                 # if not self.knife[i].exist:
                 enemy.knife[i].exist = True
@@ -192,7 +191,7 @@ class Enemy_boss:
     def draw(self):
         if self.HP > 0:
             self.cur_state.draw(self)
-            draw_rectangle(*self.get_bb())
+            # draw_rectangle(*self.get_bb())
 
     def input_buttons(self, event):
         pass
@@ -273,13 +272,13 @@ class Knife:
         if self.exist:
             if self.dir == Right:
                 self.image_right.draw(self.x, self.y)
-                draw_rectangle(*self.get_bb())
+                # draw_rectangle(*self.get_bb())
             elif self.dir == Left:
                 self.image_left.draw(self.x, self.y)
-                draw_rectangle(*self.get_bb())
+                # draw_rectangle(*self.get_bb())
             elif self.dir == Up:
                 self.image_up.draw(self.x, self.y)
-                draw_rectangle(*self.get_bb())
+                # draw_rectangle(*self.get_bb())
             # print(self.velocity)
 
     def get_bb(self):

@@ -160,7 +160,7 @@ class Enemy_mouse:
     def draw(self):
         if self.HP > 0:
             self.cur_state.draw(self)
-            draw_rectangle(*self.get_bb())
+            # draw_rectangle(*self.get_bb())
 
     def input_buttons(self, event):
         pass

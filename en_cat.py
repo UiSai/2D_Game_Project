@@ -42,8 +42,6 @@ class IdleState:
         elif enemy.x > game_state.player.x:
             enemy.dir = Left
         if enemy.Attack_Timer >= 8:
-            print(enemy.Attack_Timer)
-            print('time')
             enemy.Attack()
             enemy.Attack_Timer = 0
 
@@ -134,7 +132,7 @@ class Enemy_cat:
     def draw(self):
         if self.HP > 0:
             self.cur_state.draw(self)
-            draw_rectangle(*self.get_bb())
+            # draw_rectangle(*self.get_bb())
 
     def input_buttons(self, event):
         pass
@@ -144,7 +142,6 @@ class Enemy_cat:
         self.magic.x, self.magic.y = self.x, self.y
         self.magic.target_x, self.magic.target_y = game_state.player.x, game_state.player.y
         self.magic.line_i = 0
-        print(self.magic.line_i)
         self.magic.shoot_dir = self.dir
 
         game_world.add_object(self.magic, 2)
@@ -185,7 +182,7 @@ class Magic:
     def draw(self):
         if self.exist:
             self.image.draw(self.x, self.y)
-            draw_rectangle(*self.get_bb())
+            # draw_rectangle(*self.get_bb())
 
     def get_bb(self):
         return self.x - 10, self.y - 10, self.x + 10, self.y + 10

@@ -32,9 +32,9 @@ def input_buttons():
             if (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
                 game_framework.quit()
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_z):
-                game_framework.change_state(title_state)
-            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_x):
                 game_framework.change_state(game_state)
+            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_x):
+                game_framework.change_state(title_state)
 
 
 def draw():
