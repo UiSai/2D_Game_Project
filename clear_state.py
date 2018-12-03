@@ -4,14 +4,14 @@ import game_framework
 import title_state
 import game_state
 
-name = "GameOverState"
+name = "ClearState"
 image = None
 bgm = None
 
 
 def enter():
     global image, bgm
-    image = load_image('resource\\GameOver.png')
+    image = load_image('resource\\clear.png')
     bgm = load_music("resource\\Sound\\Forsaken.mp3")
     bgm.set_volume(64)
     bgm.repeat_play()
@@ -33,8 +33,6 @@ def input_buttons():
                 game_framework.quit()
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_z):
                 game_framework.change_state(title_state)
-            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_x):
-                game_framework.change_state(game_state)
 
 
 def draw():

@@ -78,7 +78,7 @@ class AttackState:
             enemy.Attack_Timer = 0
             throw_dir = random.randint(0, 2)
             print(throw_dir)
-            for i in range(10):
+            for i in range(7):
                 # if not self.knife[i].exist:
                 enemy.knife[i].exist = True
                 enemy.knife[i].dir = throw_dir
@@ -89,7 +89,7 @@ class AttackState:
                 elif enemy.knife[i].dir == Left:
                     enemy.knife[i].x, enemy.knife[i].y = 0, random.randint(0, 960)
 
-                enemy.knife_num = clamp(0, i, 9)
+                enemy.knife_num = clamp(0, i, 6)
                 game_world.add_object(enemy.knife[i], 2)
                 count += 1
                 if count > 30:
@@ -162,7 +162,7 @@ class Enemy_boss:
         self.Invincible_Timer = 0
         # self.knife = Knife()
 
-        self.knife = [Knife() for i in range(10)]
+        self.knife = [Knife() for i in range(7)]
         self.knife_num = 0
         self.damage = 1
 

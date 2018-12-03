@@ -157,18 +157,18 @@ def update():
 
 
 
-    for i in range(10):
+    for i in range(7):
         if boss.knife[i].exist and player.HP > 0 and not player.Invincible_Status:
             if collide(boss.knife[i], player):
                 game_world.remove_object(boss.knife[i])
                 player.HP -= boss.damage
                 boss.knife[i].exist = False
-                boss.arrow_num = clamp(0, i - 1, 9)
+                boss.arrow_num = clamp(0, i - 1, 6)
         if boss.knife[i].y < 0 or boss.knife[i].y > 961 or boss.knife[i].x < 0 or boss.knife[i].x > 1280:
             game_world.remove_object(boss.knife[i])
             boss.knife[i].exist = False
             boss.knife_num = i - 1
-            boss.arrow_num = clamp(0, i - 1, 9)
+            boss.arrow_num = clamp(0, i - 1, 6)
             #boss.add_event(0)
 
 
