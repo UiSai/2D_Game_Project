@@ -296,7 +296,7 @@ class Player:
     def __init__(self):
         self.x, self.y = 100, first_floor_player_y  # 130은 지형의 높이
         self.ground_y = self.y
-        self.image = load_image('resource\\Character_sprite\\TestSprite.png')
+        self.image = load_image('resource\\Character_sprite\\Player_animation.png')
         self.hhealth_image = load_image('resource\\Half_HP.png')
         self.health_image = load_image('resource\\HP.png')
         self.dir = Right

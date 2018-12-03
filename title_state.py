@@ -19,8 +19,6 @@ def enter():
     bgm.set_volume(100)
     bgm.repeat_play()
 
-    print('Title')
-
 
 def exit():
     global image, bgm

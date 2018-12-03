@@ -7,11 +7,14 @@ import game_state
 name = "ClearState"
 image = None
 bgm = None
-
+staff = None
+timer = 0
+roll_enable = False
 
 def enter():
-    global image, bgm
+    global image, bgm, staff
     image = load_image('resource\\clear.png')
+    staff = load_image('resource\\StaffRoll.png')
     bgm = load_music("resource\\Sound\\clear.mp3")
     bgm.set_volume(100)
     bgm.repeat_play()
@@ -36,13 +39,26 @@ def input_buttons():
 
 
 def draw():
-    clear_canvas()
-    image.draw(640, 480)
-    update_canvas()
+    global roll_enable
+
+    if not roll_enable:
+        clear_canvas()
+        image.draw(640, 480)
+        update_canvas()
+    else:
+        clear_canvas()
+        staff.draw(640, 480)
+        update_canvas()
 
 
 def update():
-    pass
+    global timer, roll_enable
+
+    timer += game_framework.frame_time
+    if timer >= 5:
+        timer = 0
+        roll_enable = True
+
 
 
 def pause():
