@@ -257,23 +257,33 @@ class Knife:
 """
 
 class Knife:
-    image = None
-
     def __init__(self):
-        if Knife.image is None:
-            Knife.image = load_image('resource\\RangeAttack.png')
+        self.image_right = load_image('resource\\sword_r.png')
+        self.image_left = load_image('resource\\sword_l.png')
+        self.image_up = load_image('resource\\sword_u.png')
+
         self.x, self.y, self.velocity = 0, 0, Knife_speed_PPS
         self.exist = False
         self.dir = None
 
     def draw(self):
         if self.exist:
-            self.image.draw(self.x, self.y)
-            draw_rectangle(*self.get_bb())
+            if self.dir == Right:
+                self.image_right.draw(self.x, self.y)
+                draw_rectangle(*self.get_bb())
+            elif self.dir == Left:
+                self.image_left.draw(self.x, self.y)
+                draw_rectangle(*self.get_bb())
+            elif self.dir == Up:
+                self.image_up.draw(self.x, self.y)
+                draw_rectangle(*self.get_bb())
             # print(self.velocity)
 
     def get_bb(self):
-        return self.x - 10, self.y - 10, self.x + 10, self.y + 10
+        if self.dir == Right or self.dir == Left:
+            return self.x - 56, self.y - 16, self.x + 56, self.y + 16
+        elif self.dir == Up:
+            return self.x - 16, self.y - 56, self.x + 16, self.y + 56
 
     def update(self):
         if self.exist:

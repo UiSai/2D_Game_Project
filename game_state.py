@@ -84,6 +84,7 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
+    print(player.velocity)
     if not mouse.exist and background.block == 1:
         game_world.add_object(mouse, 1)
 
@@ -204,7 +205,7 @@ def update():
     if player.HP <= 0:
         game_framework.change_state(gameover_state)
 
-    if background.block == 3 and player.y >= 940:
+    if background.block == 3 and player.y >= 955:
         background.block += 1
         player.y = 11
         for i in range(10):
@@ -220,13 +221,11 @@ def update():
         game_framework.change_state(clear_state)
     else:
         if player.x >= 1281:
-            print(game_world.objects[2])
             background.block += 1
             player.x = 2
             for i in range(10):
                 player.arrow[i].exist = False
             game_world.remove_object_in_layer(2)
-            print(game_world.objects[2])
         elif player.x <= -1:
             background.block -= 1
             player.x = 1278

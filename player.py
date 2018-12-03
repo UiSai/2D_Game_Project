@@ -234,6 +234,7 @@ class FallingState:
 
     @staticmethod
     def enter(player, event):
+        player.Falling_velocity = Fall_speed_PPS * game_framework.frame_time
         if event == Right_DOWN:
             player.dir = Right
             player.velocity = Move_speed_PPS
@@ -256,19 +257,13 @@ class FallingState:
 
     @staticmethod
     def do(player):
-        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         player.x += player.velocity * game_framework.frame_time
-        if game_state.background.block == 4 and player.x < 600:
-            player.y -= Fall_speed_PPS * game_framework.frame_time
+        player.y -= player.Falling_velocity
+        if player.y <= player.ground_y and not game_state.background.block == 4:
+            player.cur_state = GroundState
         else:
-            if player.y >= player.ground_y:
-                player.y -= Fall_speed_PPS * game_framework.frame_time
-                print('falling')
-            else:
-                player.In_Air = False
-                print(player.In_Air)
-                player.add_event(GroundState)
-        player.clamp_and_timer()
+            player.clamp_and_timer()
+
 
     @staticmethod
     def draw(player):
@@ -321,6 +316,7 @@ class Player:
         self.Invincible_Status = False
         self.MeleeTimer = 0
         self.Invincible_Timer = 0
+        self.Falling_stop_judge = False
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -363,14 +359,18 @@ class Player:
 
     def clamp_and_timer(self):
         if game_state.background.block == 3:
-            self.x = clamp(-10, self.x, 1000)
+            self.x = clamp(-10, self.x, 600)
             self.y = clamp(self.ground_y, self.y, 970)
         elif game_state.background.block == 4:
-            self.y = clamp(-10, self.y, 880)
+            self.y = clamp(0, self.y, 880)
             self.x = clamp(50, self.x, 1290)
-            if self.x > 600 and self.y < self.ground_y - 15:
-                self.x = clamp(50, self.x, 600)
-                self.y = clamp(self.ground_y, self.y, 880)
+            if self.y < self.ground_y:
+                if self.x <= 600:
+                    self.x = clamp(50, self.x, 600)
+                else:
+                    pass
+                    self.x = clamp(50, self.x, 600)
+                    # self.y = clamp(self.ground_y, self.y, 880)
         elif game_state.background.block == 6 and game_state.boss.exist:
             self.x = clamp(50, self.x, 1250)
             self.y = clamp(self.ground_y, self.y, 880)
@@ -379,7 +379,7 @@ class Player:
             self.y = clamp(self.ground_y, self.y, 880)
         elif game_state.background.block == 1:
             self.x = clamp(50, self.x, 1290)
-            self.y = clamp(self.ground_y + 1, self.y, 880)
+            self.y = clamp(self.ground_y - 1, self.y, 880)
         else:
             self.x = clamp(-10, self.x, 1290)
             self.y = clamp(self.ground_y, self.y, 880)
