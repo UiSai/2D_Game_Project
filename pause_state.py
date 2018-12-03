@@ -1,7 +1,7 @@
 import game_framework
 from pico2d import *
 
-import title_state
+import game_state
 import game_framework
 
 name = "PauseState"
@@ -12,9 +12,11 @@ pause_second = 0.0
 def enter():
     global image
     image = load_image('resource\\pause.png')
+    game_state.background.bgm.pause()
 
 
 def exit():
+    game_state.background.bgm.resume()
     global image
     del(image)
 

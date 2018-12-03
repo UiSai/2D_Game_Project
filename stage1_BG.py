@@ -1,5 +1,6 @@
 from pico2d import *
 import title_state
+import game_state
 
 class Block:
     @staticmethod
