@@ -7,13 +7,7 @@
     <bookmark url="file://$PROJECT_DIR$/player.py" line="419" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f71c0a7-b36e-47a7-bcbe-04c1d5e43618" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/en_boss.py" beforeDir="false" afterPath="$PROJECT_DIR$/en_boss.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/en_cat.py" beforeDir="false" afterPath="$PROJECT_DIR$/en_cat.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/en_mouse.py" beforeDir="false" afterPath="$PROJECT_DIR$/en_mouse.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/player.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resource/RangeAttack.png" beforeDir="false" afterPath="$PROJECT_DIR$/resource/RangeAttack.png" afterDir="false" />
-    </list>
+    <list default="true" id="9f71c0a7-b36e-47a7-bcbe-04c1d5e43618" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,11 +28,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gameover_state.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="14" column="38" selection-start-line="14" selection-start-column="38" selection-end-line="14" selection-end-column="38" />
+            <state relative-caret-position="474">
+              <caret line="34" column="55" selection-start-line="34" selection-start-column="55" selection-end-line="34" selection-end-column="55" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -118,11 +112,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/en_boss.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
-              <caret line="288" lean-forward="true" selection-start-line="288" selection-end-line="288" />
+            <state relative-caret-position="406">
+              <caret line="293" column="32" selection-start-line="293" selection-start-column="32" selection-end-line="293" selection-end-column="32" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -261,13 +255,13 @@
         <option value="$PROJECT_DIR$/game_state.py" />
         <option value="$PROJECT_DIR$/StaffRoll.py" />
         <option value="$PROJECT_DIR$/stage1_BG.py" />
-        <option value="$PROJECT_DIR$/gameover_state.py" />
         <option value="$PROJECT_DIR$/clear_state.py" />
         <option value="$PROJECT_DIR$/title_state.py" />
         <option value="$PROJECT_DIR$/en_mouse.py" />
         <option value="$PROJECT_DIR$/player.py" />
         <option value="$PROJECT_DIR$/en_cat.py" />
         <option value="$PROJECT_DIR$/en_boss.py" />
+        <option value="$PROJECT_DIR$/gameover_state.py" />
       </list>
     </option>
   </component>
@@ -864,16 +858,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gameover_state.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="14" column="38" selection-start-line="14" selection-start-column="38" selection-end-line="14" selection-end-column="38" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/title_state.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="855">
@@ -966,8 +950,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/en_boss.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="288" lean-forward="true" selection-start-line="288" selection-end-line="288" />
+        <state relative-caret-position="406">
+          <caret line="293" column="32" selection-start-line="293" selection-start-column="32" selection-end-line="293" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gameover_state.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="474">
+          <caret line="34" column="55" selection-start-line="34" selection-start-column="55" selection-end-line="34" selection-end-column="55" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>

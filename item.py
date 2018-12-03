@@ -19,7 +19,7 @@ class Item_Health:
     def draw(self):
         if self.exist:
             self.image.draw(self.x, self.y)
-            draw_rectangle(*self.get_bb())
+            # draw_rectangle(*self.get_bb())
 
     def get_bb(self):
         return self.x - 20, self.y - 20, self.x + 20, self.y + 20
