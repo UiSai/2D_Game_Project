@@ -131,6 +131,7 @@ def update():
         if collide(player, boss):
             if player.MAttack_Status and not boss.Invincible_Status:
                 boss.HP -= player.MA_Damage
+                print('hit')
                 boss.Invincible_Status = True
             elif not player.MAttack_Status and not player.Invincible_Status:
                 player.HP -= 1

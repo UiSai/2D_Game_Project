@@ -6,7 +6,7 @@ import game_state
 import random
 
 Left, Right, Up = 0, 1, 2
-first_floor_boss_y = 180
+first_floor_boss_y = 225
 
 Pixel_per_Meter = 1 / 1.23  # 1픽셀에 1.23미터
 Move_speed_MPS = 200
@@ -40,9 +40,9 @@ class IdleState:
     @staticmethod
     def draw(enemy):
         if enemy.dir == Right:
-            enemy.image.clip_draw(int(enemy.frame) * 120, 0, 120, 200, enemy.x, enemy.y)  # 오른쪽 이동
+            enemy.image.draw(enemy.x, enemy.y)  # 오른쪽 이동
         else:
-            enemy.image.clip_draw(int(enemy.frame) * 120, 0, 120, 200, enemy.x, enemy.y)
+            enemy.image.draw(enemy.x, enemy.y)
 
 
 count = 0
@@ -105,9 +105,9 @@ class AttackState:
     @staticmethod
     def draw(enemy):
         if enemy.dir == Right:
-            enemy.image.clip_draw(int(enemy.frame) * 120, 0, 120, 200, enemy.x, enemy.y)  # 오른쪽 이동
+            enemy.image.draw(enemy.x, enemy.y)  # 오른쪽 이동
         else:
-            enemy.image.clip_draw(int(enemy.frame) * 120, 0, 120, 200, enemy.x, enemy.y)
+            enemy.image.draw(enemy.x, enemy.y)
 
 
 class MoveState:
@@ -149,9 +149,9 @@ state_table = [IdleState, AttackState, MoveState]
 
 class Enemy_boss:
     def __init__(self):
-        self.x, self.y = 800, first_floor_boss_y
+        self.x, self.y = 1115, first_floor_boss_y
         self.ground_y = self.y
-        self.image = load_image('resource\\High_boss.png')
+        self.image = load_image('resource\\boss_1.png')
         self.dir = Left
         self.Idle_Timer = 0
         self.Attack_Timer = 10
@@ -175,7 +175,7 @@ class Enemy_boss:
         self.event_que.insert(0, event)
 
     def get_bb(self):
-        return self.x - 60, self.y - 100, self.x + 60, self.y + 100
+        return self.x - 86, self.y - 150, self.x + 86, self.y + 150
 
     def update(self):
         print(self.Invincible_Status, self.Invincible_Timer)
