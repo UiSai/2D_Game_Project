@@ -36,7 +36,7 @@ class IdleState:
         if enemy.exist:
             enemy.Attack_Timer += game_framework.frame_time
         else:
-            enemy.Attack_Timer = 0
+            pass
         if enemy.x < game_state.player.x:
             enemy.dir = Right
         elif enemy.x > game_state.player.x:
@@ -50,9 +50,9 @@ class IdleState:
     @staticmethod
     def draw(enemy):
         if enemy.dir == Right:
-            enemy.image.clip_draw(int(enemy.frame) * 120, 0, 120, 200, enemy.x, enemy.y)  # 오른쪽 이동
+            enemy.image.draw(enemy.x, enemy.y)  # 오른쪽 이동
         else:
-            enemy.image.clip_draw(int(enemy.frame) * 120, 0, 120, 200, enemy.x, enemy.y)
+            enemy.image.draw(enemy.x, enemy.y)
 
 """
 class AttackState:
