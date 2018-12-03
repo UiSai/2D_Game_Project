@@ -68,9 +68,9 @@ class MoveState:
     @staticmethod
     def draw(enemy):
         if enemy.dir == Right:
-            enemy.image.clip_draw(int(enemy.frame) * 0, 0, 280, 50, enemy.x, enemy.y)
+            enemy.image_r.draw(enemy.x, enemy.y)
         else:
-            enemy.image.clip_draw(int(enemy.frame) * 0, 0, 280, 50, enemy.x, enemy.y)  # 왼쪽 이동 스프라이트
+            enemy.image_l.draw(enemy.x, enemy.y)  # 왼쪽 이동 스프라이트
 
 
 """
@@ -117,7 +117,8 @@ class Enemy_mouse:
         self.x, self.y = 800, first_floor_mouse_y  # 120은 지형의 높이.
         self.ground_y = self.y
         self.start_x = self.x
-        self.image = load_image('resource\\High_mouse.png')
+        self.image_r = load_image('resource\\High_mouse_r.png')
+        self.image_l = load_image('resource\\High_mouse_l.png')
         self.dir = Neutral
         self.velocity = 0
         self.frame = 0
@@ -133,7 +134,7 @@ class Enemy_mouse:
         self.event_que.insert(0, event)
 
     def get_bb(self):
-        return self.x - 140, self.y - 25, self.x + 140, self.y + 25
+        return self.x - 100, self.y - 25, self.x + 100, self.y + 25
 
     def update(self):
         self.cur_state.do(self)

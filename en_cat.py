@@ -50,9 +50,9 @@ class IdleState:
     @staticmethod
     def draw(enemy):
         if enemy.dir == Right:
-            enemy.image.draw(enemy.x, enemy.y)  # 오른쪽 이동
+            enemy.image_r.draw(enemy.x, enemy.y)  # 오른쪽 이동
         else:
-            enemy.image.draw(enemy.x, enemy.y)
+            enemy.image_l.draw(enemy.x, enemy.y)
 
 """
 class AttackState:
@@ -97,7 +97,8 @@ class Enemy_cat:
     def __init__(self):
         self.x, self.y = 800, first_floor_cat_y
         self.ground_y = self.y
-        self.image = load_image('resource\\High_cat.png')
+        self.image_r = load_image('resource\\High_cat_r.png')
+        self.image_l = load_image('resource\\High_cat_l.png')
         self.dir = Left
         self.Attack_Timer = 7
         self.frame = 0

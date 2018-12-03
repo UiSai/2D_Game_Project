@@ -45,11 +45,11 @@ class Background:
 
         if not title_state.easter:
             self.bgm = load_music('resource\\Sound\\bgm.mp3')
-            self.bgm.set_volume(64)
+            self.bgm.set_volume(100)
             self.bgm.repeat_play()
         else:
             self.bgm = load_music('resource\\Sound\\bgm02.mp3')
-            self.bgm.set_volume(64)
+            self.bgm.set_volume(100)
             self.bgm.repeat_play()
 
     def draw(self):

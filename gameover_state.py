@@ -13,7 +13,7 @@ def enter():
     global image, bgm
     image = load_image('resource\\GameOver.png')
     bgm = load_music("resource\\Sound\\GameOver.mp3")
-    bgm.set_volume(64)
+    bgm.set_volume(100)
     bgm.repeat_play()
 
 

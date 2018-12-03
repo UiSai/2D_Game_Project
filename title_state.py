@@ -2,6 +2,7 @@ from pico2d import *
 
 import game_framework
 import game_state
+import StaffRoll
 
 name = "TitleState"
 image = None
@@ -15,7 +16,7 @@ def enter():
     easter = False
     easter_commend = []
     bgm = load_music("resource\\Sound\\title.mp3")
-    bgm.set_volume(64)
+    bgm.set_volume(100)
     bgm.repeat_play()
 
     print('Title')
@@ -37,6 +38,8 @@ def input_buttons():
                 game_framework.quit()
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_z):
                 game_framework.change_state(game_state)
+            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_x):
+                game_framework.push_state(StaffRoll)
 
 
 def draw():
