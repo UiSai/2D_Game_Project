@@ -225,9 +225,9 @@ class AirState:
                         player.image.clip_draw(int(player.frame) * 250, 1500, 250, 250, player.x, player.y)  # 오른쪽을 보고 서있다
         else:
             if player.dir == Left:
-                    player.image.clip_draw(int(player.frame) * 61, 0, 30, 130, player.x + 100, player.y + 100)  # 왼쪽 공격
+                    player.image.clip_draw(int(player.frame) * 250, 1250, 250, 250, player.x, player.y)  # 왼쪽 공격
             else:
-                    player.image.clip_draw(int(player.frame) * 61, 0, 30, 130, player.x - 100, player.y - 100)  # 오른쪽 공격
+                    player.image.clip_draw(int(player.frame) * 250, 1000, 250, 250, player.x, player.y)  # 오른쪽 공격
 
 
 class FallingState:
