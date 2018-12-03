@@ -284,9 +284,11 @@ next_state_table = {
                   Air_DOWN: AirState, MAttack: GroundState, RAttack: GroundState, Up_DOWN: GroundState,
                   Up_UP: GroundState, Roll: GroundState},
     AirState: {Right_UP: AirState, Left_UP: AirState, Right_DOWN: AirState, Left_DOWN: AirState,
-               Air_DOWN: FallingState, RAttack: AirState, Up_DOWN: AirState, Up_UP: AirState, MAttack: AirState},
+               Air_DOWN: FallingState, RAttack: AirState, Up_DOWN: AirState, Up_UP: AirState, MAttack: AirState,
+               Roll: AirState},
     FallingState: {Right_DOWN: FallingState, Left_DOWN: FallingState, Right_UP: FallingState, Left_UP: FallingState,
-                   Air_DOWN: AirState, RAttack: FallingState, Up_DOWN: FallingState, Up_UP: FallingState, MAttack: FallingState}
+                   Air_DOWN: AirState, RAttack: FallingState, Up_DOWN: FallingState, Up_UP: FallingState,
+                   MAttack: FallingState, Roll: FallingState}
 }
 
 
@@ -338,15 +340,15 @@ class Player:
     def get_bb(self):
         if self.MAttack_Status:
             if self.dir == Right:
-                return self.x - 37, self.y - 125, self.x + 64, self.y + 100
+                return self.x - 37, self.y - 125, self.x + 70, self.y + 100
             else:
-                return self.x - 64, self.y - 125, self.x + 37, self.y + 100
+                return self.x - 70, self.y - 125, self.x + 37, self.y + 100
         else:
             return self.x - 37, self.y - 125, self.x + 37, self.y + 100
 
     def update(self):
         self.cur_state.do(self)
-        print(self.cur_state)
+        # print(self.cur_state)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
             self.cur_state.exit(self, event)

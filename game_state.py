@@ -84,7 +84,6 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
-    print(player.velocity)
     if not mouse.exist and background.block == 1:
         game_world.add_object(mouse, 1)
 
@@ -107,6 +106,7 @@ def update():
         if collide(player, cat):
             if player.MAttack_Status and not cat.Invincible_Status:
                 cat.HP -= player.MA_Damage
+                cat.Invincible_Status = True
             elif not player.Invincible_Status:
                 player.HP -= 1
                 player.Invincible_Status = True
@@ -131,7 +131,8 @@ def update():
         if collide(player, boss):
             if player.MAttack_Status and not boss.Invincible_Status:
                 boss.HP -= player.MA_Damage
-            elif not player.Invincible_Status:
+                boss.Invincible_Status = True
+            elif not player.MAttack_Status and not player.Invincible_Status:
                 player.HP -= 1
                 player.Invincible_Status = True
 

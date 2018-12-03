@@ -35,6 +35,7 @@ class IdleState:
         enemy.Idle_Timer += game_framework.frame_time
         if enemy.Idle_Timer >= 20:
             enemy.add_event(1)
+        enemy.Invincible()
 
     @staticmethod
     def draw(enemy):
@@ -66,6 +67,8 @@ class AttackState:
             enemy.Attack_Timer += game_framework.frame_time
         else:
             enemy.Attack_Timer = 0
+
+        enemy.Invincible()
         """
         Attacks = [Knife() for i in range(10)]
         for Attack in Attacks:
@@ -131,6 +134,8 @@ class MoveState:
             enemy.dir = Right
             enemy.x -= enemy.velocity * game_framework.frame_time
 
+        enemy.Invincible()
+
     @staticmethod
     def draw(enemy):
         if enemy.dir == Right:
@@ -149,13 +154,13 @@ class Enemy_boss:
         self.image = load_image('resource\\High_boss.png')
         self.dir = Left
         self.Idle_Timer = 0
-        self.Attack_Timer = 7
+        self.Attack_Timer = 10
         self.Move_Timer = 0
         self.frame = 0
         self.event_que = []
         self.cur_state = AttackState
         self.cur_state.enter(self, None)
-        self.HP = 50
+        self.HP = 200
         self.exist = False
         self.dead = False
         self.Invincible_Status = False
@@ -173,6 +178,7 @@ class Enemy_boss:
         return self.x - 60, self.y - 100, self.x + 60, self.y + 100
 
     def update(self):
+        print(self.Invincible_Status, self.Invincible_Timer)
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
@@ -200,8 +206,9 @@ class Enemy_boss:
 
     def Invincible(self):
         if self.Invincible_Status:
+            print('check')
             self.Invincible_Timer += game_framework.frame_time
-            if self.Invincible_Timer >= 0.8:
+            if self.Invincible_Timer >= 1:
                 self.Invincible_Status = False
                 self.Invincible_Timer = 0
 
